@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text } from 'react-native';
+import {StyleSheet, Text, Image } from 'react-native';
 import { Container, Content, Form, Header, Input, Item, Button } from 'native-base';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { AppScreens, AuthStackParamList } from '../AuthFlowScreen';
@@ -17,6 +17,7 @@ const Login: React.FunctionComponent<LoginScreenProps> = (props) => {
         <Container>
             <Header />
             <Content contentContainerStyle={styles.container}>
+                <Image style={styles.logo} source={require("../assets/BarBuddyLogo.png")}/>
                 <Form style={styles.form}>
                     <Item style={styles.Input} rounded>
                         <Input placeholder="Username" onChangeText={e => setUsername(e)}/>
@@ -28,7 +29,7 @@ const Login: React.FunctionComponent<LoginScreenProps> = (props) => {
                     onPress={() => TryLogin(username,password, navigation)}>
                         <Text>Sign in</Text>
                     </Button>
-                    <Button small bordered full danger style={styles.RegisterButton} onPress={() => navigation.navigate(AppScreens.Register)}>
+                    <Button full rounded danger style={styles.RegisterButton} onPress={() => navigation.navigate(AppScreens.Register)}>
                         <Text>Register</Text>
                     </Button>
                 </Form>
@@ -56,8 +57,13 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
     },
+    logo: {
+        bottom: 30,
+        width: 300,
+        height: 300
+    },
     form: {
-        top: 50
+        top: 10
     },
     Input: {
         margin: "2.5%",
@@ -68,7 +74,8 @@ const styles = StyleSheet.create({
     },
     RegisterButton: {
         top: 50,
-        justifyContent: "center"
+        width: "60%",
+        alignSelf: "center"
     }
   });
   

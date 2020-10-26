@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet} from "react-native";
+import {StyleSheet, Image} from "react-native";
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Body, Button, Container, Content, DatePicker, Form, Header, Input, Item, Left, Right, Text, Title, View } from 'native-base';
 import { AppScreens, AuthStackParamList } from '../AuthFlowScreen';
@@ -20,6 +20,7 @@ const Register: React.FunctionComponent<RegisterScreenProps> = (props) => {
         <Container>
             <Header/>
             <Content contentContainerStyle={styles.Content}>
+                <Image style={styles.Logo} source={require("../assets/BarBuddyLogo.png")}/>
                 <Text style={{fontSize: 30}}>Register</Text>
                 <View style={styles.FormView}>
                   <Text style={{fontSize: 10, marginLeft: 20}}>Please fill in all of the fields</Text>
@@ -45,7 +46,7 @@ const Register: React.FunctionComponent<RegisterScreenProps> = (props) => {
                           <Input secureTextEntry placeholder="Confirm Password" onChangeText={e => setRepeatPassword(e)}/>
                       </Item>
                   </Form>
-                  <Button style={styles.Button} full onPress={() => TryRegister(Username, Firstname, Password, repeatPassword, navigation)}><Text>Register</Text></Button>
+                  <Button full rounded success style={{ top: 20, width: "80%", alignSelf: "center"}} onPress={() => TryRegister(Username, Firstname, Password, repeatPassword, navigation)}><Text>Register</Text></Button>
                 </View>
             </Content>
         </Container>
@@ -90,6 +91,12 @@ const styles = StyleSheet.create({
     },
     Button: {
         top: 20,
+        width: "70&"
+    },
+    Logo: {
+        bottom: 30,
+        width: 300,
+        height: 300
     }
 });
 

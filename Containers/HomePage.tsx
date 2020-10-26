@@ -1,5 +1,5 @@
 import { StackNavigationProp } from '@react-navigation/stack';
-import { Container, Content, Header, Text } from 'native-base';
+import { Button, Container, Content, Header, Text } from 'native-base';
 import React from 'react';
 import { AppScreens, AuthStackParamList } from '../AuthFlowScreen';
 
@@ -21,6 +21,7 @@ const HomePage: React.FunctionComponent<HomePageScreenProps> = (props) => {
             <Content>
     <Text>Hello, {route.params.username}</Text>
                 <Text>A home screen window</Text>
+                <Button onPress={() => navigation.navigate("ScanningPage")}><Text>QR Scanner</Text></Button>
             </Content>
         </Container>
     );
