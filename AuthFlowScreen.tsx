@@ -5,19 +5,22 @@ import Login from './Containers/Login';
 import HomePage, { HomeScreenParams } from "./Containers/HomePage";
 import Register from './Containers/Register';
 import ScanningPage from "./Containers/ScanningPage";
+import FriendList from "./Containers/FriendList";
 
 export enum AppScreens {
     Login = "Login",
     Register = "Register",
     HomePage = "HomePage",
-    ScanningPage = "ScanningPage"
+    ScanningPage = "ScanningPage",
+    FriendList = "FriendList"
   }
   
   export type AuthStackParamList =  {
     Login: undefined,
     Register: undefined,
     HomePage: HomeScreenParams,
-    ScanningPage: undefined
+    ScanningPage: undefined,
+    FriendList : undefined
   }
 
   const Stack = createStackNavigator<AuthStackParamList>();
@@ -29,6 +32,7 @@ export enum AppScreens {
                 <Stack.Screen name="Register" component={Register}/>
                 <Stack.Screen name="HomePage" component={HomePage}/>
                 <Stack.Screen name="ScanningPage" component={ScanningPage}/>
+                <Stack.Screen name="FriendList" component={FriendList}/>
             </Stack.Navigator>
       );
   }
