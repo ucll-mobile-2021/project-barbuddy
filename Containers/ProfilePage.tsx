@@ -1,6 +1,6 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Image } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { Container, Content, Header, Text, Item, List, Input, Icon, Button, Image, Footer, FooterTab } from 'native-base';
+import { Container, Content, Header, Text, Item, List, Input, Icon, Button,  Footer, FooterTab } from 'native-base';
 import React from 'react';
 import { AppScreens, AuthStackParamList } from '../AuthFlowScreen';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -134,13 +134,16 @@ const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => 
         <Container>
 
             <Content>
+                <View>
+                <View style={styles.header}>
+                    <View style={styles.headerContent}>
+                        <Image style={styles.avatar} source={{uri: 'https://i.ibb.co/k47jXWr/Alfons.png'}}/>
+                        <Text style={styles.nameUser}>Alfons Piwiet</Text>
+                    </View>
+                </View>
+                </View>
 
-                <Text style={styles.headingText}>Personal info</Text>
-
-                <Text>This is my personal info Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consequatur tempora, est non atque quia rerum quibusdam ut, nobis, recusandae vel voluptatem amet illum praesentium quos impedit odio ipsam. Possimus, velit?</Text>
-
-
-               
+                             
                         <List style={styles.list}>
                         
                     
@@ -260,21 +263,43 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     header: {
+        backgroundColor:'#FFC229',
+    },
+    headerContent:{
+        padding:30,
+        alignItems: 'center',
+    },
+    avatar:{
+        width: 130,
+        height: 130,
+        borderRadius: 63,
+        borderWidth: 4,
+        borderColor: "#FFFFFF",
+        marginBottom:10,
+    },
+    nameUser:{
+        fontSize:45,
+        color:"#FFFFFF",
+        fontWeight:'600',
+    },
+    heading: {
         backgroundColor: '#FFC229'
     },
-    headingText: {
-        backgroundColor: '#f2d4ff',
-        fontSize: 24
+    headingText: { // 'all the bars youve logd into'
+        backgroundColor: '#FFC229',
+        fontSize: 25,
+        color:"#FFFFFF",
+        fontWeight:'300',
     },
     scrollView: {
 
-        height: 150
+        height: 200
     },
     list: {
-        // height: 350
+        //height: 150
     },
     listItem: {
-        //height: 100
+        //height: 150
     },
     footer: {
         backgroundColor: '#FFC229'
