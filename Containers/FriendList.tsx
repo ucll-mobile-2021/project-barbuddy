@@ -60,7 +60,7 @@ interface FriendListScreenProps {
                                 <Icon name="people" />
                                 <Text style={{fontSize: 9}}>Friends</Text>
                             </Button>
-                            <Button onPress={() => navigation.navigate("Review")}>
+                            <Button onPress={() => navigation.navigate("ReviewPage")}>
                                 <Icon name="star" />
                                 <Text style={{fontSize: 9}}>Review</Text>
                             </Button>

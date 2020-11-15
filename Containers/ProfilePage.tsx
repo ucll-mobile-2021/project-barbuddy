@@ -5,6 +5,9 @@ import React from 'react';
 import { AppScreens, AuthStackParamList } from '../AuthFlowScreen';
 import { ScrollView } from 'react-native-gesture-handler';
 import { ListItem, Avatar } from 'react-native-elements';
+//import LinearGradient from 'react-native-linear-gradient';
+
+
 
 type ProfilePageNavigationProps = StackNavigationProp<AuthStackParamList, AppScreens.ProfilePage>
 export type ProfilePageParams = {
@@ -84,7 +87,7 @@ const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => 
             /*subtitle: 'Vice Chairman'*/
         },
         {
-            name: 'Bar K',
+            name: 'Bar M',
             avatar_url: 'https://i.ibb.co/mFPdFvL/BarM.png'
             /*subtitle: 'Vice Chairman'*/
         },
@@ -133,64 +136,78 @@ const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => 
     return (
         <Container>
 
-            <Content>
+            <Content style={styles.content}>
+            {/* <LinearGradient colors={['#4c669f', '#3b5998', '#192f6a']}> */}
                 <View>
                 <View style={styles.header}>
+                
                     <View style={styles.headerContent}>
+
                         <Image style={styles.avatar} source={{uri: 'https://i.ibb.co/k47jXWr/Alfons.png'}}/>
                         <Text style={styles.nameUser}>Alfons Piwiet</Text>
-                    </View>
-                </View>
-                </View>
 
-                             
-                        <List style={styles.list}>
+                    </View>
+                    
+                </View>
+               
+                </View>
+                {/* </LinearGradient> */}
+
+                <View style={styles.topBars}>
+                <List>
                         
                     
-                            <ListItem style={styles.listItem}> 
-                                <Avatar source={{uri: 'https://i.ibb.co/D4KtD4g/BarO.png'}} />
-                                <ListItem.Content>
-                                    <ListItem.Title>{'Favorite bar'}</ListItem.Title>
-                                    <ListItem.Subtitle>{'Bar O'}</ListItem.Subtitle>
-                                </ListItem.Content>
-                            </ListItem>
+                        <ListItem bottomDivider style={styles.bottomDeviderList}>
+                            
+                            <Avatar source={{uri: 'https://i.ibb.co/D4KtD4g/BarO.png'}} />
+                            <ListItem.Content >
+                                <ListItem.Title>{'Favorite bar'}</ListItem.Title>
+                                <ListItem.Subtitle>{'Bar O'}</ListItem.Subtitle>
+                            </ListItem.Content>
+                          
 
-                            <ListItem style={styles.listItem}> 
-                                <Avatar source={{uri: 'https://i.ibb.co/wY0GvnC/BarL.png'}} />
-                                <ListItem.Content>
-                                    <ListItem.Title>{'Second favorite bar'}</ListItem.Title>
-                                    <ListItem.Subtitle>{'Bar L'}</ListItem.Subtitle>
-                                </ListItem.Content>
-                            </ListItem>
+                        </ListItem>
 
-                            <ListItem style={styles.listItem}> 
-                                <Avatar source={{uri: 'https://i.ibb.co/rcz2Nzp/BarG.png'}} />
-                                <ListItem.Content>
-                                    <ListItem.Title>{'Third favorite bar'}</ListItem.Title>
-                                    <ListItem.Subtitle>{'Bar G'}</ListItem.Subtitle>
-                                </ListItem.Content>
-                            </ListItem>
-                        </List>
-                   
+                        <ListItem bottomDivider style={styles.bottomDeviderList}>
+                            <Avatar source={{uri: 'https://i.ibb.co/wY0GvnC/BarL.png'}} />
+                            <ListItem.Content>
+                                <ListItem.Title>{'Second favorite bar'}</ListItem.Title>
+                                <ListItem.Subtitle>{'Bar L'}</ListItem.Subtitle>
+                            </ListItem.Content>
+                        </ListItem>
 
-                {/* <Text style={styles.headingText}>Your top 3 bars</Text>
+                        <ListItem bottomDivider style={styles.bottomDeviderList}>
+                            <Avatar source={{uri: 'https://i.ibb.co/rcz2Nzp/BarG.png'}} />
+                            <ListItem.Content>
+                                <ListItem.Title>{'Third favorite bar'}</ListItem.Title>
+                                <ListItem.Subtitle>{'Bar G'}</ListItem.Subtitle>
+                            </ListItem.Content>
+                        </ListItem>
+                    </List>
+               
 
-                <List>
-                    <ListItem.Content>
-                        <ListItem.Title ><Text>nr 1 favo bar</Text></ListItem.Title>
+            {/* <Text style={styles.headingText}>Your top 3 bars</Text>
+
+            <List>
+                <ListItem.Content>
+                    <ListItem.Title ><Text>nr 1 favo bar</Text></ListItem.Title>
+                    
+                </ListItem.Content>
+
+                <ListItem><Text>nr 2 favo bar</Text></ListItem>
+                <ListItem><Text>nr 3 favo bar</Text></ListItem>
+            </List> */}
+
+                </View>             
                         
-                    </ListItem.Content>
+                
 
-                    <ListItem><Text>nr 2 favo bar</Text></ListItem>
-                    <ListItem><Text>nr 3 favo bar</Text></ListItem>
-                </List> */}
-
-                <Text style={styles.headingText}>All the bars you've loged into</Text>
-
-                <ScrollView style={styles.scrollView}>
+            <View style={styles.allTheBars}>
+            <Text style={styles.headingText}>All the bars you've loged into</Text>
+            <ScrollView style={styles.scrollView}>
                 {
                         list.map((l, i) => (
-                            <ListItem key={i} bottomDivider style={styles.list}>
+                            <ListItem key={i} bottomDivider style={styles.bottomDeviderList}>
                                 
                                 <Avatar source={{uri: l.avatar_url}} />
                                 <ListItem.Content>
@@ -227,7 +244,9 @@ const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => 
                         <ListItem><Text>1st bar</Text></ListItem>
                     </List> */}
                 </ScrollView>
+            </View>
             </Content>
+            
             <Footer>
                 <FooterTab style={styles.footer}>
                     <Button onPress={() => navigation.navigate("HomePage")}>
@@ -238,7 +257,7 @@ const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => 
                         <Icon style={styles.footerIcon} name="people" />
                         <Text style={styles.footerText}>Friends</Text>
                     </Button>
-                    <Button onPress={() => navigation.navigate("Review")}>
+                    <Button onPress={() => navigation.navigate("ReviewPage")}>
                         <Icon style={styles.footerIcon} name="star" />
                         <Text style={styles.footerText}>Review</Text>
                     </Button>
@@ -252,6 +271,7 @@ const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => 
                     </Button>
                 </FooterTab>
             </Footer>
+            
         </Container>
     );
 }
@@ -260,56 +280,81 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        
     },
+    content:{
+        
+        backgroundColor: '#181818'// dark background colour
+        //backgroundColor: '#f1f1f1'
+    },
+    // linearGradientHeader: {
+    //     alignItems: 'center',
+    // justifyContent: 'center',
+    // borderRadius: 5,
+    // height: 200,
+    // width: 350,
+    // },
     header: {
-        backgroundColor:'#FFC229',
+        backgroundColor:'#1f1f1f', 
+
     },
     headerContent:{
         padding:30,
         alignItems: 'center',
+        
     },
     avatar:{
         width: 130,
         height: 130,
         borderRadius: 63,
         borderWidth: 4,
-        borderColor: "#FFFFFF",
+        borderColor: "#FFC229", //yellow
         marginBottom:10,
     },
     nameUser:{
         fontSize:45,
-        color:"#FFFFFF",
+        color: '#FFC229', //yellow
         fontWeight:'600',
-    },
-    heading: {
-        backgroundColor: '#FFC229'
+
     },
     headingText: { // 'all the bars youve logd into'
-        backgroundColor: '#FFC229',
-        fontSize: 25,
-        color:"#FFFFFF",
-        fontWeight:'300',
+        color: '#FFC229',
+        //backgroundColor: '#1a1a1a',
+        backgroundColor: '#1f1f1f', //darkgray 
+        fontSize: 20,
+        fontWeight:'normal',
+        padding: 15,
+        //paddingHorizontal:20
+    },
+    topBars:{
+        opacity: 0.95
+        
+    },
+    allTheBars:{
+        opacity: 0.95
+        
     },
     scrollView: {
+        height: 200,
+        
+    },
+    bottomDeviderList: {
+        paddingVertical: 2,
+        borderColor: '#FFC229', // yellow
+        borderWidth: 1,
+        
+    },
 
-        height: 200
-    },
-    list: {
-        //height: 150
-    },
-    listItem: {
-        //height: 150
-    },
     footer: {
-        backgroundColor: '#FFC229'
+        backgroundColor: '#FFC229', //yellow 
     },
     footerText: {
         fontSize: 9,
         color: 'black'
     },
     footerIcon: {
-        color: 'black'
+        color: '#1f1f1f' //drakgray
     }
 
 });
