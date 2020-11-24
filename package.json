@@ -8,13 +8,15 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.13.2",
     "@react-native-community/masked-view": "0.1.10",
-    "@react-navigation/native": "^5.8.9",
-    "@react-navigation/stack": "^5.12.6",
+    "@react-navigation/native": "^5.8.10",
+    "@react-navigation/stack": "^5.12.8",
     "buffer": "5.0.6",
     "expo": "^39.0.4",
     "expo-barcode-scanner": "~9.0.0",
     "expo-cli": "^3.28.5",
+    "expo-font": "~8.3.0",
     "expo-status-bar": "~1.0.2",
     "native-base": "^2.13.14",
     "react": "16.13.1",
@@ -25,15 +27,15 @@
     "react-native-linear-gradient": "^2.5.6",
     "react-native-qrcode-image": "^0.2.8",
     "react-native-qrcode-svg": "^6.0.6",
-    "react-native-reanimated": "~1.13.0",
+    "react-native-reanimated": "^1.13.2",
     "react-native-safe-area-context": "3.1.4",
     "react-native-screens": "~2.10.1",
     "react-native-webview": "^10.10.2"
   },
   "devDependencies": {
-    "@types/react": "^16.9.56",
-    "@types/react-dom": "^16.9.9",
-    "@types/react-native": "^0.63.34",
+    "@types/react": "^16.14.2",
+    "@types/react-dom": "^16.9.10",
+    "@types/react-native": "^0.63.37",
     "react-native-web": "^0.13.18",
     "typescript": "~3.9.5"
   },

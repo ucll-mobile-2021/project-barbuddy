@@ -1,21 +1,46 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Container, Content, Header, Text, Item, List, ListItem, Input, Icon, Button, Image, Footer, FooterTab } from 'native-base';
-import React from 'react';
+import React, {useEffect} from 'react';
 import { AppScreens, AuthStackParamList } from '../AuthFlowScreen';
+import { getData } from '../Database';
 
 type HomePageNavigationProps = StackNavigationProp<AuthStackParamList,AppScreens.HomePage>
-export type HomeScreenParams = {
-    username: string
-}
 
 interface HomePageScreenProps {
-    route: {params: HomeScreenParams}
     navigation: HomePageNavigationProps
 }
     const HomePage: React.FunctionComponent<HomePageScreenProps> = (props) => {
-        const {navigation, route} = props;
-        return (
-            <Container>
+        const [currentUser, setCurrentUser] = React.useState("");
+        const [friendList, setFriendList] = React.useState("");
+        const [isLoaded, setLoaded] = React.useState(false);
+
+        useEffect(() => {
+            getData("current").then(response => {
+                if(response === "")
+                {
+                    navigation.navigate("Login");
+                    return;
+                }
+                setCurrentUser(response);
+                getData("friendList").then((response2) => {
+                    setFriendList(response2);
+                    setLoaded(true);
+                });
+            });
+        });
+
+        const GetCurrentUser = () => {
+            return JSON.parse(currentUser);
+        }
+        const GetFriendList = () => {
+            return JSON.parse(friendList);
+        }
+        const {navigation} = props;
+
+        if(isLoaded)
+        {
+            return (
+                <Container>
                 <Header searchBar rounded>
                     <Item>
                         <Icon name="ios-search" />
@@ -27,29 +52,15 @@ interface HomePageScreenProps {
                     </Button>
                 </Header>
                 <Content>
-                    <Text>Hello, {route.params.username}</Text>
+                    <Text>Hello, {GetCurrentUser().Firstname}</Text>
                     <List>
-                        <ListItem>
-                            <Text>Bar 1</Text>
-                        </ListItem>
-                        <ListItem>
-                            <Text>Bar 2</Text>
-                        </ListItem>
-                        <ListItem>
-                            <Text>Bar 3</Text>
-                        </ListItem>
-                        <ListItem>
-                            <Text>Bar 3</Text>
-                        </ListItem>
-                        <ListItem>
-                            <Text>Bar 4</Text>
-                        </ListItem>
-                        <ListItem>
-                            <Text>Bar 5</Text>
-                        </ListItem>
-                        <ListItem>
-                            <Text>Bar 6</Text>
-                        </ListItem>
+                        {GetFriendList().map((friend: string) => {
+                            return (
+                                <ListItem key={friend}>
+                                    <Text>{friend}</Text>
+                                </ListItem>
+                            );
+                        })}
                     </List>
                     <Footer>
                         <FooterTab>
@@ -77,9 +88,12 @@ interface HomePageScreenProps {
                     </Footer>
                 </Content>
             </Container>
-        );
+            );
+        }
+        else
+        {
+            return null;
+        }
     }
-
-
 
     export default HomePage;

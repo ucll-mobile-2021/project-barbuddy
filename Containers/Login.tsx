@@ -3,6 +3,7 @@ import {StyleSheet, Text, Image } from 'react-native';
 import { Container, Content, Form, Header, Input, Item, Button } from 'native-base';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { AppScreens, AuthStackParamList } from '../AuthFlowScreen';
+import { getData, storeData } from '../Database';
 
 type LoginScreenNavigationProps = StackNavigationProp<AuthStackParamList,AppScreens.Login>
 interface LoginScreenProps {
@@ -39,16 +40,25 @@ const Login: React.FunctionComponent<LoginScreenProps> = (props) => {
 }
 
 const TryLogin = (username: string, password: string, navigation: StackNavigationProp<AuthStackParamList, AppScreens.Login>) => {
-    if(username === "admin" && password === "admin")
-    {
-        console.log("Logged in");
-        navigation.navigate("HomePage", {username});
-    }
-    else
-    {
-        console.log("Bad try");
-    }
-    
+    getData("users").then(users => {
+        if(users === "")
+        {
+            console.log("Not found");
+        }
+        let result = JSON.parse(users);
+        let foundUser = result.find((temp: { Username: string; Password: string; }) => temp.Username === username && temp.Password === password);
+        if(foundUser === undefined)
+        {
+            console.log("Not found");
+        }
+        else
+        {
+            console.log(foundUser);
+            storeData("current",JSON.stringify(foundUser)).then(() => {
+                navigation.navigate("HomePage");
+            });
+        }
+    });  
 }
 
 const styles = StyleSheet.create({

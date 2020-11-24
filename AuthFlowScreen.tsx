@@ -1,8 +1,8 @@
 import 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
-import Login from './Containers/Login';
-import HomePage, { HomeScreenParams } from "./Containers/HomePage";
+import Login from "./Containers/Login";
+import HomePage from "./Containers/HomePage";
 import Register from './Containers/Register';
 import ScanningPage from "./Containers/ScanningPage";
 import FriendList from "./Containers/FriendList";
@@ -22,7 +22,7 @@ export enum AppScreens {
   export type AuthStackParamList =  {
     Login: undefined,
     Register: undefined,
-    HomePage: HomeScreenParams,
+    HomePage: undefined,
     ScanningPage: undefined,
     FriendList : undefined,
     ProfilePage : undefined,
