@@ -3,6 +3,8 @@ import { Container, Content, Header, Text, Item, List, ListItem, Input, Icon, Bu
 import React, {useEffect} from 'react';
 import { AppScreens, AuthStackParamList } from '../AuthFlowScreen';
 import { getData } from '../Database';
+import * as Font from "expo-font";
+import { Ionicons } from '@expo/vector-icons';
 
 type HomePageNavigationProps = StackNavigationProp<AuthStackParamList,AppScreens.HomePage>
 
@@ -24,7 +26,14 @@ interface HomePageScreenProps {
                 setCurrentUser(response);
                 getData("friendList").then((response2) => {
                     setFriendList(response2);
-                    setLoaded(true);
+                    const LoadFonts = async () => {
+                        await Font.loadAsync({
+                            'Roboto': require('native-base/Fonts/Roboto.ttf'),
+                            'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
+                            ...Ionicons.font,
+                          });
+                     }
+                     LoadFonts().then(() => setLoaded(true));
                 });
             });
         });

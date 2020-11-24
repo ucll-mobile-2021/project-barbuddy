@@ -11,8 +11,21 @@ let friendList = [
     "Friend 8"
 ];
 
+let userList = [
+    {
+        Username: "Admin",
+        Password: "password",
+        Date: "2020-09-10",
+        Firstname: "Admin's name"
+    }
+];
+
 export const initialise = async () => {
-    AsyncStorage.setItem("friendList",JSON.stringify(friendList));
+    AsyncStorage.clear().then(() => {
+        AsyncStorage.setItem("friendList",JSON.stringify(friendList)).then(() => {
+            AsyncStorage.setItem("users",JSON.stringify(userList));
+        });
+    })
 }
 
 export const storeData = async (key: string, value: string) => {
