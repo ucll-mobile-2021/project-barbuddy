@@ -11,7 +11,7 @@ interface HomePageScreenProps {
 }
     const HomePage: React.FunctionComponent<HomePageScreenProps> = (props) => {
         const [currentUser, setCurrentUser] = React.useState("");
-        const [friendList, setFriendList] = React.useState("");
+        const [barList, setBarList] = React.useState("");
         const [isLoaded, setLoaded] = React.useState(false);
 
         useEffect(() => {
@@ -22,8 +22,8 @@ interface HomePageScreenProps {
                     return;
                 }
                 setCurrentUser(response);
-                getData("friendList").then((response2) => {
-                    setFriendList(response2);
+                getData("barList").then((response2) => {
+                    setBarList(response2);
                     setLoaded(true);
                 });
             });
@@ -32,8 +32,8 @@ interface HomePageScreenProps {
         const GetCurrentUser = () => {
             return JSON.parse(currentUser);
         }
-        const GetFriendList = () => {
-            return JSON.parse(friendList);
+        const GetBarList = () => {
+            return JSON.parse(barList);
         }
         const {navigation} = props;
 
@@ -54,10 +54,10 @@ interface HomePageScreenProps {
                 <Content>
                     <Text>Hello, {GetCurrentUser().Firstname}</Text>
                     <List>
-                        {GetFriendList().map((friend: string) => {
+                        {GetBarList().map((bar: string) => {
                             return (
-                                <ListItem key={friend}>
-                                    <Text>{friend}</Text>
+                                <ListItem key={bar}>
+                                    <Text>{bar}</Text>
                                 </ListItem>
                             );
                         })}
