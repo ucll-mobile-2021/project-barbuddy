@@ -11,7 +11,6 @@ let friendList = [
     "Friend 8"
 ];
 
-<<<<<<< HEAD
 let barList = [
     "Bar 1",
     "Bar 2",
@@ -35,9 +34,10 @@ let userList = [
 export const initialise = async () => {
     AsyncStorage.clear().then(() => {
         AsyncStorage.setItem("friendList",JSON.stringify(friendList)).then(() => {
-            AsyncStorage.setItem("users",JSON.stringify(userList));
+            AsyncStorage.setItem("users",JSON.stringify(userList)).then(() => {
+                AsyncStorage.setItem("barList",JSON.stringify(barList));
+            });
         });
-        AsyncStorage.setItem("friendList",JSON.stringify(barList));
     })
 }
 
