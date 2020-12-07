@@ -1,25 +1,68 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 let friendList = [
-    "Friend 1",
-    "Friend 2",
-    "Friend 3",
-    "Friend 4",
-    "Friend 5",
-    "Friend 6",
-    "Friend 7",
-    "Friend 8"
+    {Firstname:'Ben',
+    Lastname: 'Vandermeeren',
+    Age: 21},
+    {Firstname:"Auriams",
+    Lastname: 'Arlauskas',
+    Age: 21},
+    {Firstname:'Phloy',
+    Lastname: 'Vanderwyngeart',
+    Age: 21},
+    {Firstname:'Nand',
+    Lastname: 'van Dongen',
+    Age: 21},
+    {Firstname:'Jef',
+    Lastname: 'Lemmens',
+    Age: 21},
+    {Firstname:'Natan',
+    Lastname: 'Vermeersch',
+    Age: 21},
+    {Firstname:"Sofie",
+    Lastname: 'Evers',
+    Age: 21},
+    {Firstname:"Giel",
+    Lastname: 'Lenearts',
+    Age: 21}
 ];
 
 let barList = [
-    "Bar 1",
-    "Bar 2",
-    "Bar 3",
-    "Bar 4",
-    "Bar 5",
-    "Bar 6",
-    "Bar 7",
-    "Bar 8"
+    {
+        id: 1,
+        Name: "blokhut",
+        Location: "oude markt, 3000 Leuven",
+    },
+    {
+        id: 2,
+        Name: "Vesper",
+        Location: "oude markt, 3000 Leuven",
+    },
+    {
+        id: 1,
+        Name: "Alegria",
+        Location: "oude markt, 3000 Leuven",
+    },
+    {
+        id: 1,
+        Name: "Villa artois",
+        Location: "oude markt, 3000 Leuven",
+    },
+    {
+        id: 1,
+        Name: "'t archief",
+        Location: "oude markt, 3000 Leuven",
+    },
+    {
+        id: 1,
+        Name: "Café Manger",
+        Location: "oude markt, 3000 Leuven",
+    },
+    {
+        id: 1,
+        Name: "De Giraf",
+        Location: "oude markt, 3000 Leuven",
+    },
 ];
 
 let userList = [
