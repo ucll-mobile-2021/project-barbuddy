@@ -18,7 +18,7 @@ interface HomePageScreenProps {
         const [currentUser, setCurrentUser] = React.useState("");
         const [barList, setBarList] = React.useState("");
         const [isLoaded, setLoaded] = React.useState(false);
-        const [search, setSearch] = React.useState('');
+        const [search, setSearch] = React.useState("");
 
         useEffect(() => {
             getData("current").then(response => {
@@ -47,29 +47,29 @@ interface HomePageScreenProps {
             return JSON.parse(currentUser);
         }
 
-       function SearchFilterFunction(text: string) {
-           setSearch(text);
-        };
-
         const GetBarList = () => {
-            return JSON.parse(barList).map(function(bar: { id: any; Name: any; Location: any; }) {
-                if(search != ''){
-                    if(bar.Name = search){
-                        return {
-                            id: bar.id,
-                            Name: bar.Name,
-                            Location: bar.Location
-                        };
-                    }
-                }
-                else{
+            if(search === "")
+            {
+                return JSON.parse(barList).map((bar: {id: any; Name: any; Location: any}) => {
                     return {
                         id: bar.id,
                         Name: bar.Name,
                         Location: bar.Location
-                    };
-                }
-            });
+                    }
+                });
+            }
+            else
+            {
+                return JSON.parse(barList)
+                .filter((bar: {id: any; Name: String; Location: any;}) => bar.Name.toLowerCase().startsWith(search.toLowerCase()))
+                .map((bar: {id: any; Name: any; Location: any}) => {
+                    return {
+                        id: bar.id,
+                        Name: bar.Name,
+                        Location: bar.Location
+                    }
+                });
+            }
         }
 
         const {navigation} = props;
@@ -83,19 +83,18 @@ interface HomePageScreenProps {
                         <Icon name="ios-search" />
                         <Input placeholder="search" />
                     </Item>
-                    <Button transparent>
-                        <Input placeholder ="Search bar" onChangeText={text => SearchFilterFunction(text)}></Input>
-                    </Button>
+                    <Item>
+                        <Input placeholder ="Search bar" onChangeText={text => setSearch(text)}></Input>
+                    </Item>
                 </Header>
                 <Content style={styles.content}>
                     <View style={styles.allTheBars}>
                         <Text style={styles.headingText}>Hello, {GetCurrentUser().Firstname}</Text>
-
                         <ScrollView style={styles.scrollView}>
                             <List>
-                                {GetBarList().map((bar: {id: bigint, Name: String, Location: String}) => {
+                                {GetBarList().map((bar: {id: any, Name: any, Location: any}) => {
                                     return (
-                                        <ListItem bottomDivider style={styles.bottomDeviderList}>
+                                        <ListItem key={bar.id} bottomDivider style={styles.bottomDeviderList}>
                                             <ListItem.Title>{bar.Name + ' '}
                                             </ListItem.Title>
                                             <ListItem.Subtitle>{'location: ' + bar.Location}</ListItem.Subtitle>

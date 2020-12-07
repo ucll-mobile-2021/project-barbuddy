@@ -77,9 +77,9 @@ interface FriendListScreenProps {
                         <Text style={styles.headingText}>Friendlist</Text>
                         <ScrollView style={styles.scrollView}>
                             <List>
-                                {GetFriendList().map((friend: {Firstname: String, Lastname: String, Age: bigint}) => {
+                                {GetFriendList().map((friend: {id: any,Firstname: String, Lastname: String, Age: bigint}) => {
                                     return (
-                                        <ListItem bottomDivider style={styles.bottomDeviderList}>
+                                        <ListItem key={friend.id} bottomDivider style={styles.bottomDeviderList}>
                                             <ListItem.Title>{friend.Firstname + ' ' + friend.Lastname + ' '}
                                             </ListItem.Title>
                                             <ListItem.Subtitle>{'age: ' + friend.Age}</ListItem.Subtitle>
