@@ -25,6 +25,7 @@ interface FriendListScreenProps {
         const [currentUser, setCurrentUser] = React.useState("");
         const [friendList, setFriendList] = React.useState("");
         const [isLoaded, setLoaded] = React.useState(false);
+        const [search, setSearch] = React.useState("");
 
         useEffect(() => {
             getData("current").then(response => {
@@ -54,7 +55,30 @@ interface FriendListScreenProps {
         }
 
         const GetFriendList = () => {
-            return JSON.parse(friendList);
+            if(search === "")
+            {
+                return JSON.parse(friendList).map((friend: {id: any; Firstname: any; Lastname: any; Age: any;}) => {
+                    return {
+                        id: friend.id,
+                        Firstname: friend.Firstname,
+                        Lastname: friend.Lastname,
+                        Age: friend.Age
+                    }
+                });
+            }
+            else
+            {
+                return JSON.parse(friendList)
+                .filter((friend: {id: any; Firstname: any; Lastname: any; Age: any;}) => friend.Lastname.toLowerCase().startsWith(search.toLowerCase()) || friend.Firstname.toLowerCase().startsWith(search.toLowerCase()))
+                .map((friend: {id: any; Firstname: any; Lastname: any; Age: any;}) => {
+                    return {
+                        id: friend.id,
+                        Firstname: friend.Firstname,
+                        Lastname: friend.Lastname,
+                        Age: friend.Age
+                    }
+                });
+            }
         }
 
         if(isLoaded)
@@ -65,12 +89,9 @@ interface FriendListScreenProps {
                 <Header searchBar rounded style={styles.header}>
                     <Item>
                         <Icon name="ios-search" />
-                        <Input placeholder="search" />
+                        <Input placeholder ="Search bar" onChangeText={text => setSearch(text)}></Input>
                         <Icon name="ios-people" />
                     </Item>
-                    <Button transparent>
-                        <Text>Search</Text>
-                    </Button>
                 </Header>
                 <Content style={styles.content}>
                     <View style={styles.allTheBars}>

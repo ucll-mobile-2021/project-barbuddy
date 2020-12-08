@@ -81,9 +81,6 @@ interface HomePageScreenProps {
                 <Header searchBar rounded style={styles.header}>
                     <Item>
                         <Icon name="ios-search" />
-                        <Input placeholder="search" />
-                    </Item>
-                    <Item>
                         <Input placeholder ="Search bar" onChangeText={text => setSearch(text)}></Input>
                     </Item>
                 </Header>
