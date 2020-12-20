@@ -1,8 +1,11 @@
 import { StyleSheet, View, Image } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Container, Content, Header, Text, Item, List, Input, Icon, Button,  Footer, FooterTab } from 'native-base';
-import React from 'react';
+import React, {useEffect} from 'react';
 import { AppScreens, AuthStackParamList } from '../AuthFlowScreen';
+import { getData } from '../Database';
+import * as Font from "expo-font";
+import { Ionicons } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
 import { ListItem, Avatar } from 'react-native-elements';
 //import LinearGradient from 'react-native-linear-gradient';
@@ -20,118 +23,49 @@ interface ProfilePageScreenProps {
 }
 const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => {
     const { navigation, route } = props;
-    const list = [
-        { 
-            name: 'A bar', 
-            avatar_url:'https://i.ibb.co/LgqWFsw/Bar.png'
-            /*subtitle: '' */
-        },
-        {
-            name: 'Bar A',
-            avatar_url: 'https://i.ibb.co/KGKwRFQ/BarA.png'
-            /*subtitle: 'Vice Chairman'*/
-        },
-        {
-            name: 'Bar B',
-            avatar_url:'https://i.ibb.co/XtVHGR3/BarB.png'
-            /*subtitle: 'Vice Chairman'*/
-        },
-        {
-            name: 'Bar C',
-            avatar_url: 'https://i.ibb.co/6sFdc6j/BarC.png'
-            /*subtitle: 'Vice Chairman'*/
-        },
-        {
-            name: 'Bar D',
-            avatar_url: 'https://i.ibb.co/5GHK2vL/BarD.png'
-            /*subtitle: 'Vice Chairman'*/
-        },
-        {
-            name: 'Bar E',
-            avatar_url: 'https://i.ibb.co/qk2XKzd/BarE.png'
-            /*subtitle: 'Vice Chairman'*/
-        },
-        {
-            name: 'Bar F',
-            avatar_url: 'https://i.ibb.co/bLP0NZ5/BarF.png'
-            /*subtitle: 'Vice Chairman'*/
-        },
-        {
-            name: 'Bar G',
-            avatar_url: 'https://i.ibb.co/rcz2Nzp/BarG.png'
-            /*subtitle: 'Vice Chairman'*/
-        },
-        {
-            name: 'Bar H',
-            avatar_url: 'https://i.ibb.co/M23Gwcf/BarH.png'
-            /*subtitle: 'Vice Chairman'*/
-        },
-        {
-            name: 'Bar I',
-            avatar_url: 'https://i.ibb.co/mXg1bGs/BarI.png'
-            /*subtitle: 'Vice Chairman'*/
-        },
-        {
-            name: 'Bar J',
-            avatar_url: 'https://i.ibb.co/HTGgRNG/BarJ.png'
-            /*subtitle: 'Vice Chairman'*/
-        },
-        {
-            name: 'Bar K',
-            avatar_url: 'https://i.ibb.co/rwTp8CT/BarK.png'
-            /*subtitle: 'Vice Chairman'*/
-        },
-        {
-            name: 'Bar L',
-            avatar_url: 'https://i.ibb.co/wY0GvnC/BarL.png'
-            /*subtitle: 'Vice Chairman'*/
-        },
-        {
-            name: 'Bar M',
-            avatar_url: 'https://i.ibb.co/mFPdFvL/BarM.png'
-            /*subtitle: 'Vice Chairman'*/
-        },
-        {
-            name: 'Bar N',
-            avatar_url: 'https://i.ibb.co/585SMY2/BarN.png'
-            /*subtitle: 'Vice Chairman'*/
-        },
-        {
-            name: 'Bar O',
-            avatar_url: 'https://i.ibb.co/D4KtD4g/BarO.png'
-            /*subtitle: 'Vice Chairman'*/
-        },
-        {
-            name: 'Bar P',
-            avatar_url: 'https://i.ibb.co/8d79hc4/BarP.png'
-            /*subtitle: 'Vice Chairman'*/
-        },
-        {
-            name: 'Bar Q',
-            avatar_url: 'https://i.ibb.co/Dk3mgdY/BarQ.png'
-            /*subtitle: 'Vice Chairman'*/
-        },
-        {
-            name: 'Bar R',
-            avatar_url: 'https://i.ibb.co/m6JrmYL/BarR.png'
-            /*subtitle: 'Vice Chairman'*/
-        },
-        {
-            name: 'Bar S',
-            avatar_url: 'https://i.ibb.co/0c1j14w/BarS.png'
-            /*subtitle: 'Vice Chairman'*/
-        },
-        {
-            name: 'Bar T',
-            avatar_url: 'https://i.ibb.co/nsM5zTT/BarT.png'
-            /*subtitle: 'Vice Chairman'*/
-        },
-        {
-            name: 'Bar U',
-            avatar_url: 'https://i.ibb.co/VH8D40y/BarU.png'
-            /*subtitle: 'Vice Chairman'*/
-        }
-    ]
+    const [currentUser, setCurrentUser] = React.useState("");
+    const [barList, setBarList] = React.useState("");
+    const [isLoaded, setLoaded] = React.useState(false);
+
+    useEffect(() => {
+        getData("current").then(response => {
+            if(response === "")
+            {
+                navigation.navigate("ProfilePage");
+                return;
+            }
+            setCurrentUser(response);
+
+            getData("barList").then((response2) => {
+                setBarList(response2);
+                const LoadFonts = async () => {
+                    await Font.loadAsync({
+                        'Roboto': require('native-base/Fonts/Roboto.ttf'),
+                        'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
+                        ...Ionicons.font,
+                     });
+                 }
+                 LoadFonts().then(() => setLoaded(true));
+            });
+        });
+    });
+
+    const GetCurrentUser = () => {
+        return JSON.parse(currentUser);
+    }
+
+    const GetBarList = () => {
+            return JSON.parse(barList).map((bar: {id: any; Name: any; Location: any}) => {
+                return {
+                    id: bar.id,
+                    Name: bar.Name,
+                    Location: bar.Location
+                }
+            });
+    }
+
+    if(isLoaded)
+    {
 
     return (
         <Container>
@@ -184,19 +118,7 @@ const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => 
                             </ListItem.Content>
                         </ListItem>
                     </List>
-               
-
-            {/* <Text style={styles.headingText}>Your top 3 bars</Text>
-
-            <List>
-                <ListItem.Content>
-                    <ListItem.Title ><Text>nr 1 favo bar</Text></ListItem.Title>
-                    
-                </ListItem.Content>
-
-                <ListItem><Text>nr 2 favo bar</Text></ListItem>
-                <ListItem><Text>nr 3 favo bar</Text></ListItem>
-            </List> */}
+            
 
                 </View>             
                         
@@ -206,43 +128,19 @@ const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => 
             <Text style={styles.headingText}>All the bars you've loged into</Text>
             <ScrollView style={styles.scrollView}>
                 {
-                        list.map((l, i) => (
-                            <ListItem key={i} bottomDivider style={styles.bottomDeviderList}>
+                        GetBarList().map((bar: {id: any, Name: any, Location: any, avatar_url:any}) => {
+                            return (
+                                <ListItem key={bar.id} bottomDivider style={styles.bottomDeviderList}>
                                 
-                                <Avatar source={{uri: l.avatar_url}} />
-                                <ListItem.Content>
-                                    <ListItem.Title>{l.name}</ListItem.Title>
-                                   {/* <ListItem.Subtitle>{l.subtitle}</ListItem.Subtitle> */}
-                                </ListItem.Content>
-                            </ListItem>
-                        ))
-                    }
-                    {/* <List>
-                        <ListItem><Text>24th bar</Text></ListItem>
-                        <ListItem><Text>23rd bar</Text></ListItem>
-                        <ListItem><Text>22nd bar</Text></ListItem>
-                        <ListItem><Text>21st bar</Text></ListItem>
-                        <ListItem><Text>20th bar</Text></ListItem>
-                        <ListItem><Text>19th bar</Text></ListItem>
-                        <ListItem><Text>18th bar</Text></ListItem>
-                        <ListItem><Text>17th bar</Text></ListItem>
-                        <ListItem><Text>16th bar</Text></ListItem>
-                        <ListItem><Text>15th bar</Text></ListItem>
-                        <ListItem><Text>14th bar</Text></ListItem>
-                        <ListItem><Text>13th bar</Text></ListItem>
-                        <ListItem><Text>12th bar</Text></ListItem>
-                        <ListItem><Text>11th bar</Text></ListItem>
-                        <ListItem><Text>10th bar</Text></ListItem>
-                        <ListItem><Text>9th bar</Text></ListItem>
-                        <ListItem><Text>8th bar</Text></ListItem>
-                        <ListItem><Text>7th bar</Text></ListItem>
-                        <ListItem><Text>6th bar</Text></ListItem>
-                        <ListItem><Text>5th bar</Text></ListItem>
-                        <ListItem><Text>4th bar</Text></ListItem>
-                        <ListItem><Text>3rd bar</Text></ListItem>
-                        <ListItem><Text>2nd bar</Text></ListItem>
-                        <ListItem><Text>1st bar</Text></ListItem>
-                    </List> */}
+                                    <Avatar source={{uri:bar.avatar_url}} />
+                                    <ListItem.Content>
+                                        <ListItem.Title>{bar.Name}</ListItem.Title>
+                                        <ListItem.Subtitle>{bar.Location}</ListItem.Subtitle>
+                                    </ListItem.Content> 
+                                </ListItem>
+                                );
+                            })}
+
                 </ScrollView>
             </View>
             </Content>
@@ -274,6 +172,11 @@ const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => 
             
         </Container>
     );
+    }
+    else
+    {
+        return null;
+    }
 }
 
 const styles = StyleSheet.create({

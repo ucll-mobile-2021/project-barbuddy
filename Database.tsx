@@ -54,39 +54,47 @@ let friendList = [
 let barList = [
     {
         id: 1,
-        Name: "blokhut",
+        Name: "Blokhut",
         Location: "oude markt, 3000 Leuven",
+        avatar_url: 'https://i.ibb.co/6sFdc6j/BarB.png',
     },
     {
         id: 2,
         Name: "Vesper",
         Location: "oude markt, 3000 Leuven",
+        avatar_url: 'https://i.ibb.co/6sFdc6j/BarC.png',
+
     },
     {
         id: 3,
         Name: "Alegria",
         Location: "oude markt, 3000 Leuven",
+        avatar_url: 'https://i.ibb.co/qk2XKzd/BarE.png'
     },
     {
         id: 4,
         Name: "Villa artois",
         Location: "oude markt, 3000 Leuven",
+        avatar_url: 'https://i.ibb.co/M23Gwcf/BarH.png'
     },
     {
         id: 5,
         Name: "'t archief",
         Location: "oude markt, 3000 Leuven",
+        avatar_url: 'https://i.ibb.co/HTGgRNG/BarJ.png'
     },
     {
         id: 6,
         Name: "Café Manger",
         Location: "oude markt, 3000 Leuven",
+        avatar_url: 'https://i.ibb.co/mFPdFvL/BarM.png'
     },
     {
         id: 7,
         Name: "De Giraf",
         Location: "oude markt, 3000 Leuven",
-    },
+        avatar_url: 'https://i.ibb.co/585SMY2/BarN.png'
+    }
 ];
 
 let userList = [
