@@ -24,7 +24,7 @@ interface ProfilePageScreenProps {
 const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => {
     const { navigation, route } = props;
     const [currentUser, setCurrentUser] = React.useState("");
-    const [barList, setBarList] = React.useState("");
+    const [userBars, setUserBars] = React.useState("");
     const [isLoaded, setLoaded] = React.useState(false);
 
     useEffect(() => {
@@ -36,8 +36,8 @@ const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => 
             }
             setCurrentUser(response);
 
-            getData("barList").then((response2) => {
-                setBarList(response2);
+            getData("userBars").then((response2) => {
+                setUserBars(response2);
                 const LoadFonts = async () => {
                     await Font.loadAsync({
                         'Roboto': require('native-base/Fonts/Roboto.ttf'),
@@ -54,14 +54,20 @@ const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => 
         return JSON.parse(currentUser);
     }
 
-    const GetBarList = () => {
-            return JSON.parse(barList).map((bar: {id: any; Name: any; Location: any}) => {
-                return {
-                    id: bar.id,
-                    Name: bar.Name,
-                    Location: bar.Location
-                }
-            });
+    const GetUserBars = () => {
+        return JSON.parse(userBars).map((bars: {id: any; Name: any; Location: any; avatar_url: any; Ranked:any}) => {
+            return {
+                id: bars.id,
+                Name: bars.Name,
+                Location: bars.Location,
+                avatar_url:bars.avatar_url,
+                Ranked: bars.Ranked
+
+            }
+        });
+    }
+
+    const GetTop3= () => {
     }
 
     if(isLoaded)
@@ -77,8 +83,8 @@ const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => 
                 
                     <View style={styles.headerContent}>
 
-                        <Image style={styles.avatar} source={{uri: 'https://i.ibb.co/k47jXWr/Alfons.png'}}/>
-                        <Text style={styles.nameUser}>Alfons Piwiet</Text>
+                        <Image style={styles.avatar} source={{uri:GetCurrentUser().ProfilePic}}/>
+                        <Text style={styles.nameUser}>{GetCurrentUser().Firstname}</Text>
 
                     </View>
                     
@@ -88,36 +94,9 @@ const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => 
                 {/* </LinearGradient> */}
 
                 <View style={styles.topBars}>
-                <List>
-                        
-                    
-                        <ListItem bottomDivider style={styles.bottomDeviderList}>
-                            
-                            <Avatar source={{uri: 'https://i.ibb.co/D4KtD4g/BarO.png'}} />
-                            <ListItem.Content >
-                                <ListItem.Title>{'Favorite bar'}</ListItem.Title>
-                                <ListItem.Subtitle>{'Bar O'}</ListItem.Subtitle>
-                            </ListItem.Content>
-                          
+                <Text style={styles.headingText}>Your top 3 bars</Text>
 
-                        </ListItem>
 
-                        <ListItem bottomDivider style={styles.bottomDeviderList}>
-                            <Avatar source={{uri: 'https://i.ibb.co/wY0GvnC/BarL.png'}} />
-                            <ListItem.Content>
-                                <ListItem.Title>{'Second favorite bar'}</ListItem.Title>
-                                <ListItem.Subtitle>{'Bar L'}</ListItem.Subtitle>
-                            </ListItem.Content>
-                        </ListItem>
-
-                        <ListItem bottomDivider style={styles.bottomDeviderList}>
-                            <Avatar source={{uri: 'https://i.ibb.co/rcz2Nzp/BarG.png'}} />
-                            <ListItem.Content>
-                                <ListItem.Title>{'Third favorite bar'}</ListItem.Title>
-                                <ListItem.Subtitle>{'Bar G'}</ListItem.Subtitle>
-                            </ListItem.Content>
-                        </ListItem>
-                    </List>
             
 
                 </View>             
@@ -125,17 +104,18 @@ const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => 
                 
 
             <View style={styles.allTheBars}>
-            <Text style={styles.headingText}>All the bars you've loged into</Text>
+            <Text style={styles.headingText}>All the bars you've logged into</Text>
             <ScrollView style={styles.scrollView}>
                 {
-                        GetBarList().map((bar: {id: any, Name: any, Location: any, avatar_url:any}) => {
+                        GetUserBars().map((bars: {id: any; Name: any; Location: any, avatar_url: any,Ranked: any}) => {
                             return (
-                                <ListItem key={bar.id} bottomDivider style={styles.bottomDeviderList}>
                                 
-                                    <Avatar source={{uri:bar.avatar_url}} />
+                                <ListItem key={bars.id} bottomDivider style={styles.bottomDeviderList}>
+                                
+                                    <Avatar source={{uri:bars.avatar_url}} />
                                     <ListItem.Content>
-                                        <ListItem.Title>{bar.Name}</ListItem.Title>
-                                        <ListItem.Subtitle>{bar.Location}</ListItem.Subtitle>
+                                        <ListItem.Title>{bars.Name}</ListItem.Title>
+                                        <ListItem.Subtitle>{bars.Location}</ListItem.Subtitle>
                                     </ListItem.Content> 
                                 </ListItem>
                                 );

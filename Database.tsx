@@ -56,44 +56,44 @@ let barList = [
         id: 1,
         Name: "Blokhut",
         Location: "oude markt, 3000 Leuven",
-        avatar_url: 'https://i.ibb.co/6sFdc6j/BarB.png',
+        avatar_url: "https://i.ibb.co/VJ8PyNK/Blokhut.png",
     },
     {
         id: 2,
         Name: "Vesper",
         Location: "oude markt, 3000 Leuven",
-        avatar_url: 'https://i.ibb.co/6sFdc6j/BarC.png',
+        avatar_url: "https://i.ibb.co/4gcfTgR/Vesper.png",
 
     },
     {
         id: 3,
         Name: "Alegria",
         Location: "oude markt, 3000 Leuven",
-        avatar_url: 'https://i.ibb.co/qk2XKzd/BarE.png'
+        avatar_url: "https://i.ibb.co/VLG7QSW/Alegria.png"
     },
     {
         id: 4,
         Name: "Villa artois",
         Location: "oude markt, 3000 Leuven",
-        avatar_url: 'https://i.ibb.co/M23Gwcf/BarH.png'
+        avatar_url: "https://i.ibb.co/qFZcryg/Villa-artois.jpg"
     },
     {
         id: 5,
         Name: "'t archief",
         Location: "oude markt, 3000 Leuven",
-        avatar_url: 'https://i.ibb.co/HTGgRNG/BarJ.png'
+        avatar_url: "https://i.ibb.co/X8gbK3v/t-archief.jpg"
     },
     {
         id: 6,
         Name: "Café Manger",
         Location: "oude markt, 3000 Leuven",
-        avatar_url: 'https://i.ibb.co/mFPdFvL/BarM.png'
+        avatar_url: "https://i.ibb.co/j8DH0XR/Caf-manger.png"
     },
     {
         id: 7,
         Name: "De Giraf",
         Location: "oude markt, 3000 Leuven",
-        avatar_url: 'https://i.ibb.co/585SMY2/BarN.png'
+        avatar_url: "https://i.ibb.co/hfwbDrL/De-Giraf.jpg"
     }
 ];
 
@@ -102,7 +102,54 @@ let userList = [
         Username: "Admin",
         Password: "password",
         Date: "2020-09-10",
-        Firstname: "Admin's name"
+        Firstname: "Admin's name",
+        ProfilePic: "https://i.ibb.co/z7xPnft/Peter.png", //test
+    }
+];
+
+let userBars = [
+    {
+        id: 2,
+        Name: "Vesper",
+        Location: "oude markt, 3000 Leuven",
+        avatar_url: "https://i.ibb.co/4gcfTgR/Vesper.png",
+        Ranked: "3"
+
+    },
+    {
+        id: 7,
+        Name: "De Giraf",
+        Location: "oude markt, 3000 Leuven",
+        avatar_url: "https://i.ibb.co/hfwbDrL/De-Giraf.jpg",
+        Ranked: "4"
+    },
+    {
+        id: 5,
+        Name: "'t archief",
+        Location: "oude markt, 3000 Leuven",
+        avatar_url: "https://i.ibb.co/X8gbK3v/t-archief.jpg",
+        Ranked: "5"
+    },
+    {
+        id: 4,
+        Name: "Villa artois",
+        Location: "oude markt, 3000 Leuven",
+        avatar_url: "https://i.ibb.co/qFZcryg/Villa-artois.jpg",
+        Ranked: "1"
+    },
+    {
+        id: 3,
+        Name: "Alegria",
+        Location: "oude markt, 3000 Leuven",
+        avatar_url: "https://i.ibb.co/VLG7QSW/Alegria.png",
+        Ranked: "2"
+    },
+    {
+        id: 1,
+        Name: "Blokhut",
+        Location: "oude markt, 3000 Leuven",
+        avatar_url: "https://i.ibb.co/VJ8PyNK/Blokhut.png",
+        Ranked: "5"
     }
 ];
 
@@ -110,9 +157,11 @@ export const initialise = async () => {
     AsyncStorage.clear().then(() => {
         AsyncStorage.setItem("friendList", JSON.stringify(friendList)).then(() => {
             AsyncStorage.setItem("users", JSON.stringify(userList)).then(() => {
+                AsyncStorage.setItem("userBars", JSON.stringify(userBars)).then(() => {
                 AsyncStorage.setItem("barList", JSON.stringify(barList));
             });
         });
+    });
     })
 }
 
