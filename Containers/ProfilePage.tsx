@@ -24,7 +24,7 @@ interface ProfilePageScreenProps {
 const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => {
     const { navigation, route } = props;
     const [currentUser, setCurrentUser] = React.useState("");
-    const [userBars, setUserBars] = React.useState("");
+    const [userList, setUserList] = React.useState("");
     const [isLoaded, setLoaded] = React.useState(false);
 
     useEffect(() => {
@@ -36,8 +36,8 @@ const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => 
             }
             setCurrentUser(response);
 
-            getData("userBars").then((response2) => {
-                setUserBars(response2);
+            getData("userList").then((response2) => {
+                setUserList(response2);
                 const LoadFonts = async () => {
                     await Font.loadAsync({
                         'Roboto': require('native-base/Fonts/Roboto.ttf'),
@@ -54,8 +54,8 @@ const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => 
         return JSON.parse(currentUser);
     }
 
-    const GetUserBars = () => {
-        return JSON.parse(userBars).map((bars: {id: any; Name: any; Location: any; avatar_url: any; Ranked:any}) => {
+    const GetUserList = () => {
+        return GetCurrentUser().Bars.map((bars: {id: any; Name: any; Location: any; avatar_url: any; Ranked:any}) => {
             return {
                 id: bars.id,
                 Name: bars.Name,
@@ -95,19 +95,13 @@ const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => 
 
                 <View style={styles.topBars}>
                 <Text style={styles.headingText}>Your top 3 bars</Text>
-
-
-            
-
                 </View>             
-                        
-                
-
+            
             <View style={styles.allTheBars}>
             <Text style={styles.headingText}>All the bars you've logged into</Text>
             <ScrollView style={styles.scrollView}>
                 {
-                        GetUserBars().map((bars: {id: any; Name: any; Location: any, avatar_url: any,Ranked: any}) => {
+                        GetCurrentUser().Bars.map((bars: {id: any; Name: any; Location: any, avatar_url: any,Ranked: any}) => {
                             return (
                                 
                                 <ListItem key={bars.id} bottomDivider style={styles.bottomDeviderList}>
