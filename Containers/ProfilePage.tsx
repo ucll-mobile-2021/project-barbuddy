@@ -165,10 +165,6 @@ const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => 
                         <Icon style={styles.footerIcon} name="people" />
                         <Text style={styles.footerText}>Friends</Text>
                     </Button>
-                    <Button onPress={() => navigation.navigate("ReviewPage")}>
-                        <Icon style={styles.footerIcon} name="star" />
-                        <Text style={styles.footerText}>Review</Text>
-                    </Button>
                     <Button onPress={() => navigation.navigate("ProfilePage")}>
                         <Icon style={styles.footerIcon} name="person" />
                         <Text style={styles.footerText}>Profile</Text>

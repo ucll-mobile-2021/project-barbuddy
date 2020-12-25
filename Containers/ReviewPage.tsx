@@ -1,11 +1,10 @@
 import { StackNavigationProp } from '@react-navigation/stack';
-import { Container, Content, Header, Text, Item, List, Input, Icon, Button, Image, Footer, FooterTab } from 'native-base';
+import { Container, Content, Header, Text, List, Icon, Button, Footer, FooterTab } from 'native-base';
 import React, {useEffect} from 'react';
 import { AppScreens, AuthStackParamList } from '../AuthFlowScreen';
 import { getData } from '../Database';
 import * as Font from "expo-font";
 import { Ionicons } from '@expo/vector-icons';
-import QRCode from 'react-native-qrcode-svg';
 import { ScrollView } from 'react-native-gesture-handler';
 import { StyleSheet, View } from 'react-native';
 import { ListItem } from 'react-native-elements';
@@ -26,6 +25,7 @@ interface ReviewPageScreenProps {
         const [reviewList, setReviewList] = React.useState("");
         const [userList, setUserList] = React.useState("");
         const [barList, setBarList] = React.useState("");
+        const [barToReview, setBarToReview] = React.useState("");
         const [isLoaded, setLoaded] = React.useState(false);
 
         useEffect(() => {
@@ -37,22 +37,25 @@ interface ReviewPageScreenProps {
                 }
                 setCurrentUser(response);
 
-                getData("reviewList").then((repsonse3) => {
-                    setReviewList(repsonse3)
-                    getData("users").then((response2) => {
-                        setUserList(response2);
-                        getData("barList").then((repsonse4) => {
-                            setBarList(repsonse4);
-                        })   
-                    })
-                    const LoadFonts = async () => {
-                        await Font.loadAsync({
-                            'Roboto': require('native-base/Fonts/Roboto.ttf'),
-                            'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
-                            ...Ionicons.font,
-                         });
-                     }
-                     LoadFonts().then(() => setLoaded(true));
+                getData("barId").then((repsonse5) => {
+                    setBarToReview(repsonse5);   
+                    getData("reviewList").then((repsonse3) => {
+                        setReviewList(repsonse3)
+                        getData("users").then((response2) => {
+                            setUserList(response2);
+                            getData("barList").then((repsonse4) => {
+                                setBarList(repsonse4);
+                            })   
+                        })
+                        const LoadFonts = async () => {
+                            await Font.loadAsync({
+                                'Roboto': require('native-base/Fonts/Roboto.ttf'),
+                                'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
+                                ...Ionicons.font,
+                            });
+                        }
+                        LoadFonts().then(() => setLoaded(true));
+                    });
                 });
             });
         });
@@ -61,9 +64,14 @@ interface ReviewPageScreenProps {
             return JSON.parse(currentUser);
         }
 
-        const GetReviewer = (checkUserID: any) => {
-            let result =  JSON.parse(userList)
-            .filter((friend: { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, Age: any, ProfilePic: any, Bars: any, Friends: any}) =>
+        const GetBarToReview = () => {
+            return JSON.parse(barToReview);
+        }
+        console.log(GetBarToReview());
+
+        const GetReviewer = (checkUserID: number) => {
+            let result =  JSON.parse(userList).filter((friend: 
+            { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, Age: any, ProfilePic: any, Bars: any, Friends: any}) =>
             friend.id === checkUserID)
             .map((friend: { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, Age: any, ProfilePic: any, Bars: any, Friends: any}) => {
                 return {
@@ -78,7 +86,7 @@ interface ReviewPageScreenProps {
         console.log("reviewer:");
         console.log(GetReviewer(1));
 
-        const GetBar = (checkBarID: any) => {
+        const GetBar = (checkBarID: number) => {
             let result =  JSON.parse(barList).filter((bar: {id: any; Name: String; Location: any;}) => bar.id === checkBarID)
             .map((bar: {id: any; Name: any; Location: any}) => {
                 return {
@@ -92,8 +100,8 @@ interface ReviewPageScreenProps {
         console.log("Bar:");
         console.log(GetBar(1));
 
-        const GetReviewList = () => {
-            return JSON.parse(reviewList)
+        const GetReviewList = (barToReview: number) => {
+            return JSON.parse(reviewList).filter((review: {id: any; Review: String; Reviewer: any, Bar: any;}) => review.Bar.id === barToReview)
             .map((review: {id: any; Review: any; Reviewer: any, Bar: any}) => {
                 return {
                     id: review.id,
@@ -105,7 +113,7 @@ interface ReviewPageScreenProps {
             
         }
         console.log("Reviews");
-        console.log(GetReviewList());
+        console.log(GetReviewList(1));
 
 
         if(isLoaded)
@@ -116,11 +124,11 @@ interface ReviewPageScreenProps {
                 <Header searchBar rounded style={styles.header}>
                 </Header>
                 <Content style={styles.content}>
-                <View style={styles.allTheBars}>
+                    <View style={styles.allTheBars}>
                         <Text style={styles.headingText}>Friendlist</Text>
                         <ScrollView style={styles.scrollView}>
                             <List>
-                                {GetReviewList().map((review: {id: any; Review: any; Reviewer: any, Bar: any}) => {
+                                {GetReviewList(GetBarToReview()).map((review: {id: any; Review: any; Reviewer: any, Bar: any}) => {
                                     return (
                                         <ListItem key={review.id} bottomDivider style={styles.bottomDeviderList}>
                                             <ListItem.Title>{review.Review + ' by ' + review.Reviewer.Firstname + ' '}
@@ -143,10 +151,6 @@ interface ReviewPageScreenProps {
                         <Button onPress={() => navigation.navigate("FriendList")}>
                             <Icon style={styles.footerIcon} name="people" />
                             <Text style={styles.footerText}>Friends</Text>
-                        </Button>
-                        <Button onPress={() => navigation.navigate("ReviewPage")}>
-                            <Icon style={styles.footerIcon} name="star" />
-                            <Text style={styles.footerText}>Review</Text>
                         </Button>
                         <Button onPress={() => navigation.navigate("ProfilePage")}>
                             <Icon style={styles.footerIcon} name="person" />

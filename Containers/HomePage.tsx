@@ -1,8 +1,8 @@
 import { StackNavigationProp } from '@react-navigation/stack';
-import { Container, Content, Header, Text, Item, List, Input, Icon, Button, Footer, FooterTab } from 'native-base';
+import { Container, Content, Header, Text, Item, List, Input, Icon, Button, Footer, FooterTab,Right } from 'native-base';
 import React, {useEffect} from 'react';
 import { AppScreens, AuthStackParamList } from '../AuthFlowScreen';
-import { getData } from '../Database';
+import { getData, storeData } from '../Database';
 import * as Font from "expo-font";
 import { Ionicons } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -73,6 +73,13 @@ interface HomePageScreenProps {
             }
         }
 
+        const ReviewBar = (barId: number) => {
+            console.log(barId);
+            storeData("barId",JSON.stringify(barId)).then(() => {
+                navigation.navigate("ReviewPage");
+            });
+        }
+
         const {navigation} = props;
 
         if(isLoaded)
@@ -95,7 +102,10 @@ interface HomePageScreenProps {
                                         <ListItem key={bar.id} bottomDivider style={styles.bottomDeviderList}>
                                             <ListItem.Title>{bar.Name + ' '}
                                             </ListItem.Title>
-                                            <ListItem.Subtitle>{'location: ' + bar.Location}</ListItem.Subtitle>
+                                            <ListItem.Subtitle>{bar.Location}</ListItem.Subtitle>
+                                            <Right>
+                                                <Icon name="arrow-forward" onPress={() => ReviewBar(bar.id)}/>
+                                            </Right>
                                         </ListItem>
                                     );
                                 })}
@@ -112,10 +122,6 @@ interface HomePageScreenProps {
                         <Button onPress={() => navigation.navigate("FriendList")}>
                             <Icon style={styles.footerIcon} name="people" />
                             <Text style={styles.footerText}>Friends</Text>
-                        </Button>
-                        <Button onPress={() => navigation.navigate("ReviewPage")}>
-                            <Icon style={styles.footerIcon} name="star" />
-                            <Text style={styles.footerText}>Review</Text>
                         </Button>
                         <Button onPress={() => navigation.navigate("ProfilePage")}>
                             <Icon style={styles.footerIcon} name="person" />

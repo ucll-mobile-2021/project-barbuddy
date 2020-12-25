@@ -6,6 +6,24 @@ let Reviews = [
         Review: "Nice bar, lots of drinks",
         Reviewer: 1,
         Bar: 1
+    },
+    {
+        id: 2,
+        Review: "Cool bar, lots of falshy drinks",
+        Reviewer: 2,
+        Bar: 1
+    },
+    {
+        id: 3,
+        Review: "Epic bar, the best drinks",
+        Reviewer: 1,
+        Bar: 1
+    },
+    {
+        id: 4,
+        Review: "Shit bar, the worst service",
+        Reviewer: 1,
+        Bar: 2
     }
 ]
 
