@@ -46,6 +46,7 @@ interface HomePageScreenProps {
         const GetCurrentUser = () => {
             return JSON.parse(currentUser);
         }
+        
 
         const GetBarList = () => {
             if(search === "")

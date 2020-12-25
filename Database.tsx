@@ -1,69 +1,26 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-let friendList = [
+let Reviews = [
     {
         id: 1,
-        Firstname: 'Ben',
-        Lastname: 'Vandermeeren',
-        Age: 21
-    },
-    {
-        id: 2,
-        Firstname: "Auriams",
-        Lastname: 'Arlauskas',
-        Age: 21
-    },
-    {
-        id: 3,
-        Firstname: 'Phloy',
-        Lastname: 'Vanderwyngeart',
-        Age: 21
-    },
-    {
-        id: 4,
-        Firstname: 'Nand',
-        Lastname: 'van Dongen',
-        Age: 21
-    },
-    {
-        id: 5,
-        Firstname: 'Jef',
-        Lastname: 'Lemmens',
-        Age: 21
-    },
-    {
-        id: 6,
-        Firstname: 'Natan',
-        Lastname: 'Vermeersch',
-        Age: 21
-    },
-    {
-        id: 7,
-        Firstname: "Sofie",
-        Lastname: 'Evers',
-        Age: 21
-    },
-    {
-        id: 8,
-        Firstname: "Giel",
-        Lastname: 'Lenearts',
-        Age: 21
+        Review: "Nice bar, lots of drinks",
+        Reviewer: 1,
+        Bar: 1
     }
-];
+]
 
 let barList = [
     {
         id: 1,
         Name: "Blokhut",
         Location: "oude markt, 3000 Leuven",
-        avatar_url: "https://i.ibb.co/VJ8PyNK/Blokhut.png",
+        avatar_url: "https://i.ibb.co/VJ8PyNK/Blokhut.png"
     },
     {
         id: 2,
         Name: "Vesper",
         Location: "oude markt, 3000 Leuven",
-        avatar_url: "https://i.ibb.co/4gcfTgR/Vesper.png",
-
+        avatar_url: "https://i.ibb.co/4gcfTgR/Vesper.png"
     },
     {
         id: 3,
@@ -97,72 +54,138 @@ let barList = [
     }
 ];
 
-let userList = [
+let users = [
     {
-        Username: "Admin",
-        Password: "password",
+        id: 1,
+        Username: "Peter",
+        Password: "Password",
         Date: "2020-09-10",
-        Firstname: "Admin's name",
+        Firstname: "Peter",
+        Lastname: "Jackson",
+        Age: "25",
         ProfilePic: "https://i.ibb.co/z7xPnft/Peter.png", //test
-        Bars: 
-        [
-            {
-                id: 2,
-                Name: "Vesper",
-                Location: "oude markt, 3000 Leuven",
-                avatar_url: "https://i.ibb.co/4gcfTgR/Vesper.png",
-                Ranked: "3"
-        
-            },
-            {
-                id: 7,
-                Name: "De Giraf",
-                Location: "oude markt, 3000 Leuven",
-                avatar_url: "https://i.ibb.co/hfwbDrL/De-Giraf.jpg",
-                Ranked: "4"
-            },
-            {
-                id: 5,
-                Name: "'t archief",
-                Location: "oude markt, 3000 Leuven",
-                avatar_url: "https://i.ibb.co/X8gbK3v/t-archief.jpg",
-                Ranked: "5"
-            },
-            {
-                id: 4,
-                Name: "Villa artois",
-                Location: "oude markt, 3000 Leuven",
-                avatar_url: "https://i.ibb.co/qFZcryg/Villa-artois.jpg",
-                Ranked: "1"
-            },
-            {
-                id: 3,
-                Name: "Alegria",
-                Location: "oude markt, 3000 Leuven",
-                avatar_url: "https://i.ibb.co/VLG7QSW/Alegria.png",
-                Ranked: "2"
-            },
-            {
-                id: 1,
-                Name: "Blokhut",
-                Location: "oude markt, 3000 Leuven",
-                avatar_url: "https://i.ibb.co/VJ8PyNK/Blokhut.png",
-                Ranked: "5"
-            }
-        ]
+        Bars:[{id:3, Rank:"1"},
+            {id:2, Rank:"2"},
+            {id:1, Rank:"3"},
+            {id:4, Rank:"4"},
+            {id:5, Rank:"5"},
+            {id:6, Rank:"6"}],
+        Friends: [2,3,4,5,6]
+    },
+    {
+        id: 2,
+        Username: "Jef",
+        Password: "Pas123",
+        Date: "2020-09-10",
+        Firstname: "Jef",
+        Lastname: "Jefferson",
+        Age: "21",
+        ProfilePic: "https://i.ibb.co/z7xPnft/Peter.png", //test
+        Bars:[{id:2, Rank:"3"},
+        {id:6, Rank:"5"},
+        {id:5, Rank:"4"},
+        {id:4, Rank:"1"},
+        {id:3, Rank:"2"},
+        {id:1, Rank:"6"}],
+        Friends: [3,4]
+    },
+    {
+        id: 3,
+        Username: "Andrew",
+        Password: "Azerty123",
+        Date: "2020-09-10",
+        Firstname: "Andrew",
+        Lastname: "Everet",
+        Age: "31",
+        ProfilePic: "https://i.ibb.co/z7xPnft/Peter.png", //test
+        Bars:[{id:2, Rank:"3"},
+        {id:6, Rank:"5"},
+        {id:5, Rank:"4"},
+        {id:4, Rank:"1"},
+        {id:3, Rank:"2"},
+        {id:1, Rank:"6"}],
+        Friends: [2,4]
+    },
+    {
+        id: 4,
+        Username: "Lisa",
+        Password: "Password123.",
+        Date: "2020-09-10",
+        Firstname: "Lisa",
+        Lastname: "Minelli",
+        Age: "27",
+        ProfilePic: "https://i.ibb.co/z7xPnft/Peter.png", //test
+        Bars:[{id:2, Rank:"3"},
+        {id:6, Rank:"5"},
+        {id:5, Rank:"4"},
+        {id:4, Rank:"1"},
+        {id:3, Rank:"2"},
+        {id:1, Rank:"6"}],
+        Friends: [1,2]
+    },
+    {
+        id: 5,
+        Username: "Erik",
+        Password: "Damann",
+        Date: "2020-09-10",
+        Firstname: "Erik",
+        Lastname: "Cartman",
+        Age: "28",
+        ProfilePic: "https://i.ibb.co/z7xPnft/Peter.png", //test
+        Bars:[{id:2, Rank:"3"},
+        {id:6, Rank:"5"},
+        {id:5, Rank:"4"},
+        {id:4, Rank:"1"},
+        {id:3, Rank:"2"},
+        {id:1, Rank:"6"}],
+        Friends: [1,6]
+    },
+    {
+        id: 6,
+        Username: "Nia",
+        Password: "Nia",
+        Date: "2020-09-10",
+        Firstname: "Nia",
+        Lastname: "Naal",
+        Age: "29",
+        ProfilePic: "https://i.ibb.co/z7xPnft/Peter.png", //test
+        Bars:[{id:2, Rank:"3"},
+        {id:6, Rank:"5"},
+        {id:5, Rank:"4"},
+        {id:4, Rank:"1"},
+        {id:3, Rank:"2"},
+        {id:1, Rank:"6"}],
+        friends: [2,7]
+    },
+    {
+        id: 7,
+        Username: "Jessica",
+        Password: "Rabbit",
+        Date: "2020-09-10",
+        Firstname: "Jessica",
+        Lastname: "Cruz",
+        Age: "25",
+        ProfilePic: "https://i.ibb.co/z7xPnft/Peter.png", //test
+        Bars:[{id:2, Rank:"3"},
+        {id:6, Rank:"5"},
+        {id:5, Rank:"4"},
+        {id:4, Rank:"1"},
+        {id:3, Rank:"2"},
+        {id:1, Rank:"6"}],
+        friends: [4,5]
     }
     
 ];
 
 export const initialise = async () => {
     AsyncStorage.clear().then(() => {
-        AsyncStorage.setItem("friendList", JSON.stringify(friendList)).then(() => {
-            AsyncStorage.setItem("users", JSON.stringify(userList)).then(() => {
-                
+        //AsyncStorage.setItem("friendList", JSON.stringify(friendList)).then(() => {
+            AsyncStorage.setItem("users", JSON.stringify(users)).then(() => {
                 AsyncStorage.setItem("barList", JSON.stringify(barList));
+                AsyncStorage.setItem("reviewList", JSON.stringify(Reviews));
             });
         });
-    })
+    //})
 }
 
 export const storeData = async (key: string, value: string) => {

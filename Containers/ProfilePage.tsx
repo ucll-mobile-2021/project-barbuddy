@@ -24,7 +24,7 @@ interface ProfilePageScreenProps {
 const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => {
     const { navigation, route } = props;
     const [currentUser, setCurrentUser] = React.useState("");
-    const [userList, setUserList] = React.useState("");
+    const [userBarList, setUserBarList] = React.useState("");
     const [isLoaded, setLoaded] = React.useState(false);
 
     useEffect(() => {
@@ -36,8 +36,8 @@ const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => 
             }
             setCurrentUser(response);
 
-            getData("userList").then((response2) => {
-                setUserList(response2);
+            getData("barList").then((response2) => {
+                setUserBarList(response2);
                 const LoadFonts = async () => {
                     await Font.loadAsync({
                         'Roboto': require('native-base/Fonts/Roboto.ttf'),
@@ -54,20 +54,47 @@ const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => 
         return JSON.parse(currentUser);
     }
 
-    const GetUserList = () => {
-        return GetCurrentUser().Bars.map((bars: {id: any; Name: any; Location: any; avatar_url: any; Ranked:any}) => {
+    const GetUserBarList = () => {
+        const idArray = GetCurrentUser().Bars.map((bar: {id: any}) => {
+            return bar.id
+        });
+        return JSON.parse(userBarList).filter((bar:{id: any, Name: any, Location: any, avatar_url: any}) => idArray.includes(bar.id))
+        .map((bar:{id: any, Name: any, Location: any, avatar_url: any}) => {
             return {
-                id: bars.id,
-                Name: bars.Name,
-                Location: bars.Location,
-                avatar_url:bars.avatar_url,
-                Ranked: bars.Ranked
-
+                id: bar.id,
+                Name: bar.Name,
+                Location: bar.Location,
+                avatar_url: bar.avatar_url
             }
         });
     }
-
+    
     const GetTop3= () => {
+        const idArray = GetCurrentUser().Bars.map((bar: {id: any}) => {
+            return bar.id
+        });
+
+        let ranking = [1];
+        let teller = 1;
+        let here = 0;
+        let result = [];
+        /*if(GetCurrentUser().Bars.length == 0){
+            console.log("No favorite bars yet!")
+        }
+        else{*/
+            while(teller <= 3){
+
+                GetCurrentUser().Bars.forEach((checkBar: {id: any, Rank: string}) => {
+                    if(checkBar.Rank === teller.toString() && teller <= 3){
+                        result.push(JSON.parse(userBarList).filter((bar:{id: any, Name: any, Location: any, avatar_url: any}) => idArray.includes(bar.id)).filter(
+                            (bar:{id: any, Name: any, Location: any, avatar_url: any}) => bar.id === checkBar.id)[0]);
+                        teller++;
+                    }
+                })
+                
+            }
+            return result;
+        //} 
     }
 
     if(isLoaded)
@@ -95,27 +122,36 @@ const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => 
 
                 <View style={styles.topBars}>
                 <Text style={styles.headingText}>Your top 3 bars</Text>
+                <ScrollView style={styles.scrollView}>
+                    {GetTop3().map((bars: {id: any; Name: any; Location: any, avatar_url: any,Ranked: any}) => {
+                        return (
+                            <ListItem key={bars.id} bottomDivider style={styles.bottomDeviderList}>
+                                <Avatar source={{uri:bars.avatar_url}} />
+                                <ListItem.Content>
+                                    <ListItem.Title>{bars.Name}</ListItem.Title>
+                                    <ListItem.Subtitle>{bars.Location}</ListItem.Subtitle>
+                                </ListItem.Content> 
+                            </ListItem>
+                            );
+                        })}
+                </ScrollView>
                 </View>             
             
             <View style={styles.allTheBars}>
             <Text style={styles.headingText}>All the bars you've logged into</Text>
             <ScrollView style={styles.scrollView}>
-                {
-                        GetCurrentUser().Bars.map((bars: {id: any; Name: any; Location: any, avatar_url: any,Ranked: any}) => {
-                            return (
-                                
-                                <ListItem key={bars.id} bottomDivider style={styles.bottomDeviderList}>
-                                
-                                    <Avatar source={{uri:bars.avatar_url}} />
-                                    <ListItem.Content>
-                                        <ListItem.Title>{bars.Name}</ListItem.Title>
-                                        <ListItem.Subtitle>{bars.Location}</ListItem.Subtitle>
-                                    </ListItem.Content> 
-                                </ListItem>
-                                );
-                            })}
-
-                </ScrollView>
+                {GetUserBarList().map((bars: {id: any; Name: any; Location: any, avatar_url: any,Ranked: any}) => {
+                    return (
+                        <ListItem key={bars.id} bottomDivider style={styles.bottomDeviderList}>
+                            <Avatar source={{uri:bars.avatar_url}} />
+                            <ListItem.Content>
+                                <ListItem.Title>{bars.Name}</ListItem.Title>
+                                <ListItem.Subtitle>{bars.Location}</ListItem.Subtitle>
+                            </ListItem.Content> 
+                        </ListItem>
+                        );
+                    })}
+            </ScrollView>
             </View>
             </Content>
             

@@ -36,7 +36,7 @@ interface FriendListScreenProps {
                 }
                 setCurrentUser(response);
 
-                getData("friendList").then((response2) => {
+                getData("users").then((response2) => {
                     setFriendList(response2);
                     const LoadFonts = async () => {
                         await Font.loadAsync({
@@ -57,7 +57,8 @@ interface FriendListScreenProps {
         const GetFriendList = () => {
             if(search === "")
             {
-                return JSON.parse(friendList).map((friend: {id: any; Firstname: any; Lastname: any; Age: any;}) => {
+                return JSON.parse(friendList).filter((friend: { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, Age: any, ProfilePic: any, Bars: any, Friends: any}) => GetCurrentUser().Friends.includes(friend.id))
+                .map((friend: { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, Age: any, ProfilePic: any, Bars: any, Friends: any}) => {
                     return {
                         id: friend.id,
                         Firstname: friend.Firstname,
@@ -68,9 +69,9 @@ interface FriendListScreenProps {
             }
             else
             {
-                return JSON.parse(friendList)
-                .filter((friend: {id: any; Firstname: any; Lastname: any; Age: any;}) => friend.Lastname.toLowerCase().startsWith(search.toLowerCase()) || friend.Firstname.toLowerCase().startsWith(search.toLowerCase()))
-                .map((friend: {id: any; Firstname: any; Lastname: any; Age: any;}) => {
+                return JSON.parse(friendList).filter((friend: { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, Age: any, ProfilePic: any, Bars: any, Friends: any}) => GetCurrentUser().Friends.includes(friend.id))
+                .filter((friend: { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, Age: any, ProfilePic: any, Bars: any, Friends: any}) => friend.Lastname.toLowerCase().startsWith(search.toLowerCase()) || friend.Firstname.toLowerCase().startsWith(search.toLowerCase()))
+                .map((friend: { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, Age: any, ProfilePic: any, Bars: any, Friends: any}) => {
                     return {
                         id: friend.id,
                         Firstname: friend.Firstname,
