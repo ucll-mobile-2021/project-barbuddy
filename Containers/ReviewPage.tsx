@@ -7,7 +7,7 @@ import * as Font from "expo-font";
 import { Ionicons } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
 import { StyleSheet, View } from 'react-native';
-import { ListItem } from 'react-native-elements';
+import { ListItem, Avatar } from 'react-native-elements';
 
 
 type ReviewPageNavigationProps = StackNavigationProp<AuthStackParamList,AppScreens.ReviewPage>
@@ -60,19 +60,13 @@ interface ReviewPageScreenProps {
             });
         });
 
-        const GetCurrentUser = () => {
+        /*const GetCurrentUser = () => {
             return JSON.parse(currentUser);
-        }
-
-        const GetBarToReview = () => {
-            return JSON.parse(barToReview);
-        }
-        console.log(GetBarToReview());
+        }*/
 
         const GetReviewer = (checkUserID: number) => {
             let result =  JSON.parse(userList).filter((friend: 
-            { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, Age: any, ProfilePic: any, Bars: any, Friends: any}) =>
-            friend.id === checkUserID)
+            { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, Age: any, ProfilePic: any, Bars: any, Friends: any}) => friend.id === checkUserID)
             .map((friend: { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, Age: any, ProfilePic: any, Bars: any, Friends: any}) => {
                 return {
                     id: friend.id,
@@ -82,9 +76,7 @@ interface ReviewPageScreenProps {
                 }
             });
         return result[0];
-        }
-        console.log("reviewer:");
-        console.log(GetReviewer(1));
+        };
 
         const GetBar = (checkBarID: number) => {
             let result =  JSON.parse(barList).filter((bar: {id: any; Name: String; Location: any;}) => bar.id === checkBarID)
@@ -96,12 +88,10 @@ interface ReviewPageScreenProps {
                 }
             });
         return result[0];
-        } 
-        console.log("Bar:");
-        console.log(GetBar(1));
+        }; 
 
-        const GetReviewList = (barToReview: number) => {
-            return JSON.parse(reviewList).filter((review: {id: any; Review: String; Reviewer: any, Bar: any;}) => review.Bar.id === barToReview)
+        const GetReviewList = () => {
+            return JSON.parse(reviewList).filter((review: {id: any; Review: String; Reviewer: any, Bar: any;}) => review.Bar === GetBar(Number(barToReview)).id)
             .map((review: {id: any; Review: any; Reviewer: any, Bar: any}) => {
                 return {
                     id: review.id,
@@ -110,11 +100,7 @@ interface ReviewPageScreenProps {
                     Bar: GetBar(review.Bar)
                 }
             });
-            
         }
-        console.log("Reviews");
-        console.log(GetReviewList(1));
-
 
         if(isLoaded)
         {
@@ -125,10 +111,13 @@ interface ReviewPageScreenProps {
                 </Header>
                 <Content style={styles.content}>
                     <View style={styles.allTheBars}>
-                        <Text style={styles.headingText}>Friendlist</Text>
+                        
                         <ScrollView style={styles.scrollView}>
+                            <Avatar source={{uri:GetBar(Number(barToReview)).avatar_url}} />
+                            <Text style={styles.headingText}>{GetBar(Number(barToReview)).Name}</Text>
+                            <Text>{GetBar(Number(barToReview)).Location} </Text>
                             <List>
-                                {GetReviewList(GetBarToReview()).map((review: {id: any; Review: any; Reviewer: any, Bar: any}) => {
+                                {GetReviewList().map((review: {id: any; Review: any; Reviewer: any, Bar: any}) => {
                                     return (
                                         <ListItem key={review.id} bottomDivider style={styles.bottomDeviderList}>
                                             <ListItem.Title>{review.Review + ' by ' + review.Reviewer.Firstname + ' '}
