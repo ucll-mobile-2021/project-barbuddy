@@ -54,7 +54,7 @@ let barList = [
     },
     {
         id: 5,
-        Name: "'t archief",
+        Name: "t archief",
         Location: "oude markt, 3000 Leuven",
         avatar_url: "https://i.ibb.co/X8gbK3v/t-archief.jpg"
     },
@@ -173,7 +173,7 @@ let users = [
         {id:4, Rank:"1"},
         {id:3, Rank:"2"},
         {id:1, Rank:"6"}],
-        friends: [2,7]
+        Friends: [2,7]
     },
     {
         id: 7,
@@ -184,13 +184,8 @@ let users = [
         Lastname: "Cruz",
         Age: "25",
         ProfilePic: "https://i.ibb.co/z7xPnft/Peter.png", //test
-        Bars:[{id:2, Rank:"3"},
-        {id:6, Rank:"5"},
-        {id:5, Rank:"4"},
-        {id:4, Rank:"1"},
-        {id:3, Rank:"2"},
-        {id:1, Rank:"6"}],
-        friends: [4,5]
+        Bars:[],
+        Friends: []
     }
     
 ];

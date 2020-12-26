@@ -70,20 +70,16 @@ const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => 
     }
     
     const GetTop3= () => {
-        const idArray = GetCurrentUser().Bars.map((bar: {id: any}) => {
-            return bar.id
-        });
-
-        let ranking = [1];
-        let teller = 1;
-        let here = 0;
         let result = [];
-        /*if(GetCurrentUser().Bars.length == 0){
-            console.log("No favorite bars yet!")
+        if(GetCurrentUser().Bars.length == 0){
+            result.push("empty");
         }
-        else{*/
+        else{
+            const idArray = GetCurrentUser().Bars.map((bar: {id: any}) => {
+                return bar.id
+            });
+            let teller = 1;
             while(teller <= 3){
-
                 GetCurrentUser().Bars.forEach((checkBar: {id: any, Rank: string}) => {
                     if(checkBar.Rank === teller.toString() && teller <= 3){
                         result.push(JSON.parse(userBarList).filter((bar:{id: any, Name: any, Location: any, avatar_url: any}) => idArray.includes(bar.id)).filter(
@@ -93,8 +89,8 @@ const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => 
                 })
                 
             }
-            return result;
-        //} 
+        } 
+         return result;
     }
 
     if(isLoaded)
@@ -106,55 +102,59 @@ const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => 
             <Content style={styles.content}>
             {/* <LinearGradient colors={['#4c669f', '#3b5998', '#192f6a']}> */}
                 <View>
-                <View style={styles.header}>
-                
-                    <View style={styles.headerContent}>
-
-                        <Image style={styles.avatar} source={{uri:GetCurrentUser().ProfilePic}}/>
-                        <Text style={styles.nameUser}>{GetCurrentUser().Firstname}</Text>
-
+                    <View style={styles.header}>
+                        <View style={styles.headerContent}>
+                            <Image style={styles.avatar} source={{uri:GetCurrentUser().ProfilePic}}/>
+                            <Text style={styles.nameUser}>{GetCurrentUser().Firstname}</Text>
+                        </View> 
                     </View>
-                    
-                </View>
-               
                 </View>
                 {/* </LinearGradient> */}
-
-                <View style={styles.topBars}>
-                <Text style={styles.headingText}>Your top 3 bars</Text>
-                <ScrollView style={styles.scrollView}>
-                    {GetTop3().map((bars: {id: any; Name: any; Location: any, avatar_url: any,Ranked: any}) => {
-                        return (
-                            <ListItem key={bars.id} bottomDivider style={styles.bottomDeviderList}>
-                                <Avatar source={{uri:bars.avatar_url}} />
-                                <ListItem.Content>
-                                    <ListItem.Title>{bars.Name}</ListItem.Title>
-                                    <ListItem.Subtitle>{bars.Location}</ListItem.Subtitle>
-                                </ListItem.Content> 
-                            </ListItem>
-                            );
-                        })}
-                </ScrollView>
-                </View>             
-            
-            <View style={styles.allTheBars}>
-            <Text style={styles.headingText}>All the bars you've logged into</Text>
-            <ScrollView style={styles.scrollView}>
-                {GetUserBarList().map((bars: {id: any; Name: any; Location: any, avatar_url: any,Ranked: any}) => {
-                    return (
-                        <ListItem key={bars.id} bottomDivider style={styles.bottomDeviderList}>
-                            <Avatar source={{uri:bars.avatar_url}} />
-                            <ListItem.Content>
-                                <ListItem.Title>{bars.Name}</ListItem.Title>
-                                <ListItem.Subtitle>{bars.Location}</ListItem.Subtitle>
-                            </ListItem.Content> 
-                        </ListItem>
-                        );
-                    })}
-            </ScrollView>
-            </View>
+                <View>
+                    {GetUserBarList().length === 0? 
+                    <Text style={styles.headingText}>You haven't registered any bars yet.</Text>:null}
+                     {GetUserBarList().length != 0?
+                     <><View style={styles.topBars}>
+                            <Text style={styles.headingText}>Your top 3 bars</Text>
+                            <ScrollView style={styles.scrollView}>
+                                {GetUserBarList().length != 0 ?
+                                    <List>
+                                        {GetTop3().map((bars: { id: any; Name: any; Location: any; avatar_url: any; Ranked: any; }) => {
+                                            return (
+                                                <ListItem key={bars.id} bottomDivider style={styles.bottomDeviderList}>
+                                                    <Avatar source={{ uri: bars.avatar_url }} />
+                                                    <ListItem.Content>
+                                                        <ListItem.Title>{bars.Name}</ListItem.Title>
+                                                        <ListItem.Subtitle>{bars.Location}</ListItem.Subtitle>
+                                                    </ListItem.Content>
+                                                </ListItem>
+                                            );
+                                        })}
+                                    </List>
+                                    : null}
+                                {GetUserBarList().length === 0 ? <Text></Text> : null}
+                            </ScrollView>
+                        </View>
+                            <View style={styles.allTheBars}>
+                                <Text style={styles.headingText}>All the bars you've logged into</Text>
+                                <ScrollView style={styles.scrollView}>
+                                    {GetUserBarList().map((bars: { id: any; Name: any; Location: any; avatar_url: any; Ranked: any; }) => {
+                                        return (
+                                            <ListItem key={bars.id} bottomDivider style={styles.bottomDeviderList}>
+                                                <Avatar source={{ uri: bars.avatar_url }} />
+                                                <ListItem.Content>
+                                                    <ListItem.Title>{bars.Name}</ListItem.Title>
+                                                    <ListItem.Subtitle>{bars.Location}</ListItem.Subtitle>
+                                                </ListItem.Content>
+                                            </ListItem>
+                                        );
+                                    })}
+                                </ScrollView>
+                            </View></> 
+                   :null}
+                </View>
+                
             </Content>
-            
             <Footer>
                 <FooterTab style={styles.footer}>
                     <Button onPress={() => navigation.navigate("HomePage")}>

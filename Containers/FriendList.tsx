@@ -98,6 +98,7 @@ interface FriendListScreenProps {
                     <View style={styles.allTheBars}>
                         <Text style={styles.headingText}>Friendlist</Text>
                         <ScrollView style={styles.scrollView}>
+                            {GetFriendList().length != 0?
                             <List>
                                 {GetFriendList().map((friend: {id: any,Firstname: String, Lastname: String, Age: bigint}) => {
                                     return (
@@ -108,7 +109,9 @@ interface FriendListScreenProps {
                                         </ListItem>
                                     );
                                 })}
-                            </List>
+                            </List>: null}
+                            {GetFriendList().length === 0? 
+                            <Text style={styles.headingText}>You haven't registered any of your friends yet.</Text>:null}
                         </ScrollView>
                     </View>
                     <View style={styles.allTheBars}>
