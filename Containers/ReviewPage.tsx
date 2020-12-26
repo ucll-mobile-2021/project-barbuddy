@@ -45,16 +45,16 @@ interface ReviewPageScreenProps {
                             setUserList(response2);
                             getData("barList").then((repsonse4) => {
                                 setBarList(repsonse4);
+                                const LoadFonts = async () => {
+                                    await Font.loadAsync({
+                                        'Roboto': require('native-base/Fonts/Roboto.ttf'),
+                                        'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
+                                        ...Ionicons.font,
+                                    });
+                                }
+                                LoadFonts().then(() => setLoaded(true));
                             })   
                         })
-                        const LoadFonts = async () => {
-                            await Font.loadAsync({
-                                'Roboto': require('native-base/Fonts/Roboto.ttf'),
-                                'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
-                                ...Ionicons.font,
-                            });
-                        }
-                        LoadFonts().then(() => setLoaded(true));
                     });
                 });
             });
@@ -65,29 +65,13 @@ interface ReviewPageScreenProps {
         }*/
 
         const GetReviewer = (checkUserID: number) => {
-            let result =  JSON.parse(userList).filter((friend: 
-            { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, Age: any, ProfilePic: any, Bars: any, Friends: any}) => friend.id === checkUserID)
-            .map((friend: { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, Age: any, ProfilePic: any, Bars: any, Friends: any}) => {
-                return {
-                    id: friend.id,
-                    Firstname: friend.Firstname,
-                    Lastname: friend.Lastname,
-                    Age: friend.Age
-                }
-            });
-        return result[0];
+        let result = JSON.parse(userList).find((friend: any) => friend.id === checkUserID);
+        return result;
         };
 
         const GetBar = (checkBarID: number) => {
-            let result =  JSON.parse(barList).filter((bar: {id: any; Name: String; Location: any;}) => bar.id === checkBarID)
-            .map((bar: {id: any; Name: any; Location: any}) => {
-                return {
-                    id: bar.id,
-                    Name: bar.Name,
-                    Location: bar.Location
-                }
-            });
-        return result[0];
+        let result = JSON.parse(barList).find((bar: any) => bar.id === checkBarID);
+        return result;
         }; 
 
         const GetReviewList = () => {
@@ -111,7 +95,6 @@ interface ReviewPageScreenProps {
                 </Header>
                 <Content style={styles.content}>
                     <View style={styles.allTheBars}>
-                        
                         <ScrollView style={styles.scrollView}>
                             <Avatar source={{uri:GetBar(Number(barToReview)).avatar_url}} />
                             <Text style={styles.headingText}>{GetBar(Number(barToReview)).Name}</Text>
@@ -122,7 +105,6 @@ interface ReviewPageScreenProps {
                                         <ListItem key={review.id} bottomDivider style={styles.bottomDeviderList}>
                                             <ListItem.Title>{review.Review + ' by ' + review.Reviewer.Firstname + ' '}
                                             </ListItem.Title>
-                                            <ListItem.Subtitle>{review.Bar.id}</ListItem.Subtitle>
                                         </ListItem>
                                     );
                                 })}

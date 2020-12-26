@@ -54,7 +54,7 @@ let barList = [
     },
     {
         id: 5,
-        Name: "'t archief",
+        Name: "t archief",
         Location: "oude markt, 3000 Leuven",
         avatar_url: "https://i.ibb.co/X8gbK3v/t-archief.jpg"
     },
