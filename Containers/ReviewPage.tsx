@@ -60,14 +60,13 @@ interface ReviewPageScreenProps {
             });
         });
 
-        /*const GetCurrentUser = () => {
+        const GetCurrentUser = () => {
             return JSON.parse(currentUser);
-        }*/
+        }
 
         const GetReviewer = (checkUserID: number) => {
             let result =  JSON.parse(userList).filter((friend: 
-            { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, Age: any, ProfilePic: any, Bars: any, Friends: any}) => friend.id === checkUserID)
-            .map((friend: { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, Age: any, ProfilePic: any, Bars: any, Friends: any}) => {
+            { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, Age: any, ProfilePic: any, Bars: any, Friends: any}) => friend.id === checkUserID).map((friend: { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, Age: any, ProfilePic: any, Bars: any, Friends: any}) => {
                 return {
                     id: friend.id,
                     Firstname: friend.Firstname,
@@ -79,8 +78,7 @@ interface ReviewPageScreenProps {
         };
 
         const GetBar = (checkBarID: number) => {
-            let result =  JSON.parse(barList).filter((bar: {id: any; Name: String; Location: any;}) => bar.id === checkBarID)
-            .map((bar: {id: any; Name: any; Location: any}) => {
+            let result =  JSON.parse(barList).filter((bar: {id: any; Name: String; Location: any;}) => bar.id === checkBarID).map((bar: {id: any; Name: any; Location: any}) => {
                 return {
                     id: bar.id,
                     Name: bar.Name,
@@ -91,8 +89,7 @@ interface ReviewPageScreenProps {
         }; 
 
         const GetReviewList = () => {
-            return JSON.parse(reviewList).filter((review: {id: any; Review: String; Reviewer: any, Bar: any;}) => review.Bar === GetBar(Number(barToReview)).id)
-            .map((review: {id: any; Review: any; Reviewer: any, Bar: any}) => {
+            return JSON.parse(reviewList).filter((review: {id: any; Review: String; Reviewer: any, Bar: any;}) => review.Bar === GetBar(Number(barToReview)).id).map((review: {id: any; Review: any; Reviewer: any, Bar: any}) => {
                 return {
                     id: review.id,
                     Review: review.Review,
@@ -120,7 +117,7 @@ interface ReviewPageScreenProps {
                                 {GetReviewList().map((review: {id: any; Review: any; Reviewer: any, Bar: any}) => {
                                     return (
                                         <ListItem key={review.id} bottomDivider style={styles.bottomDeviderList}>
-                                            <ListItem.Title>{review.Review + ' by ' + review.Reviewer.Firstname + ' '}
+                                            <ListItem.Title>{review.Review + ' by ' + review.Reviewer.Firstname}
                                             </ListItem.Title>
                                             <ListItem.Subtitle>{review.Bar.id}</ListItem.Subtitle>
                                         </ListItem>
