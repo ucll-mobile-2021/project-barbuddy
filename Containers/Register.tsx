@@ -3,7 +3,7 @@ import {StyleSheet, Image} from "react-native";
 import * as Font from "expo-font";
 import { Ionicons } from '@expo/vector-icons';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { Body, Button, Container, Content, DatePicker, Form, Header, Input, Item, Left, Right, Text, Title, View } from 'native-base';
+import { Button, Container, Content, DatePicker, Form, Header, Input, Item, Text, View } from 'native-base';
 import { AppScreens, AuthStackParamList } from '../AuthFlowScreen';
 import {getData, storeData} from "../Database";
 

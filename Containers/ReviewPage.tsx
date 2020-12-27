@@ -2,7 +2,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { Container, Content, Header, Text, List, Icon, Button, Footer, FooterTab } from 'native-base';
 import React, {useEffect} from 'react';
 import { AppScreens, AuthStackParamList } from '../AuthFlowScreen';
-import { getData } from '../Database';
+import { getData, storeData } from '../Database';
 import * as Font from "expo-font";
 import { Ionicons } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -65,6 +65,13 @@ interface ReviewPageScreenProps {
             return JSON.parse(currentUser);
         }
 
+        const Logout = () => {
+            storeData("current",JSON.stringify("")).then(() => {
+                navigation.navigate("Login");
+            });
+            
+        }
+
         const GetQRCodeValue = () => {
             let qr = {
                 type: "bar",
@@ -84,10 +91,11 @@ interface ReviewPageScreenProps {
         }; 
 
         const GetReviewList = () => {
-            return JSON.parse(reviewList).filter((review: {id: any; Review: String; Reviewer: any, Bar: any;}) => review.Bar === GetBar(Number(barToReview)).id).map((review: {id: any; Review: any; Reviewer: any, Bar: any}) => {
+            return JSON.parse(reviewList).filter((review: {id: any; Review: String; Score: Number, Reviewer: any, Bar: any;}) => review.Bar === GetBar(Number(barToReview)).id).map((review: {id: any; Review: any; Score: Number, Reviewer: any, Bar: any}) => {
                 return {
                     id: review.id,
                     Review: review.Review,
+                    Score: review.Score,
                     Reviewer: GetReviewer(review.Reviewer),
                     Bar: GetBar(review.Bar)
                 }
@@ -99,29 +107,28 @@ interface ReviewPageScreenProps {
         return (
             <Container>
             {/* <LinearGradient colors={['#4c669f', '#3b5998', '#192f6a']}> */}
-                <Header searchBar rounded style={styles.header}>
-                    <Text style={styles.nameUser}>Reviews</Text>
-                </Header>
                 <Content style={styles.content}>
+                    <View style={styles.headerContent}>
+                        <Avatar source={{uri:GetBar(Number(barToReview)).avatar_url}}/>
+                        <Text style={styles.nameUser}>{GetBar(Number(barToReview)).Name}</Text>
+                        <Text style={styles.headingText}>{GetBar(Number(barToReview)).Location} </Text>
+                    </View>
                     <View style={styles.allTheBars}>
                         <View style={styles.header}>
-                            <View style={styles.headerContent}>
-                                <Avatar source={{uri:GetBar(Number(barToReview)).avatar_url}}/>
-                                <Text style={styles.nameUser}>{GetBar(Number(barToReview)).Name}</Text>
-                                <Text style={styles.headingText}>{GetBar(Number(barToReview)).Location} </Text>
-                            </View>
                             <View style={styles.allTheBars}>
                                 <QRCode value={GetQRCodeValue()} size={150}/>
-                        </View>
+                            </View>
                         </View>
                         <ScrollView style={styles.scrollView}>
-                            {GetReviewList().length != 0 ?
+                            {GetReviewList().length !== 0 ?
                             <List>
-                                {GetReviewList().map((review: {id: any; Review: any; Reviewer: any, Bar: any}) => {
+                                {GetReviewList().map((review: {id: any; Review: any, Score: Number, Reviewer: any, Bar: any}) => {
                                     return (
                                         <ListItem key={review.id} bottomDivider style={styles.bottomDeviderList}>
-                                            <ListItem.Title>{review.Review + ' by ' + review.Reviewer.Firstname}
-                                            </ListItem.Title>
+                                            <ListItem.Title>{review.Review}</ListItem.Title>
+                                            <ListItem.Subtitle>{"Score: " + review.Score}</ListItem.Subtitle>
+                                            <ListItem.Subtitle>{'By ' + review.Reviewer.Firstname}</ListItem.Subtitle>
+                                            <ListItem.Subtitle></ListItem.Subtitle>
                                         </ListItem>
                                     );
                                 })}
@@ -148,6 +155,10 @@ interface ReviewPageScreenProps {
                         <Button onPress={() => navigation.navigate("ScanningPage")}>
                             <Icon style={styles.footerIcon} name="camera" />
                             <Text style={styles.footerText}>QR Scan</Text>
+                        </Button>
+                        <Button onPress={() => Logout()}>
+                            <Icon style={styles.footerIcon} name="exit" />
+                            <Text style={styles.footerText}>Logout</Text>
                         </Button>
                     </FooterTab>
                 </Footer>

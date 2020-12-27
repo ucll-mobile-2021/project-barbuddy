@@ -17,6 +17,7 @@ interface HomePageScreenProps {
     const HomePage: React.FunctionComponent<HomePageScreenProps> = (props) => {
         const [currentUser, setCurrentUser] = React.useState("");
         const [barList, setBarList] = React.useState("");
+        const [reviewList, setReviewList] = React.useState("");
         const [isLoaded, setLoaded] = React.useState(false);
         const [search, setSearch] = React.useState("");
 
@@ -31,14 +32,17 @@ interface HomePageScreenProps {
 
                 getData("barList").then((response2) => {
                     setBarList(response2);
-                    const LoadFonts = async () => {
-                        await Font.loadAsync({
-                            'Roboto': require('native-base/Fonts/Roboto.ttf'),
-                            'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
-                            ...Ionicons.font,
-                         });
-                     }
-                     LoadFonts().then(() => setLoaded(true));
+                    getData("reviewList").then((response3) => {
+                        setReviewList(response3);
+                        const LoadFonts = async () => {
+                            await Font.loadAsync({
+                                'Roboto': require('native-base/Fonts/Roboto.ttf'),
+                                'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
+                                ...Ionicons.font,
+                            });
+                        }
+                        LoadFonts().then(() => setLoaded(true));
+                    });
                 });
             });
         });
@@ -46,8 +50,24 @@ interface HomePageScreenProps {
         const GetCurrentUser = () => {
             return JSON.parse(currentUser);
         }
-        
 
+        const GetAverageScore = (BarId:any) => {
+            let sumRating = 0;
+            let amount = 0;
+            let result = JSON.parse(reviewList).filter((review: {id: any; Review: String; Score: any, Reviewer: any, Bar: any;}) => review.Bar === BarId)
+            if(result.length === 0){
+                console.log(BarId + " has no reviews to base average score on.")
+            }
+            else{
+                result.map((review: {id: any; Review: any; Score: any, Reviewer: any, Bar: any}) => {
+                    sumRating = sumRating + Number(review.Score);
+                    amount++;
+    
+                });
+                return Number(sumRating/amount).toFixed(0);
+            }
+        }
+        
         const GetBarList = () => {
             if(search === "")
             {
@@ -73,11 +93,17 @@ interface HomePageScreenProps {
             }
         }
 
-        const ReviewBar = (barId: number) => {
-            console.log(barId);
+        const BarDetails = (barId: number) => {
             storeData("barId",JSON.stringify(barId)).then(() => {
                 navigation.navigate("ReviewPage");
             });
+        }
+
+        const Logout = () => {
+            storeData("current",JSON.stringify("")).then(() => {
+                navigation.navigate("Login");
+            });
+            
         }
 
         const {navigation} = props;
@@ -102,9 +128,10 @@ interface HomePageScreenProps {
                                         <ListItem key={bar.id} bottomDivider style={styles.bottomDeviderList}>
                                             <ListItem.Title>{bar.Name + ' '}
                                             </ListItem.Title>
-                                            <ListItem.Subtitle>{bar.Location}</ListItem.Subtitle>
+                                            <ListItem.Subtitle>Location: {bar.Location}</ListItem.Subtitle>
+                                            <ListItem.Subtitle>Average rating: {GetAverageScore(bar.id)}</ListItem.Subtitle>
                                             <Right>
-                                                <Icon name="arrow-forward" onPress={() => ReviewBar(bar.id)}/>
+                                                <Icon name="arrow-forward" onPress={() => BarDetails(bar.id)}/>
                                             </Right>
                                         </ListItem>
                                     );
@@ -130,6 +157,10 @@ interface HomePageScreenProps {
                         <Button onPress={() => navigation.navigate("ScanningPage")}>
                             <Icon style={styles.footerIcon} name="camera" />
                             <Text style={styles.footerText}>QR Scan</Text>
+                        </Button>
+                        <Button onPress={() => Logout()}>
+                            <Icon style={styles.footerIcon} name="exit" />
+                            <Text style={styles.footerText}>Logout</Text>
                         </Button>
                     </FooterTab>
                 </Footer>

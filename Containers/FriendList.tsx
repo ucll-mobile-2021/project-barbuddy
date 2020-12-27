@@ -2,7 +2,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { Container, Content, Header, Text, Item, List, Input, Icon, Button, Image, Footer, FooterTab } from 'native-base';
 import React, {useEffect} from 'react';
 import { AppScreens, AuthStackParamList } from '../AuthFlowScreen';
-import { getData } from '../Database';
+import { getData, storeData } from '../Database';
 import * as Font from "expo-font";
 import { Ionicons } from '@expo/vector-icons';
 import QRCode from 'react-native-qrcode-svg';
@@ -53,6 +53,13 @@ interface FriendListScreenProps {
                 });
             });
         });
+
+        const Logout = () => {
+            storeData("current",JSON.stringify("")).then(() => {
+                navigation.navigate("Login");
+            });
+            
+        }
 
         const GetCurrentUser = () => {
             return JSON.parse(currentUser);
@@ -122,7 +129,7 @@ interface FriendListScreenProps {
                     <View style={styles.allTheBars}>
                         <Text style={styles.headingText}>Friendlist</Text>
                         <ScrollView style={styles.scrollView}>
-                            {GetFriendList().length != 0?
+                            {GetFriendList().length !== 0?
                             <List>
                                 {GetFriendList().map((friend: {id: any,Firstname: String, Lastname: String, Age: bigint, BarName: String}) => {
                                     return (
@@ -160,6 +167,10 @@ interface FriendListScreenProps {
                         <Button onPress={() => navigation.navigate("ScanningPage")}>
                             <Icon style={styles.footerIcon} name="camera" />
                             <Text style={styles.footerText}>QR Scan</Text>
+                        </Button>
+                        <Button onPress={() => Logout()}>
+                            <Icon style={styles.footerIcon} name="exit" />
+                            <Text style={styles.footerText}>Logout</Text>
                         </Button>
                     </FooterTab>
                 </Footer>

@@ -60,13 +60,21 @@ const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => 
 
             storeData("current",JSON.stringify(user));
             storeData("users",JSON.stringify(allUsers));
+            storeData("barToReview",JSON.stringify(curr_id));
 
-            //redirect to LeavingReviewPage with the parameter of curr_id
+            navigation.navigate("LeavingReviewPage");
         });
     }
 
     const GetCurrentUser = () => {
         return JSON.parse(currentUser);
+    }
+
+    const Logout = () => {
+        storeData("current",JSON.stringify("")).then(() => {
+            navigation.navigate("Login");
+        });
+        
     }
 
     const GetUserBarList = () => {
@@ -123,7 +131,7 @@ const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => 
                             <Image style={styles.avatar} source={{uri:GetCurrentUser().ProfilePic}}/>
                             <Text style={styles.nameUser}>{GetCurrentUser().Firstname}</Text>
                             <Text style={styles.location}>{GetCurrentUser().Visiting === null ? null : "Currently at: " + GetCurrentBar(GetCurrentUser().Visiting)}</Text>
-                            {GetCurrentUser().Visiting === null ? null : <Button onPress={() => LeaveBar()}><Text>Leave</Text></Button>}
+                            {GetCurrentUser().Visiting === null ? null : <Button onPress={() => LeaveBar()}><Text>Leave</Text></Button>}   
                         </View> 
                     </View>
                 </View>
@@ -135,7 +143,7 @@ const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => 
                      <><View style={styles.topBars}>
                             <Text style={styles.headingText}>Your top 3 bars</Text>
                             <ScrollView style={styles.scrollView}>
-                                {GetUserBarList().length != 0 ?
+                                {GetUserBarList().length !== 0 ?
                                     <List>
                                         {GetTop3().map((bars: { id: any; Name: any; Location: any; avatar_url: any; }) => {
                                             return (
@@ -190,6 +198,10 @@ const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => 
                         <Icon style={styles.footerIcon} name="camera" />
                         <Text style={styles.footerText}>QR Scan</Text>
                     </Button>
+                    <Button onPress={() => Logout()}>
+                            <Icon style={styles.footerIcon} name="exit" />
+                            <Text style={styles.footerText}>Logout</Text>
+                        </Button>
                 </FooterTab>
             </Footer>
             

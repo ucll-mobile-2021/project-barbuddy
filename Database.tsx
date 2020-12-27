@@ -1,27 +1,31 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-let Reviews = [
+let reviewList = [
     {
         id: 1,
         Review: "Nice bar, lots of drinks",
+        Score: 4,
         Reviewer: 1,
         Bar: 1
     },
     {
         id: 2,
         Review: "Cool bar, lots of falshy drinks",
+        Score: 4,
         Reviewer: 2,
         Bar: 1
     },
     {
         id: 3,
         Review: "Epic bar, the best drinks",
-        Reviewer: 1,
+        Score: 5,
+        Reviewer: 5,
         Bar: 1
     },
     {
         id: 4,
         Review: "Shit bar, the worst service",
+        Score: 1,
         Reviewer: 1,
         Bar: 2
     }
@@ -192,7 +196,7 @@ let users = [
         ProfilePic: "https://i.ibb.co/z7xPnft/Peter.png", //test
         Bars:[],
         Friends: [],
-        Visiting: 7
+        Visiting: null
     }
     
 ];
@@ -202,7 +206,7 @@ export const initialise = async () => {
         //AsyncStorage.setItem("friendList", JSON.stringify(friendList)).then(() => {
             AsyncStorage.setItem("users", JSON.stringify(users)).then(() => {
                 AsyncStorage.setItem("barList", JSON.stringify(barList));
-                AsyncStorage.setItem("reviewList", JSON.stringify(Reviews));
+                AsyncStorage.setItem("reviewList", JSON.stringify(reviewList));
             });
         });
     //})
