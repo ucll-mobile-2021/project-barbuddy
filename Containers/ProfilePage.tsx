@@ -3,7 +3,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { Container, Content, Header, Text, Item, List, Input, Icon, Button,  Footer, FooterTab } from 'native-base';
 import React, {useEffect} from 'react';
 import { AppScreens, AuthStackParamList } from '../AuthFlowScreen';
-import { getData } from '../Database';
+import { getData, storeData } from '../Database';
 import * as Font from "expo-font";
 import { Ionicons } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -50,6 +50,21 @@ const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => 
         });
     });
 
+    const LeaveBar = () => {
+        getData("users").then(response => {
+            let user = JSON.parse(currentUser);
+            let allUsers = JSON.parse(response);
+            let curr_id = user.Visiting;
+            user.Visiting = null;
+            allUsers.find((temp: any) => temp.id === user.id).Visiting = null;
+
+            storeData("current",JSON.stringify(user));
+            storeData("users",JSON.stringify(allUsers));
+
+            //redirect to LeavingReviewPage with the parameter of curr_id
+        });
+    }
+
     const GetCurrentUser = () => {
         return JSON.parse(currentUser);
     }
@@ -68,29 +83,30 @@ const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => 
             }
         });
     }
+
+    const GetCurrentBar = (id: number) => {
+        return GetUserBarList().find((temp: any) => temp.id === id).Name;
+    }
     
     const GetTop3= () => {
-        let result = [];
-        if(GetCurrentUser().Bars.length == 0){
-            result.push("empty");
+        if(GetCurrentUser().Bars === 0)
+        {
+            return null;
         }
-        else{
-            const idArray = GetCurrentUser().Bars.map((bar: {id: any}) => {
-                return bar.id
+        else
+        {
+            let barsIdsRanked = GetCurrentUser().Bars.map((temp: any) => temp.id).sort();
+            barsIdsRanked.reverse();
+            let top3Ids = barsIdsRanked.slice(0,3);
+            return JSON.parse(userBarList).filter((temp: any) => top3Ids.includes(temp.id)).map((bar: any) => {
+                return {
+                    id: bar.any,
+                    Name: bar.Name,
+                    Location: bar.Location,
+                    avatar_url: bar.avatar_url
+                };
             });
-            let teller = 1;
-            while(teller <= 3){
-                GetCurrentUser().Bars.forEach((checkBar: {id: any, Rank: string}) => {
-                    if(checkBar.Rank === teller.toString() && teller <= 3){
-                        result.push(JSON.parse(userBarList).filter((bar:{id: any, Name: any, Location: any, avatar_url: any}) => idArray.includes(bar.id)).filter(
-                            (bar:{id: any, Name: any, Location: any, avatar_url: any}) => bar.id === checkBar.id)[0]);
-                        teller++;
-                    }
-                })
-                
-            }
-        } 
-         return result;
+        }
     }
 
     if(isLoaded)
@@ -106,6 +122,8 @@ const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => 
                         <View style={styles.headerContent}>
                             <Image style={styles.avatar} source={{uri:GetCurrentUser().ProfilePic}}/>
                             <Text style={styles.nameUser}>{GetCurrentUser().Firstname}</Text>
+                            <Text style={styles.location}>{GetCurrentUser().Visiting === null ? null : "Currently at: " + GetCurrentBar(GetCurrentUser().Visiting)}</Text>
+                            {GetCurrentUser().Visiting === null ? null : <Button onPress={() => LeaveBar()}><Text>Leave</Text></Button>}
                         </View> 
                     </View>
                 </View>
@@ -113,13 +131,13 @@ const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => 
                 <View>
                     {GetUserBarList().length === 0? 
                     <Text style={styles.headingText}>You haven't registered any bars yet.</Text>:null}
-                     {GetUserBarList().length != 0?
+                     {GetUserBarList().length !== 0?
                      <><View style={styles.topBars}>
                             <Text style={styles.headingText}>Your top 3 bars</Text>
                             <ScrollView style={styles.scrollView}>
                                 {GetUserBarList().length != 0 ?
                                     <List>
-                                        {GetTop3().map((bars: { id: any; Name: any; Location: any; avatar_url: any; Ranked: any; }) => {
+                                        {GetTop3().map((bars: { id: any; Name: any; Location: any; avatar_url: any; }) => {
                                             return (
                                                 <ListItem key={bars.id} bottomDivider style={styles.bottomDeviderList}>
                                                     <Avatar source={{ uri: bars.avatar_url }} />
@@ -131,8 +149,7 @@ const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => 
                                             );
                                         })}
                                     </List>
-                                    : null}
-                                {GetUserBarList().length === 0 ? <Text></Text> : null}
+                                    : <Text></Text>}
                             </ScrollView>
                         </View>
                             <View style={styles.allTheBars}>
@@ -226,6 +243,11 @@ const styles = StyleSheet.create({
         color: '#FFC229', //yellow
         fontWeight:'600',
 
+    },
+    location: {
+        fontSize: 20,
+        color: '#FFC229', //yellow
+        fontWeight:'600',
     },
     headingText: { // 'all the bars youve logd into'
         color: '#FFC229',

@@ -88,7 +88,8 @@ let users = [
             {id:4, Rank:"4"},
             {id:5, Rank:"5"},
             {id:6, Rank:"6"}],
-        Friends: [2,3,4,5,6]
+        Friends: [2,3,4,5,6],
+        Visiting: 1
     },
     {
         id: 2,
@@ -105,7 +106,8 @@ let users = [
         {id:4, Rank:"1"},
         {id:3, Rank:"2"},
         {id:1, Rank:"6"}],
-        Friends: [3,4]
+        Friends: [3,4],
+        Visiting: null
     },
     {
         id: 3,
@@ -122,7 +124,8 @@ let users = [
         {id:4, Rank:"1"},
         {id:3, Rank:"2"},
         {id:1, Rank:"6"}],
-        Friends: [2,4]
+        Friends: [2,4],
+        Visiting: 2
     },
     {
         id: 4,
@@ -139,7 +142,8 @@ let users = [
         {id:4, Rank:"1"},
         {id:3, Rank:"2"},
         {id:1, Rank:"6"}],
-        Friends: [1,2]
+        Friends: [1,2],
+        Visiting: null
     },
     {
         id: 5,
@@ -156,7 +160,8 @@ let users = [
         {id:4, Rank:"1"},
         {id:3, Rank:"2"},
         {id:1, Rank:"6"}],
-        Friends: [1,6]
+        Friends: [1,6],
+        Visiting: 1,
     },
     {
         id: 6,
@@ -173,7 +178,8 @@ let users = [
         {id:4, Rank:"1"},
         {id:3, Rank:"2"},
         {id:1, Rank:"6"}],
-        Friends: [2,7]
+        Friends: [2,7],
+        Visiting: 6
     },
     {
         id: 7,
@@ -185,7 +191,8 @@ let users = [
         Age: "25",
         ProfilePic: "https://i.ibb.co/z7xPnft/Peter.png", //test
         Bars:[],
-        Friends: []
+        Friends: [],
+        Visiting: 7
     }
     
 ];

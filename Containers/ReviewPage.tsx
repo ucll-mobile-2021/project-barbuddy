@@ -8,6 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
 import { StyleSheet, View } from 'react-native';
 import { ListItem, Avatar } from 'react-native-elements';
+import QRCode from 'react-native-qrcode-svg';
 
 
 type ReviewPageNavigationProps = StackNavigationProp<AuthStackParamList,AppScreens.ReviewPage>
@@ -64,6 +65,14 @@ interface ReviewPageScreenProps {
             return JSON.parse(currentUser);
         }
 
+        const GetQRCodeValue = () => {
+            let qr = {
+                type: "bar",
+                id: Number(barToReview)
+            };
+            return JSON.stringify(qr);
+        }
+
         const GetReviewer = (checkUserID: number) => {
             let result = JSON.parse(userList).find((friend: any) => friend.id === checkUserID);
             return result;
@@ -101,6 +110,9 @@ interface ReviewPageScreenProps {
                                 <Text style={styles.nameUser}>{GetBar(Number(barToReview)).Name}</Text>
                                 <Text style={styles.headingText}>{GetBar(Number(barToReview)).Location} </Text>
                             </View>
+                            <View style={styles.allTheBars}>
+                                <QRCode value={GetQRCodeValue()} size={150}/>
+                        </View>
                         </View>
                         <ScrollView style={styles.scrollView}>
                             {GetReviewList().length != 0 ?

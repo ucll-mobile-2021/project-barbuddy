@@ -24,6 +24,7 @@ interface FriendListScreenProps {
         const {navigation, route} = props;
         const [currentUser, setCurrentUser] = React.useState("");
         const [friendList, setFriendList] = React.useState("");
+        const [barList, setBarList] = React.useState("");
         const [isLoaded, setLoaded] = React.useState(false);
         const [search, setSearch] = React.useState("");
 
@@ -38,14 +39,17 @@ interface FriendListScreenProps {
 
                 getData("users").then((response2) => {
                     setFriendList(response2);
-                    const LoadFonts = async () => {
-                        await Font.loadAsync({
-                            'Roboto': require('native-base/Fonts/Roboto.ttf'),
-                            'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
-                            ...Ionicons.font,
-                         });
-                     }
-                     LoadFonts().then(() => setLoaded(true));
+                    getData("barList").then((response3) => {
+                        setBarList(response3);
+                        const LoadFonts = async () => {
+                            await Font.loadAsync({
+                                'Roboto': require('native-base/Fonts/Roboto.ttf'),
+                                'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
+                                ...Ionicons.font,
+                             });
+                         }
+                         LoadFonts().then(() => setLoaded(true));
+                    });
                 });
             });
         });
@@ -54,29 +58,49 @@ interface FriendListScreenProps {
             return JSON.parse(currentUser);
         }
 
+        const GetQRCodeValue = () => {
+            let qr =  {
+                type: "friend",
+                id: GetCurrentUser().id
+            };
+            return JSON.stringify(qr);
+        }
+
         const GetFriendList = () => {
             if(search === "")
             {
-                return JSON.parse(friendList).filter((friend: { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, Age: any, ProfilePic: any, Bars: any, Friends: any}) => GetCurrentUser().Friends.includes(friend.id))
-                .map((friend: { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, Age: any, ProfilePic: any, Bars: any, Friends: any}) => {
+                return JSON.parse(friendList).filter((friend: { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, Age: any, ProfilePic: any, Bars: any, Friends: any, Visiting: any}) => GetCurrentUser().Friends.includes(friend.id))
+                .map((friend: { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, Age: any, ProfilePic: any, Bars: any, Friends: any, Visiting: any}) => {
+                    let barName = "";
+                    if(friend.Visiting !== null)
+                    {
+                        barName = JSON.parse(barList).find((temp: any) => temp.id === friend.Visiting).Name;
+                    }
                     return {
                         id: friend.id,
                         Firstname: friend.Firstname,
                         Lastname: friend.Lastname,
-                        Age: friend.Age
+                        Age: friend.Age,
+                        BarName: barName
                     }
                 });
             }
             else
             {
-                return JSON.parse(friendList).filter((friend: { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, Age: any, ProfilePic: any, Bars: any, Friends: any}) => GetCurrentUser().Friends.includes(friend.id))
-                .filter((friend: { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, Age: any, ProfilePic: any, Bars: any, Friends: any}) => friend.Lastname.toLowerCase().startsWith(search.toLowerCase()) || friend.Firstname.toLowerCase().startsWith(search.toLowerCase()))
-                .map((friend: { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, Age: any, ProfilePic: any, Bars: any, Friends: any}) => {
+                return JSON.parse(friendList).filter((friend: { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, Age: any, ProfilePic: any, Bars: any, Friends: any, Visiting: any}) => GetCurrentUser().Friends.includes(friend.id))
+                .filter((friend: { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, Age: any, ProfilePic: any, Bars: any, Friends: any, Visiting: any}) => friend.Lastname.toLowerCase().startsWith(search.toLowerCase()) || friend.Firstname.toLowerCase().startsWith(search.toLowerCase()))
+                .map((friend: { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, Age: any, ProfilePic: any, Bars: any, Friends: any, Visiting: any}) => {
+                    let barName = "";
+                    if(friend.Visiting !== null)
+                    {
+                        barName = JSON.parse(barList).find((temp: any) => temp.id === friend.Visiting).Name;
+                    }
                     return {
                         id: friend.id,
                         Firstname: friend.Firstname,
                         Lastname: friend.Lastname,
-                        Age: friend.Age
+                        Age: friend.Age,
+                        BarName: barName
                     }
                 });
             }
@@ -100,12 +124,12 @@ interface FriendListScreenProps {
                         <ScrollView style={styles.scrollView}>
                             {GetFriendList().length != 0?
                             <List>
-                                {GetFriendList().map((friend: {id: any,Firstname: String, Lastname: String, Age: bigint}) => {
+                                {GetFriendList().map((friend: {id: any,Firstname: String, Lastname: String, Age: bigint, BarName: String}) => {
                                     return (
                                         <ListItem key={friend.id} bottomDivider style={styles.bottomDeviderList}>
-                                            <ListItem.Title>{friend.Firstname + ' ' + friend.Lastname + ' '}
+                                            <ListItem.Title>{friend.Firstname + ' ' + friend.Lastname}
                                             </ListItem.Title>
-                                            <ListItem.Subtitle>{'age: ' + friend.Age}</ListItem.Subtitle>
+                                            {friend.BarName === "" ? null : <ListItem.Subtitle>{'Last seen at: ' + friend.BarName}</ListItem.Subtitle>}
                                         </ListItem>
                                     );
                                 })}
@@ -114,9 +138,9 @@ interface FriendListScreenProps {
                             <Text style={styles.headingText}>You haven't registered any of your friends yet.</Text>:null}
                         </ScrollView>
                     </View>
-                    <View style={styles.allTheBars}>
+                    <View style={styles.qrCode}>
                         <Text style={styles.headingText}>Personal QR code</Text>
-                        <QRCode value={GetCurrentUser().Firstname} size={150}/>
+                        <QRCode value={GetQRCodeValue()} size={150}/>
                     </View>
                 </Content>
                 <Footer>
@@ -207,6 +231,10 @@ interface FriendListScreenProps {
         allTheBars:{
             opacity: 0.95
             
+        },
+        qrCode: {
+            opacity: 0.95,
+            textAlign: "center"
         },
         scrollView: {
             height: 350,

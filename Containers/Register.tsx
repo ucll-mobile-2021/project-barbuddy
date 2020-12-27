@@ -28,6 +28,7 @@ const Register: React.FunctionComponent<RegisterScreenProps> = (props) => {
     const [isLoaded, setLoaded] = React.useState(false);
     const [Username, setUsername] = React.useState("");
     const [Firstname, setFirstname] = React.useState("");
+    const [Lastname, setLastname] = React.useState("");
     const [date, setDate] = React.useState(new Date());
     const [Password, setPassword] = React.useState("");
     const [repeatPassword, setRepeatPassword] = React.useState("");
@@ -49,6 +50,9 @@ const Register: React.FunctionComponent<RegisterScreenProps> = (props) => {
                           <Item rounded style={styles.Input} >
                               <Input placeholder="First name" onChangeText={e => setFirstname(e)}/>
                           </Item>
+                          <Item rounded style={styles.Input} >
+                              <Input placeholder="Last name" onChangeText={e => setLastname(e)}/>
+                          </Item>
                           <DatePicker
                           defaultDate={new Date()}
                           maximumDate={new Date()}
@@ -64,7 +68,7 @@ const Register: React.FunctionComponent<RegisterScreenProps> = (props) => {
                               <Input secureTextEntry placeholder="Confirm Password" onChangeText={e => setRepeatPassword(e)}/>
                           </Item>
                       </Form>
-                      <Button full rounded success style={{ top: 20, width: "80%", alignSelf: "center"}} onPress={() => TryRegister(Username, Firstname, Password, repeatPassword, date, navigation)}><Text>Register</Text></Button>
+                      <Button full rounded success style={{ top: 20, width: "80%", alignSelf: "center"}} onPress={() => TryRegister(Username, Firstname, Lastname, Password, repeatPassword, date, navigation)}><Text>Register</Text></Button>
                     </View>
                 </Content>
             </Container>
@@ -76,7 +80,7 @@ const Register: React.FunctionComponent<RegisterScreenProps> = (props) => {
     }
 }
 
-const TryRegister = (username: string, firstname: string, password: string, repeatPassword: string, date: Date, navigation: StackNavigationProp<AuthStackParamList, AppScreens.Register>) =>
+const TryRegister = (username: string, firstname: string, lastname: string, password: string, repeatPassword: string, date: Date, navigation: StackNavigationProp<AuthStackParamList, AppScreens.Register>) =>
 {
     if(username.length === 0 || firstname.length === 0 || password.length === 0 || repeatPassword.length === 0)
     {
@@ -100,11 +104,22 @@ const TryRegister = (username: string, firstname: string, password: string, repe
                 {
                     AllUsers = JSON.parse(users);
                 }
+                let id = AllUsers[AllUsers.length - 1].id + 2;
+                var ageDifMs = Date.now() - date.getTime();
+                var ageDate = new Date(ageDifMs); // miliseconds from epoch
+                let age = Math.abs(ageDate.getUTCFullYear() - 1970);
                 let result = {
+                    id: id,
                     Username: username,
                     Firstname: firstname,
+                    Lastname: lastname,
                     Password: password,
-                    Date: date
+                    Date: date,
+                    Age: age,
+                    ProfilePic: "https://i.ibb.co/z7xPnft/Peter.png",
+                    Bars: [],
+                    Friends: [],
+                    Visiting: null
                 };
                 AllUsers.push(result);
                 storeData("users",JSON.stringify(AllUsers)).then(() => navigation.navigate("Login"));
@@ -137,8 +152,8 @@ const styles = StyleSheet.create({
     },
     Logo: {
         bottom: 30,
-        width: 300,
-        height: 300
+        width: 200,
+        height: 200
     }
 });
 
