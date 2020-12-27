@@ -131,14 +131,14 @@ const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => 
                             <Image style={styles.avatar} source={{uri:GetCurrentUser().ProfilePic}}/>
                             <Text style={styles.nameUser}>{GetCurrentUser().Firstname}</Text>
                             <Text style={styles.location}>{GetCurrentUser().Visiting === null ? null : "Currently at: " + GetCurrentBar(GetCurrentUser().Visiting)}</Text>
-                            {GetCurrentUser().Visiting === null ? null : <Button onPress={() => LeaveBar()}><Text>Leave</Text></Button>}   
+                            {GetCurrentUser().Visiting === null ? null : <Button onPress={() => LeaveBar()}  ><Text>Leave bar</Text></Button>}   
                         </View> 
                     </View>
                 </View>
                 {/* </LinearGradient> */}
                 <View>
                     {GetUserBarList().length === 0? 
-                    <Text style={styles.headingText}>You haven't registered any bars yet.</Text>:null}
+                    <Text style={styles.headingText}>You haven't registered to any bars yet, get started now!</Text>:null}
                      {GetUserBarList().length !== 0?
                      <><View style={styles.topBars}>
                             <Text style={styles.headingText}>Your top 3 bars</Text>
@@ -278,6 +278,7 @@ const styles = StyleSheet.create({
         opacity: 0.95
         
     },
+
     scrollView: {
         height: 200,
         

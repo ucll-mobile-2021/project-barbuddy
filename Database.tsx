@@ -103,7 +103,7 @@ let users = [
         Firstname: "Jef",
         Lastname: "Jefferson",
         Age: "21",
-        ProfilePic: "https://i.ibb.co/z7xPnft/Peter.png", //test
+        ProfilePic: "https://i.ibb.co/HPkNBPD/Alfons.png", //test
         Bars:[{id:2, Rank:"3"},
         {id:6, Rank:"5"},
         {id:5, Rank:"4"},
@@ -121,7 +121,7 @@ let users = [
         Firstname: "Andrew",
         Lastname: "Everet",
         Age: "31",
-        ProfilePic: "https://i.ibb.co/z7xPnft/Peter.png", //test
+        ProfilePic: "https://i.ibb.co/f4590tC/Joseph.png", //test
         Bars:[{id:2, Rank:"3"},
         {id:6, Rank:"5"},
         {id:5, Rank:"4"},
@@ -139,7 +139,7 @@ let users = [
         Firstname: "Lisa",
         Lastname: "Minelli",
         Age: "27",
-        ProfilePic: "https://i.ibb.co/z7xPnft/Peter.png", //test
+        ProfilePic: "https://i.ibb.co/ygBc7xc/Francine.png", //test
         Bars:[{id:2, Rank:"3"},
         {id:6, Rank:"5"},
         {id:5, Rank:"4"},
@@ -157,7 +157,7 @@ let users = [
         Firstname: "Erik",
         Lastname: "Cartman",
         Age: "28",
-        ProfilePic: "https://i.ibb.co/z7xPnft/Peter.png", //test
+        ProfilePic: "https://i.ibb.co/JKk14dM/Mario.png", //test
         Bars:[{id:2, Rank:"3"},
         {id:6, Rank:"5"},
         {id:5, Rank:"4"},
@@ -175,7 +175,7 @@ let users = [
         Firstname: "Nia",
         Lastname: "Naal",
         Age: "29",
-        ProfilePic: "https://i.ibb.co/z7xPnft/Peter.png", //test
+        ProfilePic: "https://i.ibb.co/7kMgXf1/Corporate-Christmas-Party-Vector-Smiling-Drunk-Man-And-Woman-Relaxing-Celebrating-Winter-Concept-End.jpg", //test
         Bars:[{id:2, Rank:"3"},
         {id:6, Rank:"5"},
         {id:5, Rank:"4"},
@@ -193,7 +193,7 @@ let users = [
         Firstname: "Jessica",
         Lastname: "Cruz",
         Age: "25",
-        ProfilePic: "https://i.ibb.co/z7xPnft/Peter.png", //test
+        ProfilePic: "https://i.ibb.co/LnNGNy6/Jessica.jpg", //test
         Bars:[],
         Friends: [],
         Visiting: null
