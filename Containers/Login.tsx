@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, Image } from 'react-native';
-import { Container, Content, Form, Header, Input, Item, Button, View } from 'native-base';
+import { Form, Input, Item, Button, View, Toast } from 'native-base';
 import { StackNavigationProp } from '@react-navigation/stack';
-import AuthFlowNavigator, { AppScreens, AuthStackParamList } from '../AuthFlowScreen';
+import { AppScreens, AuthStackParamList } from '../AuthFlowScreen';
 import { getData, storeData } from '../Database';
-import { color } from 'react-native-reanimated';
-import { withTheme } from 'react-native-elements';
+import * as Haptics from 'expo-haptics';
+
 
 type LoginScreenNavigationProps = StackNavigationProp<AuthStackParamList, AppScreens.Login>
 interface LoginScreenProps {
@@ -31,7 +31,7 @@ const Login: React.FunctionComponent<LoginScreenProps> = (props) => {
                             <Input  style={styles.textInput} placeholder="Username"  onChangeText={e => setUsername(e)} />
                         </Item>
                         <Item >
-                            <Input style={styles.textInput} placeholder="Password" onChangeText={e => setPassword(e)} />
+                            <Input secureTextEntry={true} style={styles.textInput} placeholder="Password" onChangeText={e => setPassword(e)} />
                         </Item>
 
                     </Form>
@@ -63,16 +63,26 @@ const Login: React.FunctionComponent<LoginScreenProps> = (props) => {
 const TryLogin = (username: string, password: string, navigation: StackNavigationProp<AuthStackParamList, AppScreens.Login>) => {
     getData("users").then(users => {
         if (users === "") {
-            console.log("Not found");
+            Haptics.impactAsync();
+            Toast.show({
+                text: "User not found.",
+                type: "danger",
+            });
         }
+        
         let result = JSON.parse(users);
         let foundUser = result.find((temp: { Username: string; Password: string; }) => temp.Username === username && temp.Password === password);
         if (foundUser === undefined) {
-            console.log("Not found");
+            Haptics.impactAsync();
+            Toast.show({
+                text: "User not found.",
+                type: "danger",
+            });
         }
         else {
             console.log(foundUser);
             storeData("current", JSON.stringify(foundUser)).then(() => {
+                Haptics.selectionAsync();
                 navigation.navigate("HomePage");
             });
         }

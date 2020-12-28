@@ -58,7 +58,10 @@ interface FriendListScreenProps {
             storeData("current",JSON.stringify("")).then(() => {
                 navigation.navigate("Login");
             });
-            
+        }
+
+        const ComradeDetails = (id: number) => {
+            navigation.navigate("ComradePage",{id: id});
         }
 
         const GetCurrentUser = () => {
@@ -76,8 +79,8 @@ interface FriendListScreenProps {
         const GetFriendList = () => {
             if(search === "")
             {
-                return JSON.parse(friendList).filter((friend: { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, Age: any, ProfilePic: any, Bars: any, Friends: any, Visiting: any}) => GetCurrentUser().Friends.includes(friend.id))
-                .map((friend: { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, Age: any, ProfilePic: any, Bars: any, Friends: any, Visiting: any}) => {
+                return JSON.parse(friendList).filter((friend: { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, ProfilePic: any, Bars: any, Friends: any, Visiting: any}) => GetCurrentUser().Friends.includes(friend.id))
+                .map((friend: { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, ProfilePic: any, Bars: any, Friends: any, Visiting: any}) => {
                     let barName = "";
                     if(friend.Visiting !== null)
                     {
@@ -87,7 +90,6 @@ interface FriendListScreenProps {
                         id: friend.id,
                         Firstname: friend.Firstname,
                         Lastname: friend.Lastname,
-                        Age: friend.Age,
                         BarName: barName,
                         ProfilePic: friend.ProfilePic
 
@@ -96,9 +98,9 @@ interface FriendListScreenProps {
             }
             else
             {
-                return JSON.parse(friendList).filter((friend: { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, Age: any, ProfilePic: any, Bars: any, Friends: any, Visiting: any}) => GetCurrentUser().Friends.includes(friend.id))
-                .filter((friend: { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, Age: any, ProfilePic: any, Bars: any, Friends: any, Visiting: any}) => friend.Lastname.toLowerCase().startsWith(search.toLowerCase()) || friend.Firstname.toLowerCase().startsWith(search.toLowerCase()))
-                .map((friend: { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, Age: any, ProfilePic: any, Bars: any, Friends: any, Visiting: any}) => {
+                return JSON.parse(friendList).filter((friend: { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, ProfilePic: any, Bars: any, Friends: any, Visiting: any}) => GetCurrentUser().Friends.includes(friend.id))
+                .filter((friend: { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, ProfilePic: any, Bars: any, Friends: any, Visiting: any}) => friend.Lastname.toLowerCase().startsWith(search.toLowerCase()) || friend.Firstname.toLowerCase().startsWith(search.toLowerCase()))
+                .map((friend: { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, ProfilePic: any, Bars: any, Friends: any, Visiting: any}) => {
                     let barName = "";
                     if(friend.Visiting !== null)
                     {
@@ -108,7 +110,6 @@ interface FriendListScreenProps {
                         id: friend.id,
                         Firstname: friend.Firstname,
                         Lastname: friend.Lastname,
-                        Age: friend.Age,
                         ProfilePic: friend.ProfilePic,
                         BarName: barName
                     }
@@ -134,9 +135,9 @@ interface FriendListScreenProps {
                         <ScrollView style={styles.scrollView}>
                             {GetFriendList().length !== 0?
                             <List>
-                                {GetFriendList().map((friend: {id: any,Firstname: String, Lastname: String, Age: bigint, BarName: String, ProfilePic:any}) => {
+                                {GetFriendList().map((friend: {id: any,Firstname: String, Lastname: String, BarName: String, ProfilePic:any}) => {
                                     return (
-                                        <ListItem key={friend.id} bottomDivider style={styles.bottomDeviderList}>
+                                        <ListItem key={friend.id} bottomDivider style={styles.bottomDeviderList} onPress={() => ComradeDetails(Number(friend.id))}>
                                             <Avatar source={{uri:friend.ProfilePic}}/>
                                             <ListItem.Content>
                                             <ListItem.Title>{friend.Firstname + ' ' + friend.Lastname} </ListItem.Title>

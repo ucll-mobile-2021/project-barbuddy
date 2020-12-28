@@ -12,16 +12,16 @@ import { ListItem, Avatar } from 'react-native-elements';
 
 
 
-type ProfilePageNavigationProps = StackNavigationProp<AuthStackParamList, AppScreens.ProfilePage>
-export type ProfilePageParams = {
-    username: string
+type ComradeNavigationProps = StackNavigationProp<AuthStackParamList, AppScreens.ProfilePage>
+export type ComradePageParams = {
+    id: number
 }
 
-interface ProfilePageScreenProps {
-    route: { params: ProfilePageParams }
-    navigation: ProfilePageNavigationProps
+interface ComradeScreenProps {
+    route: { params: ComradePageParams }
+    navigation: ComradeNavigationProps
 }
-const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => {
+const ComradePage: React.FunctionComponent<ComradeScreenProps> = (props) => {
     const { navigation, route } = props;
     const [currentUser, setCurrentUser] = React.useState("");
     const [userBarList, setUserBarList] = React.useState("");
@@ -34,37 +34,28 @@ const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => 
                 navigation.navigate("ProfilePage");
                 return;
             }
-            setCurrentUser(response);
-
-            getData("barList").then((response2) => {
-                setUserBarList(response2);
-                const LoadFonts = async () => {
-                    await Font.loadAsync({
-                        'Roboto': require('native-base/Fonts/Roboto.ttf'),
-                        'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
-                        ...Ionicons.font,
-                     });
-                 }
-                 LoadFonts().then(() => setLoaded(true));
+            getData("users").then(users_response => {
+                let comrade = JSON.parse(users_response).find((temp: any) => temp.id === route.params.id);
+                if(comrade === undefined)
+                {
+                    navigation.navigate("ProfilePage");
+                    return;
+                }
+                setCurrentUser(JSON.stringify(comrade));
+                getData("barList").then((response2) => {
+                    setUserBarList(response2);
+                    const LoadFonts = async () => {
+                        await Font.loadAsync({
+                            'Roboto': require('native-base/Fonts/Roboto.ttf'),
+                            'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
+                            ...Ionicons.font,
+                         });
+                     }
+                     LoadFonts().then(() => setLoaded(true));
+                });
             });
         });
     });
-
-    const LeaveBar = () => {
-        getData("users").then(response => {
-            let user = JSON.parse(currentUser);
-            let allUsers = JSON.parse(response);
-            let curr_id = user.Visiting;
-            user.Visiting = null;
-            allUsers.find((temp: any) => temp.id === user.id).Visiting = null;
-
-            storeData("current",JSON.stringify(user));
-            storeData("users",JSON.stringify(allUsers));
-            storeData("barToReview",JSON.stringify(curr_id));
-
-            navigation.navigate("LeavingReviewPage");
-        });
-    }
 
     const GetCurrentUser = () => {
         return JSON.parse(currentUser);
@@ -134,18 +125,17 @@ const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => 
                         <View style={styles.headerContent}>
                             <Image style={styles.avatar} source={{uri:GetCurrentUser().ProfilePic}}/>
                             <Text style={styles.nameUser}>{GetCurrentUser().Firstname}</Text>
-                            <Text style={styles.location}>{GetCurrentUser().Visiting === null ? null : "Currently at: " + GetCurrentBar(GetCurrentUser().Visiting)}</Text>
-                            {GetCurrentUser().Visiting === null ? null : <Button onPress={() => LeaveBar()}  ><Text>Leave bar</Text></Button>}   
+                            <Text style={styles.location}>{GetCurrentUser().Visiting === null ? null : "Currently at: " + GetCurrentBar(GetCurrentUser().Visiting)}</Text>   
                         </View> 
                     </View>
                 </View>
                 {/* </LinearGradient> */}
                 <View>
                     {GetUserBarList().length === 0? 
-                    <Text style={styles.headingText}>You haven't registered to any bars yet, get started now!</Text>:null}
+                    <Text style={styles.headingText}>{GetCurrentUser().Firstname} has not yet registered to any bars yet.</Text>:null}
                      {GetUserBarList().length !== 0?
                      <><View style={styles.topBars}>
-                            <Text style={styles.headingText}>Your top 3 bars</Text>
+                            <Text style={styles.headingText}>{GetCurrentUser().Firstname} top 3 bars</Text>
                             {/*<ScrollView style={styles.scrollView}>*/}
                                 {GetUserBarList().length !== 0 ?
                                     <List>
@@ -165,7 +155,7 @@ const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => 
                            {/* </ScrollView> */}
                         </View>
                             <View style={styles.allTheBars}>
-                                <Text style={styles.headingText}>All the bars you've logged into</Text>
+                                <Text style={styles.headingText}>All the bars {GetCurrentUser().Firstname} logged into</Text>
                                 <ScrollView style={styles.scrollView}>
                                     {GetUserBarList().map((bars: { id: any; Name: any; Location: any; avatar_url: any; Ranked: any; }) => {
                                         return (
@@ -307,4 +297,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default ProfilePage;
+export default ComradePage;

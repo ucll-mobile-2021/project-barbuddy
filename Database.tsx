@@ -36,43 +36,50 @@ let barList = [
         id: 1,
         Name: "Blokhut",
         Location: "Oude markt, 3000 Leuven",
-        avatar_url: "https://i.ibb.co/VJ8PyNK/Blokhut.png"
+        avatar_url: "https://i.ibb.co/VJ8PyNK/Blokhut.png",
+        Url: "https://restaurantguru.com/Blokhut-Leuven/menu"
     },
     {
         id: 2,
         Name: "Vesper",
         Location: "Oude markt, 3000 Leuven",
-        avatar_url: "https://i.ibb.co/4gcfTgR/Vesper.png"
+        avatar_url: "https://i.ibb.co/4gcfTgR/Vesper.png",
+        Url: "http://www.cafevesper.be/2016/03/29/onze-cocktails-2/"
     },
     {
         id: 3,
         Name: "Alegria",
         Location: "Oude markt, 3000 Leuven",
-        avatar_url: "https://i.ibb.co/VLG7QSW/Alegria.png"
+        avatar_url: "https://i.ibb.co/VLG7QSW/Alegria.png",
+        Url: ""
     },
     {
         id: 4,
         Name: "Villa artois",
         Location: "Oude markt, 3000 Leuven",
-        avatar_url: "https://i.ibb.co/qFZcryg/Villa-artois.jpg"
+        avatar_url: "https://i.ibb.co/qFZcryg/Villa-artois.jpg",
+        Url: "https://www.facebook.com/villaartoisleuven/"
     },
     {
         id: 5,
         Name: "t archief",
         Location: "Oude markt, 3000 Leuven",
-        avatar_url: "https://i.ibb.co/X8gbK3v/t-archief.jpg"
+        avatar_url: "https://i.ibb.co/X8gbK3v/t-archief.jpg",
+        Url: "https://www.facebook.com/tarchiefleuven/"
     },
     {
         id: 6,
         Name: "Café Manger",
         Location: "Oude markt, 3000 Leuven",
-        avatar_url: "https://i.ibb.co/j8DH0XR/Caf-manger.png"
+        avatar_url: "https://i.ibb.co/j8DH0XR/Caf-manger.png",
+        Url: ""
     },
     {
         id: 7,
         Name: "De Giraf",
         Location: "Oude markt, 3000 Leuven",
-        avatar_url: "https://i.ibb.co/hfwbDrL/De-Giraf.jpg"
+        avatar_url: "https://i.ibb.co/hfwbDrL/De-Giraf.jpg",
+        Url: "https://www.opcafegaan.be/leuven/de-giraf"
     }
 ];
 
@@ -84,7 +91,6 @@ let users = [
         Date: "2020-09-10",
         Firstname: "Peter",
         Lastname: "Jackson",
-        Age: "25",
         ProfilePic: "https://i.ibb.co/z7xPnft/Peter.png", //test
         Bars:[{id:3, Rank:"1"},
             {id:2, Rank:"2"},
@@ -102,7 +108,6 @@ let users = [
         Date: "2020-09-10",
         Firstname: "Jef",
         Lastname: "Jefferson",
-        Age: "21",
         ProfilePic: "https://i.ibb.co/HPkNBPD/Alfons.png", //test
         Bars:[{id:2, Rank:"3"},
         {id:6, Rank:"5"},
@@ -120,7 +125,6 @@ let users = [
         Date: "2020-09-10",
         Firstname: "Andrew",
         Lastname: "Everet",
-        Age: "31",
         ProfilePic: "https://i.ibb.co/f4590tC/Joseph.png", //test
         Bars:[{id:2, Rank:"3"},
         {id:6, Rank:"5"},
@@ -138,7 +142,6 @@ let users = [
         Date: "2020-09-10",
         Firstname: "Lisa",
         Lastname: "Minelli",
-        Age: "27",
         ProfilePic: "https://i.ibb.co/ygBc7xc/Francine.png", //test
         Bars:[{id:2, Rank:"3"},
         {id:6, Rank:"5"},
@@ -156,7 +159,6 @@ let users = [
         Date: "2020-09-10",
         Firstname: "Erik",
         Lastname: "Cartman",
-        Age: "28",
         ProfilePic: "https://i.ibb.co/JKk14dM/Mario.png", //test
         Bars:[{id:2, Rank:"3"},
         {id:6, Rank:"5"},
@@ -174,7 +176,6 @@ let users = [
         Date: "2020-09-10",
         Firstname: "Nia",
         Lastname: "Naal",
-        Age: "29",
         ProfilePic: "https://i.ibb.co/7kMgXf1/Corporate-Christmas-Party-Vector-Smiling-Drunk-Man-And-Woman-Relaxing-Celebrating-Winter-Concept-End.jpg", //test
         Bars:[{id:2, Rank:"3"},
         {id:6, Rank:"5"},
@@ -192,7 +193,6 @@ let users = [
         Date: "2020-09-10",
         Firstname: "Jessica",
         Lastname: "Cruz",
-        Age: "25",
         ProfilePic: "https://i.ibb.co/LnNGNy6/Jessica.jpg", //test
         Bars:[],
         Friends: [],

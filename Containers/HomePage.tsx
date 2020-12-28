@@ -56,10 +56,11 @@ interface HomePageScreenProps {
             let amount = 0;
             let result = JSON.parse(reviewList).filter((review: {id: any; Review: String; Score: any, Reviewer: any, Bar: any;}) => review.Bar === BarId)
             if(result.length === 0){
-                console.log(BarId + " has no reviews to base average score on.")
+                console.log(BarId + " has no reviews to base average score on.");
+                return null;
             }
             else{
-                result.map((review: {id: any; Review: any; Score: any, Reviewer: any, Bar: any}) => {
+                result.forEach((review: {id: any; Review: any; Score: any, Reviewer: any, Bar: any}) => {
                     sumRating = sumRating + Number(review.Score);
                     amount++;
     
@@ -130,14 +131,14 @@ interface HomePageScreenProps {
                         <Text style={styles.headingText}>Hello, {GetCurrentUser().Firstname}</Text>
                         <ScrollView style={styles.scrollView}>
                             <List>
-                                {GetBarList().map((bar: {id: any, Name: any, Location: any, avatar_url: any}) => {
+                                {GetBarList().map((bar: {id: any, Name: any, Location: any, avatar_url: any, Url: any}) => {
                                     return (
                                         <ListItem key={bar.id} bottomDivider style={styles.bottomDeviderList} onPress={() => BarDetails(bar.id)}>
                                             <Avatar source={{ uri: bar.avatar_url }} />
                                             <ListItem.Content>
                                             <ListItem.Title>{bar.Name + ' '}</ListItem.Title>
                                             <ListItem.Subtitle>{bar.Location}</ListItem.Subtitle>
-                                            <ListItem.Subtitle>Average rating: {GetAverageScore(bar.id)}</ListItem.Subtitle>
+                                            <ListItem.Subtitle>{GetAverageScore(bar.id) === null ? "No reviews" : "Average score: " + GetAverageScore(bar.id)}</ListItem.Subtitle>
                                             </ListItem.Content>
 
                                         </ListItem>

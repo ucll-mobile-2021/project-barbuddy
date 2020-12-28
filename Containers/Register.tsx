@@ -3,10 +3,10 @@ import {StyleSheet, Image} from "react-native";
 import * as Font from "expo-font";
 import { Ionicons } from '@expo/vector-icons';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { Button, Container, Content, DatePicker, Form, Header, Input, Item, Text, View } from 'native-base';
+import { Button, Container, Content, Form, Header, Input, Item, Text, Toast, View } from 'native-base';
 import { AppScreens, AuthStackParamList } from '../AuthFlowScreen';
 import {getData, storeData} from "../Database";
-
+import * as Haptics from 'expo-haptics';
 
 type RegisterScreenNavigationProps = StackNavigationProp<AuthStackParamList,AppScreens.Register>
 interface RegisterScreenProps {
@@ -29,7 +29,6 @@ const Register: React.FunctionComponent<RegisterScreenProps> = (props) => {
     const [Username, setUsername] = React.useState("");
     const [Firstname, setFirstname] = React.useState("");
     const [Lastname, setLastname] = React.useState("");
-    const [date, setDate] = React.useState(new Date());
     const [Password, setPassword] = React.useState("");
     const [repeatPassword, setRepeatPassword] = React.useState("");
     
@@ -53,14 +52,6 @@ const Register: React.FunctionComponent<RegisterScreenProps> = (props) => {
                           <Item rounded style={styles.Input} >
                               <Input placeholder="Last name" onChangeText={e => setLastname(e)}/>
                           </Item>
-                          <DatePicker
-                          defaultDate={new Date()}
-                          maximumDate={new Date()}
-                          locale={"en"}
-                          timeZoneOffsetInMinutes={undefined}
-                          placeHolderText="Birth date"
-                          androidMode={"spinner"}
-                          onDateChange={e => setDate(e)} />
                           <Item rounded style={styles.Input} >
                               <Input secureTextEntry placeholder="Password" onChangeText={e => setPassword(e)}/>
                           </Item>
@@ -68,7 +59,7 @@ const Register: React.FunctionComponent<RegisterScreenProps> = (props) => {
                               <Input secureTextEntry placeholder="Confirm Password" onChangeText={e => setRepeatPassword(e)}/>
                           </Item>
                       </Form>
-                      <Button full rounded success style={{ top: 20, width: "80%", alignSelf: "center"}} onPress={() => TryRegister(Username, Firstname, Lastname, Password, repeatPassword, date, navigation)}><Text>Register</Text></Button>
+                      <Button full rounded success style={{ top: 20, width: "80%", alignSelf: "center"}} onPress={() => TryRegister(Username, Firstname, Lastname, Password, repeatPassword, navigation)}><Text>Register</Text></Button>
                     </View>
                 </Content>
             </Container>
@@ -80,17 +71,25 @@ const Register: React.FunctionComponent<RegisterScreenProps> = (props) => {
     }
 }
 
-const TryRegister = (username: string, firstname: string, lastname: string, password: string, repeatPassword: string, date: Date, navigation: StackNavigationProp<AuthStackParamList, AppScreens.Register>) =>
+const TryRegister = (username: string, firstname: string, lastname: string, password: string, repeatPassword: string, navigation: StackNavigationProp<AuthStackParamList, AppScreens.Register>) =>
 {
     if(username.length === 0 || firstname.length === 0 || password.length === 0 || repeatPassword.length === 0)
     {
-        console.log("Not all fields are filled");
+       Toast.show({
+           text: "Not all fields are filled",
+           type: "danger"
+       });
+       Haptics.impactAsync();
     }
     else
     {
         if(password !== repeatPassword)
         {
-            console.log("Passwords do not match");
+            Toast.show({
+                text: "Passwords do not match",
+                type: "danger"
+            });
+            Haptics.impactAsync();
         }
         else
         {
@@ -105,17 +104,12 @@ const TryRegister = (username: string, firstname: string, lastname: string, pass
                     AllUsers = JSON.parse(users);
                 }
                 let id = AllUsers[AllUsers.length - 1].id + 2;
-                var ageDifMs = Date.now() - date.getTime();
-                var ageDate = new Date(ageDifMs); // miliseconds from epoch
-                let age = Math.abs(ageDate.getUTCFullYear() - 1970);
                 let result = {
                     id: id,
                     Username: username,
                     Firstname: firstname,
                     Lastname: lastname,
                     Password: password,
-                    Date: date,
-                    Age: age,
                     ProfilePic: "https://i.ibb.co/z7xPnft/Peter.png",
                     Bars: [],
                     Friends: [],
@@ -123,7 +117,11 @@ const TryRegister = (username: string, firstname: string, lastname: string, pass
                 };
                 AllUsers.push(result);
                 storeData("users",JSON.stringify(AllUsers)).then(() => navigation.navigate("Login"));
-                console.log("Registered succesfully!");
+                Toast.show({
+                    text: "Registered successfully",
+                    type: "success"
+                });
+                Haptics.selectionAsync();
             });
             
         }

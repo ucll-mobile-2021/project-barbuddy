@@ -4,6 +4,7 @@ import React, {useEffect} from 'react';
 import AuthFlowNavigator from './AuthFlowScreen';
 import { initialise } from './Database';
 import { LogBox } from 'react-native';
+import { Root } from 'native-base';
 
 LogBox.ignoreAllLogs();
 
@@ -17,9 +18,11 @@ export default function App() {
   if(isLoaded)
   {
     return (
-      <NavigationContainer>
-        <AuthFlowNavigator/>
-      </NavigationContainer>
+      <Root>
+        <NavigationContainer>
+          <AuthFlowNavigator/>
+        </NavigationContainer>
+      </Root>
     );
   }
   else return null //Maybe a loading screen?

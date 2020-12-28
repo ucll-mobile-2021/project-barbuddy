@@ -3,8 +3,8 @@ import { Text, View, StyleSheet, Button, Alert } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { AppScreens, AuthStackParamList } from '../AuthFlowScreen';
-import { Container } from 'native-base';
 import { getData, storeData } from '../Database';
+import * as Haptics from 'expo-haptics';
 
 type ScanningPageNavigationProps = StackNavigationProp<AuthStackParamList,AppScreens.ScanningPage>
 export type ScanningPageParams = {
@@ -54,6 +54,7 @@ const ScanningPage: React.FunctionComponent<ScanningPageProps> = (props) => {
               if(currentUser.Friends.includes(targetUser.id) || targetUser.Friends.includes(currentUser.id))
               {
                 alert("Users are already friends!");
+                Haptics.impactAsync();
                 return;
               }
               allUsers.forEach((user: any) => {
@@ -71,6 +72,7 @@ const ScanningPage: React.FunctionComponent<ScanningPageProps> = (props) => {
                 storeData("current",JSON.stringify(currentUser)).then(() => {
                   alert("You have made a new friend!\n" +
                   "Hope you meet " + targetUser.Firstname + " soon!");
+                  Haptics.selectionAsync();
                 });
               });
             });
@@ -85,15 +87,17 @@ const ScanningPage: React.FunctionComponent<ScanningPageProps> = (props) => {
                 let barList = JSON.parse(response_barList);
                 let allUsers = JSON.parse(response_users);
 
+                console.log(currentUser);
                 if(currentUser.Visiting === data.id)
                 {
                   alert("You have already signed in into this bar!");
+                  Haptics.impactAsync();
                   return;
                 }
 
                 currentUser.Visiting = data.id;
                 let barName = barList.find((temp: any) => temp.id === data.id).Name;
-                if(currentUser.Bars.find((temp: any) => temp.id === data.id) === null)
+                if(currentUser.Bars.find((temp: any) => temp.id === data.id) === undefined)
                 {
                   currentUser.Bars.push({
                     id: data.id,
@@ -111,6 +115,7 @@ const ScanningPage: React.FunctionComponent<ScanningPageProps> = (props) => {
                 storeData("users",JSON.stringify(allUsers));
                 storeData("current",JSON.stringify(currentUser));
                 alert("Welcome! Nice to see you at " + barName + "!");
+                Haptics.selectionAsync();
               });
             });
           });
@@ -134,12 +139,50 @@ const ScanningPage: React.FunctionComponent<ScanningPageProps> = (props) => {
       }}>
       <BarCodeScanner
         onBarCodeScanned={ScanProperties => scanned ? undefined : handleBarCodeScanned(ScanProperties)}
-        style={StyleSheet.absoluteFillObject}
-      />
+        style={StyleSheet.absoluteFillObject}>
+                  <View style={styles.layerTop} />
+        <View style={styles.layerCenter}>
+          <View style={styles.layerLeft} />
+          <View style={styles.focused} />
+          <View style={styles.layerRight} />
+        </View>
+        <View style={styles.layerBottom} />
+          </BarCodeScanner>
 
       {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
     </View>
     );
 }
+
+const opacity = 'rgba(0, 0, 0, .6)';
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'column'
+  },
+  layerTop: {
+    flex: 2,
+    backgroundColor: opacity
+  },
+  layerCenter: {
+    flex: 1,
+    flexDirection: 'row'
+  },
+  layerLeft: {
+    flex: 1,
+    backgroundColor: opacity
+  },
+  focused: {
+    flex: 10
+  },
+  layerRight: {
+    flex: 1,
+    backgroundColor: opacity
+  },
+  layerBottom: {
+    flex: 2,
+    backgroundColor: opacity
+  },
+});
 
 export default ScanningPage;

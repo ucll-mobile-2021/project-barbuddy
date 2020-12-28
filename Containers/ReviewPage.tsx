@@ -1,12 +1,12 @@
 import { StackNavigationProp } from '@react-navigation/stack';
-import { Container, Content, Header, Text, List, Icon, Button, Footer, FooterTab } from 'native-base';
+import { Container, Content, Header, Text, List, Icon, Button, Footer, FooterTab, Toast } from 'native-base';
 import React, {useEffect} from 'react';
 import { AppScreens, AuthStackParamList } from '../AuthFlowScreen';
 import { getData, storeData } from '../Database';
 import * as Font from "expo-font";
 import { Ionicons } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
-import { StyleSheet, View } from 'react-native';
+import { Linking, StyleSheet, View } from 'react-native';
 import { ListItem, Avatar } from 'react-native-elements';
 import QRCode from 'react-native-qrcode-svg';
 
@@ -112,6 +112,20 @@ interface ReviewPageScreenProps {
                         <Avatar source={{uri:GetBar(Number(barToReview)).avatar_url}}/>
                         <Text style={styles.nameUser}>{GetBar(Number(barToReview)).Name}</Text>
                         <Text style={styles.headingText}>{GetBar(Number(barToReview)).Location} </Text>
+                        <Button style={styles.linkButton} onPress={() => {
+                            let url = GetBar(Number(barToReview)).Url;
+                            if(url === "" || url === undefined || url === null)
+                            {
+                                Toast.show({
+                                    text: "The bar menu is not available",
+                                    type: "danger"
+                                });
+                            }
+                            else
+                            {
+                                Linking.openURL(url);
+                            }
+                        }}><Text style={styles.text}>Menu</Text></Button>
                     </View>
                     <View style={styles.allTheBars}>
                         <View style={styles.header}>
@@ -195,6 +209,13 @@ interface ReviewPageScreenProps {
             backgroundColor:'#1f1f1f', 
     
         },
+        linkButton: {
+            alignSelf: "center",
+            alignItems: "center",
+            width: "25%",
+            backgroundColor: "#FFC229", //yellow 
+            borderRadius: 5,
+        },
         headerContent:{
             padding:30,
             alignItems: 'center',
@@ -241,7 +262,10 @@ interface ReviewPageScreenProps {
             borderWidth: 1,
             
         },
-    
+        text: {
+            color: "black",
+            alignSelf: "center"
+        },
         footer: {
             backgroundColor: '#FFC229', //yellow 
         },

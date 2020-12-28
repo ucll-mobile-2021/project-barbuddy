@@ -9,6 +9,7 @@ import FriendList from "./Containers/FriendList";
 import ProfilePage from "./Containers/ProfilePage";
 import ReviewPage from "./Containers/ReviewPage";
 import LeavingReviewPage from "./Containers/LeavingReviewPage";
+import ComradePage from './Containers/ComradePage';
 
 export enum AppScreens {
     Login = "Login",
@@ -18,7 +19,8 @@ export enum AppScreens {
     FriendList = "FriendList",
     ProfilePage = "ProfilePage",
     ReviewPage = "ReviewPage",
-    LeavingReviewPage = "LeavingReviewPage"
+    LeavingReviewPage = "LeavingReviewPage",
+    ComradePage = "ComradePage"
   }
   
   export type AuthStackParamList =  {
@@ -29,7 +31,8 @@ export enum AppScreens {
     FriendList : undefined,
     ProfilePage : undefined,
     ReviewPage : undefined,
-    LeavingReviewPage: undefined
+    LeavingReviewPage: undefined,
+    ComradePage: {id: number}
   }
 
   const Stack = createStackNavigator<AuthStackParamList>();
@@ -45,6 +48,7 @@ export enum AppScreens {
                 <Stack.Screen name="ProfilePage" component={ProfilePage}/>
                 <Stack.Screen name="ReviewPage" component={ReviewPage}/>
                 <Stack.Screen name="LeavingReviewPage" component={LeavingReviewPage}/>
+                <Stack.Screen name="ComradePage" component={ComradePage}/>
             </Stack.Navigator>
       );
   }
