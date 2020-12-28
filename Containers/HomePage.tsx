@@ -7,7 +7,7 @@ import * as Font from "expo-font";
 import { Ionicons } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
 import { StyleSheet, View } from 'react-native';
-import { ListItem } from 'react-native-elements';
+import { ListItem, Avatar } from 'react-native-elements';
 
 type HomePageNavigationProps = StackNavigationProp<AuthStackParamList,AppScreens.HomePage>
 
@@ -71,11 +71,12 @@ interface HomePageScreenProps {
         const GetBarList = () => {
             if(search === "")
             {
-                return JSON.parse(barList).map((bar: {id: any; Name: any; Location: any}) => {
+                return JSON.parse(barList).map((bar: {id: any; Name: any; Location: any, avatar_url: any}) => {
                     return {
                         id: bar.id,
                         Name: bar.Name,
-                        Location: bar.Location
+                        Location: bar.Location,
+                        avatar_url: bar.avatar_url
                     }
                 });
             }
@@ -83,11 +84,12 @@ interface HomePageScreenProps {
             {
                 return JSON.parse(barList)
                 .filter((bar: {id: any; Name: String; Location: any;}) => bar.Name.toLowerCase().startsWith(search.toLowerCase()))
-                .map((bar: {id: any; Name: any; Location: any}) => {
+                .map((bar: {id: any; Name: any; Location: any, avatar_url: any}) => {
                     return {
                         id: bar.id,
                         Name: bar.Name,
-                        Location: bar.Location
+                        Location: bar.Location,
+                        avatar_url: bar.avatar_url
                     }
                 });
             }
@@ -111,28 +113,33 @@ interface HomePageScreenProps {
         if(isLoaded)
         {
             return (
+                
                 <Container>
+                    
                 <Header searchBar rounded style={styles.header}>
                     <Item>
                         <Icon name="ios-search" />
-                        <Input placeholder ="Search bar" onChangeText={text => setSearch(text)}></Input>
+                        <Input placeholder ="Search for a bar" onChangeText={text => setSearch(text)}></Input>
                     </Item>
                 </Header>
+              
+
+                
                 <Content style={styles.content}>
                     <View style={styles.allTheBars}>
                         <Text style={styles.headingText}>Hello, {GetCurrentUser().Firstname}</Text>
                         <ScrollView style={styles.scrollView}>
                             <List>
-                                {GetBarList().map((bar: {id: any, Name: any, Location: any}) => {
+                                {GetBarList().map((bar: {id: any, Name: any, Location: any, avatar_url: any}) => {
                                     return (
-                                        <ListItem key={bar.id} bottomDivider style={styles.bottomDeviderList}>
-                                            <ListItem.Title>{bar.Name + ' '}
-                                            </ListItem.Title>
-                                            <ListItem.Subtitle>Location: {bar.Location}</ListItem.Subtitle>
+                                        <ListItem key={bar.id} bottomDivider style={styles.bottomDeviderList} onPress={() => BarDetails(bar.id)}>
+                                            <Avatar source={{ uri: bar.avatar_url }} />
+                                            <ListItem.Content>
+                                            <ListItem.Title>{bar.Name + ' '}</ListItem.Title>
+                                            <ListItem.Subtitle>{bar.Location}</ListItem.Subtitle>
                                             <ListItem.Subtitle>Average rating: {GetAverageScore(bar.id)}</ListItem.Subtitle>
-                                            <Right>
-                                                <Icon name="arrow-forward" onPress={() => BarDetails(bar.id)}/>
-                                            </Right>
+                                            </ListItem.Content>
+
                                         </ListItem>
                                     );
                                 })}
@@ -164,34 +171,32 @@ interface HomePageScreenProps {
                         </Button>
                     </FooterTab>
                 </Footer>
+                
             </Container>
+            
             );
         }
         else
         {
             return null;
         }
+        
     }
 
     const styles = StyleSheet.create({
         container: {
+            
             flex: 1,
             alignItems: 'center',
             justifyContent: 'center',
             
         },
         content:{
-            
+           
             backgroundColor: '#181818'// dark background colour
             //backgroundColor: '#f1f1f1'
         },
-        // linearGradientHeader: {
-        //     alignItems: 'center',
-        // justifyContent: 'center',
-        // borderRadius: 5,
-        // height: 200,
-        // width: 350,
-        // },
+
         header: {
             backgroundColor:'#1f1f1f', 
     
@@ -217,12 +222,10 @@ interface HomePageScreenProps {
         },
         headingText: { // 'all the bars youve logd into'
             color: '#FFC229',
-            //backgroundColor: '#1a1a1a',
             backgroundColor: '#1f1f1f', //darkgray 
             fontSize: 20,
             fontWeight:'normal',
             padding: 15,
-            //paddingHorizontal:20
         },
         topBars:{
             opacity: 0.95
@@ -233,7 +236,8 @@ interface HomePageScreenProps {
             
         },
         scrollView: {
-            height: 475,
+            
+            height: 700,
             
         },
         bottomDeviderList: {

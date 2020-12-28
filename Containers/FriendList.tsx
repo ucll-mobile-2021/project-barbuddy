@@ -8,7 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 import QRCode from 'react-native-qrcode-svg';
 import { ScrollView } from 'react-native-gesture-handler';
 import { StyleSheet, View } from 'react-native';
-import { ListItem } from 'react-native-elements';
+import { ListItem,Avatar } from 'react-native-elements';
 
 
 type FriendListNavigationProps = StackNavigationProp<AuthStackParamList,AppScreens.FriendList>
@@ -88,7 +88,9 @@ interface FriendListScreenProps {
                         Firstname: friend.Firstname,
                         Lastname: friend.Lastname,
                         Age: friend.Age,
-                        BarName: barName
+                        BarName: barName,
+                        ProfilePic: friend.ProfilePic
+
                     }
                 });
             }
@@ -107,6 +109,7 @@ interface FriendListScreenProps {
                         Firstname: friend.Firstname,
                         Lastname: friend.Lastname,
                         Age: friend.Age,
+                        ProfilePic: friend.ProfilePic,
                         BarName: barName
                     }
                 });
@@ -121,7 +124,7 @@ interface FriendListScreenProps {
                 <Header searchBar rounded style={styles.header}>
                     <Item>
                         <Icon name="ios-search" />
-                        <Input placeholder ="Search bar" onChangeText={text => setSearch(text)}></Input>
+                        <Input placeholder ="Search for a friend" onChangeText={text => setSearch(text)}></Input>
                         <Icon name="ios-people" />
                     </Item>
                 </Header>
@@ -131,12 +134,15 @@ interface FriendListScreenProps {
                         <ScrollView style={styles.scrollView}>
                             {GetFriendList().length !== 0?
                             <List>
-                                {GetFriendList().map((friend: {id: any,Firstname: String, Lastname: String, Age: bigint, BarName: String}) => {
+                                {GetFriendList().map((friend: {id: any,Firstname: String, Lastname: String, Age: bigint, BarName: String, ProfilePic:any}) => {
                                     return (
                                         <ListItem key={friend.id} bottomDivider style={styles.bottomDeviderList}>
-                                            <ListItem.Title>{friend.Firstname + ' ' + friend.Lastname}
-                                            </ListItem.Title>
+                                            <Avatar source={{uri:friend.ProfilePic}}/>
+                                            <ListItem.Content>
+                                            <ListItem.Title>{friend.Firstname + ' ' + friend.Lastname} </ListItem.Title>
                                             {friend.BarName === "" ? null : <ListItem.Subtitle>{'Last seen at: ' + friend.BarName}</ListItem.Subtitle>}
+                                            </ListItem.Content>
+                                            
                                         </ListItem>
                                     );
                                 })}

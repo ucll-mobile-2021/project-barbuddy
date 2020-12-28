@@ -4,9 +4,9 @@
     "slug": "LeuvenBars",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/BarBuddyLogo.png",
+    "icon": "./assets/BarBuddyLogoWhiteBack-removebg.png",
     "splash": {
-      "image": "./assets/BarBuddyLogo.png",
+      "image": "./assets/BarBuddyLogoWhiteBack-removebg.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -20,7 +20,7 @@
       "supportsTablet": true
     },
     "web": {
-      "favicon": "./assets/BarBuddyLogo.png"
+      "favicon": "./assets/BarBuddyLogoWhiteBack-removebg.png"
     }
   }
 }

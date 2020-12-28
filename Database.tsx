@@ -35,43 +35,43 @@ let barList = [
     {
         id: 1,
         Name: "Blokhut",
-        Location: "oude markt, 3000 Leuven",
+        Location: "Oude markt, 3000 Leuven",
         avatar_url: "https://i.ibb.co/VJ8PyNK/Blokhut.png"
     },
     {
         id: 2,
         Name: "Vesper",
-        Location: "oude markt, 3000 Leuven",
+        Location: "Oude markt, 3000 Leuven",
         avatar_url: "https://i.ibb.co/4gcfTgR/Vesper.png"
     },
     {
         id: 3,
         Name: "Alegria",
-        Location: "oude markt, 3000 Leuven",
+        Location: "Oude markt, 3000 Leuven",
         avatar_url: "https://i.ibb.co/VLG7QSW/Alegria.png"
     },
     {
         id: 4,
         Name: "Villa artois",
-        Location: "oude markt, 3000 Leuven",
+        Location: "Oude markt, 3000 Leuven",
         avatar_url: "https://i.ibb.co/qFZcryg/Villa-artois.jpg"
     },
     {
         id: 5,
         Name: "t archief",
-        Location: "oude markt, 3000 Leuven",
+        Location: "Oude markt, 3000 Leuven",
         avatar_url: "https://i.ibb.co/X8gbK3v/t-archief.jpg"
     },
     {
         id: 6,
         Name: "Café Manger",
-        Location: "oude markt, 3000 Leuven",
+        Location: "Oude markt, 3000 Leuven",
         avatar_url: "https://i.ibb.co/j8DH0XR/Caf-manger.png"
     },
     {
         id: 7,
         Name: "De Giraf",
-        Location: "oude markt, 3000 Leuven",
+        Location: "Oude markt, 3000 Leuven",
         avatar_url: "https://i.ibb.co/hfwbDrL/De-Giraf.jpg"
     }
 ];

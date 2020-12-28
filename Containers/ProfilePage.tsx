@@ -69,6 +69,11 @@ const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => 
     const GetCurrentUser = () => {
         return JSON.parse(currentUser);
     }
+    const BarDetails = (barId: number) => {
+        storeData("barId",JSON.stringify(barId)).then(() => {
+            navigation.navigate("ReviewPage");
+        });
+    }
 
     const Logout = () => {
         storeData("current",JSON.stringify("")).then(() => {
@@ -142,12 +147,12 @@ const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => 
                      {GetUserBarList().length !== 0?
                      <><View style={styles.topBars}>
                             <Text style={styles.headingText}>Your top 3 bars</Text>
-                            <ScrollView style={styles.scrollView}>
+                            {/*<ScrollView style={styles.scrollView}>*/}
                                 {GetUserBarList().length !== 0 ?
                                     <List>
                                         {GetTop3().map((bars: { id: any; Name: any; Location: any; avatar_url: any; }) => {
                                             return (
-                                                <ListItem key={bars.id} bottomDivider style={styles.bottomDeviderList}>
+                                                <ListItem key={bars.id} bottomDivider style={styles.bottomDeviderList}onPress={() => BarDetails(bars.id)}>
                                                     <Avatar source={{ uri: bars.avatar_url }} />
                                                     <ListItem.Content>
                                                         <ListItem.Title>{bars.Name}</ListItem.Title>
@@ -158,7 +163,7 @@ const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => 
                                         })}
                                     </List>
                                     : <Text></Text>}
-                            </ScrollView>
+                           {/* </ScrollView> */}
                         </View>
                             <View style={styles.allTheBars}>
                                 <Text style={styles.headingText}>All the bars you've logged into</Text>
