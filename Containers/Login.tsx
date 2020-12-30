@@ -106,7 +106,9 @@ const styles = StyleSheet.create({
 
     },
     photo:{
-        
+        width: 250,
+        height: 250,
+        marginBottom:10,
     },
 
     logo: {
@@ -135,7 +137,8 @@ const styles = StyleSheet.create({
     },
     text: {
         color: "black",
-        alignSelf: "center"
+        alignSelf: "center",
+        paddingHorizontal: "32%",
     },
 
 });

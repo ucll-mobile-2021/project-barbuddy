@@ -7,6 +7,7 @@ import { Button, Container, Content, Form, Header, Input, Item, Text, Toast, Vie
 import { AppScreens, AuthStackParamList } from '../AuthFlowScreen';
 import {getData, storeData} from "../Database";
 import * as Haptics from 'expo-haptics';
+import { ScrollView } from 'react-native-gesture-handler';
 
 type RegisterScreenNavigationProps = StackNavigationProp<AuthStackParamList,AppScreens.Register>
 interface RegisterScreenProps {
@@ -36,31 +37,38 @@ const Register: React.FunctionComponent<RegisterScreenProps> = (props) => {
     {
         return (
             <Container>
-                <Header/>
-                <Content contentContainerStyle={styles.Content}>
-                    <Image style={styles.Logo} source={require("../assets/BarBuddyLogo.png")}/>
-                    <Text style={{fontSize: 30}}>Register</Text>
+      
+                <Content contentContainerStyle={styles.Content}>   
+                
+                <Image style={styles.photo} source={require("../assets/BarBuddyLogoWhiteBack-removebg.png")} />
+                 <Text style={styles.textInput}>Please fill in all of the fields</Text>
+                    
                     <View style={styles.FormView}>
-                      <Text style={{fontSize: 10, marginLeft: 20}}>Please fill in all of the fields</Text>
+                      
                       <Form>
-                          <Item rounded style={styles.Input} >
-                              <Input placeholder="Username" onChangeText={e => setUsername(e)}/>
+                      
+                          <Item style={styles.Input} >
+                              <Input style={styles.textInput} placeholder="Username" onChangeText={e => setUsername(e)}/>
                           </Item>
-                          <Item rounded style={styles.Input} >
-                              <Input placeholder="First name" onChangeText={e => setFirstname(e)}/>
+                          <Item style={styles.Input} >
+                              <Input style={styles.textInput} placeholder="First name" onChangeText={e => setFirstname(e)}/>
                           </Item>
-                          <Item rounded style={styles.Input} >
-                              <Input placeholder="Last name" onChangeText={e => setLastname(e)}/>
+                          <Item style={styles.Input} >
+                              <Input style={styles.textInput} placeholder="Last name" onChangeText={e => setLastname(e)}/>
                           </Item>
-                          <Item rounded style={styles.Input} >
-                              <Input secureTextEntry placeholder="Password" onChangeText={e => setPassword(e)}/>
+                          <Item style={styles.Input} >
+                              <Input style={styles.textInput} secureTextEntry placeholder="Password" onChangeText={e => setPassword(e)}/>
                           </Item>
-                          <Item rounded style={styles.Input} >
-                              <Input secureTextEntry placeholder="Confirm Password" onChangeText={e => setRepeatPassword(e)}/>
+                          <Item style={styles.Input} >
+                              <Input style={styles.textInput} secureTextEntry placeholder="Confirm Password" onChangeText={e => setRepeatPassword(e)}/>
                           </Item>
+                         
+                          
                       </Form>
                       <Button full rounded success style={{ top: 20, width: "80%", alignSelf: "center"}} onPress={() => TryRegister(Username, Firstname, Lastname, Password, repeatPassword, navigation)}><Text>Register</Text></Button>
                     </View>
+                   
+                   
                 </Content>
             </Container>
         );
@@ -131,28 +139,37 @@ const TryRegister = (username: string, firstname: string, lastname: string, pass
 const styles = StyleSheet.create({
     Content: {
         flex: 1,
-        justifyContent: "center",
-        alignItems: "center"
+        justifyContent: "space-evenly",
+        alignItems: "center",
+        backgroundColor: '#181818'// dark background colour 
     },
     FormView: {
         marginTop: 10,
         width: "100%",
-        justifyContent: "center",
+        justifyContent: "space-evenly",
         alignItems: "center"
     },
     Input: {
         width: "70%",
         marginTop: 10
     },
+    Title: {
+        fontSize:45,
+        color: '#FFC229', //yellow
+        fontWeight:'600',
+    },
     Button: {
         top: 20,
         width: "70&"
     },
-    Logo: {
-        bottom: 30,
+    photo:{
         width: 200,
-        height: 200
-    }
+        height: 200,
+        marginBottom:10,
+    },
+    textInput:{
+        color: "white",
+    },
 });
 
 export default Register;

@@ -135,7 +135,7 @@ const ProfilePage: React.FunctionComponent<ProfilePageScreenProps> = (props) => 
                             <Image style={styles.avatar} source={{uri:GetCurrentUser().ProfilePic}}/>
                             <Text style={styles.nameUser}>{GetCurrentUser().Firstname}</Text>
                             <Text style={styles.location}>{GetCurrentUser().Visiting === null ? null : "Currently at: " + GetCurrentBar(GetCurrentUser().Visiting)}</Text>
-                            {GetCurrentUser().Visiting === null ? null : <Button onPress={() => LeaveBar()}  ><Text>Leave bar</Text></Button>}   
+                            {GetCurrentUser().Visiting === null ? null : <Button style={styles.LeaveButton} onPress={() => LeaveBar()}  ><Text style={styles.text}>Leave bar</Text></Button>}   
                         </View> 
                     </View>
                 </View>
@@ -293,9 +293,23 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         
     },
+    LeaveButton:{
+        backgroundColor: '#FFC229', //yellow 
+        width: "80%",
+        alignSelf: "center",
+        marginTop: "10%",
+        paddingHorizontal: "22%",
+    
+    },
+    text: {
+        color: "black",
+        alignItems: 'center',
+    },
 
     footer: {
         backgroundColor: '#FFC229', //yellow 
+        
+        
     },
     footerText: {
         fontSize: 9,

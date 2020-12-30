@@ -6,7 +6,7 @@ import { getData, storeData } from '../Database';
 import * as Font from "expo-font";
 import { Ionicons } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
-import { Linking, StyleSheet, View } from 'react-native';
+import { Linking, StyleSheet, View, Image } from 'react-native';
 import { ListItem, Avatar } from 'react-native-elements';
 import QRCode from 'react-native-qrcode-svg';
 
@@ -91,13 +91,14 @@ interface ReviewPageScreenProps {
         }; 
 
         const GetReviewList = () => {
-            return JSON.parse(reviewList).filter((review: {id: any; Review: String; Score: Number, Reviewer: any, Bar: any;}) => review.Bar === GetBar(Number(barToReview)).id).map((review: {id: any; Review: any; Score: Number, Reviewer: any, Bar: any}) => {
+            return JSON.parse(reviewList).filter((review: {id: any; Review: String; Score: Number, Reviewer: any, Bar: any, avatar_url: any}) => review.Bar === GetBar(Number(barToReview)).id).map((review: {id: any; Review: any; Score: Number, Reviewer: any, Bar: any}) => {
                 return {
                     id: review.id,
                     Review: review.Review,
                     Score: review.Score,
                     Reviewer: GetReviewer(review.Reviewer),
-                    Bar: GetBar(review.Bar)
+                    Bar: GetBar(review.Bar),
+                    avatar_url: GetReviewer(review.Reviewer.avatar_url)
                 }
             });
         }
@@ -109,7 +110,7 @@ interface ReviewPageScreenProps {
             {/* <LinearGradient colors={['#4c669f', '#3b5998', '#192f6a']}> */}
                 <Content style={styles.content}>
                     <View style={styles.headerContent}>
-                        <Avatar source={{uri:GetBar(Number(barToReview)).avatar_url}}/>
+                    <Image style={styles.avatar} source={{uri:GetBar(Number(barToReview)).avatar_url}}/>
                         <Text style={styles.nameUser}>{GetBar(Number(barToReview)).Name}</Text>
                         <Text style={styles.headingText}>{GetBar(Number(barToReview)).Location} </Text>
                         <Button style={styles.linkButton} onPress={() => {
@@ -136,13 +137,17 @@ interface ReviewPageScreenProps {
                         <ScrollView style={styles.scrollView}>
                             {GetReviewList().length !== 0 ?
                             <List>
-                                {GetReviewList().map((review: {id: any; Review: any, Score: Number, Reviewer: any, Bar: any}) => {
+                                {GetReviewList().map((review: {id: any; Review: any, Score: Number, Reviewer: any, Bar: any, avatar_url: any}) => {
                                     return (
                                         <ListItem key={review.id} bottomDivider style={styles.bottomDeviderList}>
-                                            <ListItem.Title>{review.Review}</ListItem.Title>
+                                             <Avatar source={{uri: review.avatar_url}}/>
+                                             <ListItem.Content>
+                                             <ListItem.Title>{review.Review}</ListItem.Title>
                                             <ListItem.Subtitle>{"Score: " + review.Score}</ListItem.Subtitle>
                                             <ListItem.Subtitle>{'By ' + review.Reviewer.Firstname}</ListItem.Subtitle>
                                             <ListItem.Subtitle></ListItem.Subtitle>
+                                             </ListItem.Content>
+                                           
                                         </ListItem>
                                     );
                                 })}
