@@ -6,7 +6,7 @@ import { getData, storeData } from '../Database';
 import * as Font from "expo-font";
 import { Ionicons } from '@expo/vector-icons';
 import { StyleSheet, View } from 'react-native';
-import { AirbnbRating, Rating } from 'react-native-ratings';
+import { AirbnbRating } from 'react-native-ratings';
 
 type LeavingReviewPageNavigationProps = StackNavigationProp<AuthStackParamList, AppScreens.LeavingReviewPage>
 export type LeavingReviewPageParams = {
@@ -87,6 +87,10 @@ const LeavingReviewPage: React.FunctionComponent<LeavingReviewPageScreenProps> =
                 console.log("Review succesfully!");
                 console.log("review:" + JSON.stringify(result));
                 console.log("all reviews: " + JSON.stringify(AllReviews));
+                Toast.show({
+                    text: "Review added succesfully!",
+                    type: "success"
+                });
             });
         }
     }

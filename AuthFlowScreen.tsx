@@ -12,45 +12,45 @@ import LeavingReviewPage from "./Containers/LeavingReviewPage";
 import ComradePage from './Containers/ComradePage';
 
 export enum AppScreens {
-    Login = "Login",
-    Register = "Register",
-    HomePage = "HomePage",
-    ScanningPage = "ScanningPage",
-    FriendList = "FriendList",
-    ProfilePage = "ProfilePage",
-    ReviewPage = "ReviewPage",
-    LeavingReviewPage = "LeavingReviewPage",
-    ComradePage = "ComradePage"
-  }
-  
-  export type AuthStackParamList =  {
-    Login: undefined,
-    Register: undefined,
-    HomePage: undefined,
-    ScanningPage: undefined,
-    FriendList : undefined,
-    ProfilePage : undefined,
-    ReviewPage : undefined,
-    LeavingReviewPage: undefined,
-    ComradePage: {id: number}
-  }
+  Login = "Login",
+  Register = "Register",
+  HomePage = "HomePage",
+  ScanningPage = "ScanningPage",
+  FriendList = "FriendList",
+  ProfilePage = "ProfilePage",
+  ReviewPage = "ReviewPage",
+  LeavingReviewPage = "LeavingReviewPage",
+  ComradePage = "ComradePage"
+}
 
-  const Stack = createStackNavigator<AuthStackParamList>();
+export type AuthStackParamList = {
+  Login: undefined,
+  Register: undefined,
+  HomePage: undefined,
+  ScanningPage: undefined,
+  FriendList: undefined,
+  ProfilePage: undefined,
+  ReviewPage: undefined,
+  LeavingReviewPage: undefined,
+  ComradePage: { id: number }
+}
 
-  const AuthFlowNavigator: React.FunctionComponent = () => {
-      return (
-            <Stack.Navigator headerMode="none" initialRouteName="Login">
-                <Stack.Screen name="Login" component={Login}/>
-                <Stack.Screen name="Register" component={Register}/>
-                <Stack.Screen name="HomePage" component={HomePage}/>
-                <Stack.Screen name="ScanningPage" component={ScanningPage}/>
-                <Stack.Screen name="FriendList" component={FriendList}/>
-                <Stack.Screen name="ProfilePage" component={ProfilePage}/>
-                <Stack.Screen name="ReviewPage" component={ReviewPage}/>
-                <Stack.Screen name="LeavingReviewPage" component={LeavingReviewPage}/>
-                <Stack.Screen name="ComradePage" component={ComradePage}/>
-            </Stack.Navigator>
-      );
-  }
+const Stack = createStackNavigator<AuthStackParamList>();
 
-  export default AuthFlowNavigator;
+const AuthFlowNavigator: React.FunctionComponent = () => {
+  return (
+    <Stack.Navigator headerMode="none" initialRouteName="Login">
+      <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="Register" component={Register} />
+      <Stack.Screen name="HomePage" component={HomePage} />
+      <Stack.Screen name="ScanningPage" component={ScanningPage} />
+      <Stack.Screen name="FriendList" component={FriendList} />
+      <Stack.Screen name="ProfilePage" component={ProfilePage} />
+      <Stack.Screen name="ReviewPage" component={ReviewPage} />
+      <Stack.Screen name="LeavingReviewPage" component={LeavingReviewPage} />
+      <Stack.Screen name="ComradePage" component={ComradePage} />
+    </Stack.Navigator>
+  );
+}
+
+export default AuthFlowNavigator;

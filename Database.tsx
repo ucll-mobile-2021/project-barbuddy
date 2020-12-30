@@ -92,13 +92,13 @@ let users = [
         Firstname: "Peter",
         Lastname: "Jackson",
         ProfilePic: "https://i.ibb.co/z7xPnft/Peter.png", //test
-        Bars:[{id:3, Rank:"1"},
-            {id:2, Rank:"2"},
-            {id:1, Rank:"3"},
-            {id:4, Rank:"4"},
-            {id:5, Rank:"5"},
-            {id:6, Rank:"6"}],
-        Friends: [2,3,4,5,6],
+        Bars: [{ id: 3, Rank: "1" },
+        { id: 2, Rank: "2" },
+        { id: 1, Rank: "3" },
+        { id: 4, Rank: "4" },
+        { id: 5, Rank: "5" },
+        { id: 6, Rank: "6" }],
+        Friends: [2, 3, 4, 5, 6],
         Visiting: 1
     },
     {
@@ -109,13 +109,13 @@ let users = [
         Firstname: "Jef",
         Lastname: "Jefferson",
         ProfilePic: "https://i.ibb.co/HPkNBPD/Alfons.png", //test
-        Bars:[{id:2, Rank:"3"},
-        {id:6, Rank:"5"},
-        {id:5, Rank:"4"},
-        {id:4, Rank:"1"},
-        {id:3, Rank:"2"},
-        {id:1, Rank:"6"}],
-        Friends: [3,4],
+        Bars: [{ id: 2, Rank: "3" },
+        { id: 6, Rank: "5" },
+        { id: 5, Rank: "4" },
+        { id: 4, Rank: "1" },
+        { id: 3, Rank: "2" },
+        { id: 1, Rank: "6" }],
+        Friends: [3, 4],
         Visiting: null
     },
     {
@@ -126,13 +126,13 @@ let users = [
         Firstname: "Andrew",
         Lastname: "Everet",
         ProfilePic: "https://i.ibb.co/f4590tC/Joseph.png", //test
-        Bars:[{id:2, Rank:"3"},
-        {id:6, Rank:"5"},
-        {id:5, Rank:"4"},
-        {id:4, Rank:"1"},
-        {id:3, Rank:"2"},
-        {id:1, Rank:"6"}],
-        Friends: [2,4],
+        Bars: [{ id: 2, Rank: "3" },
+        { id: 6, Rank: "5" },
+        { id: 5, Rank: "4" },
+        { id: 4, Rank: "1" },
+        { id: 3, Rank: "2" },
+        { id: 1, Rank: "6" }],
+        Friends: [2, 4],
         Visiting: 2
     },
     {
@@ -143,13 +143,13 @@ let users = [
         Firstname: "Lisa",
         Lastname: "Minelli",
         ProfilePic: "https://i.ibb.co/ygBc7xc/Francine.png", //test
-        Bars:[{id:2, Rank:"3"},
-        {id:6, Rank:"5"},
-        {id:5, Rank:"4"},
-        {id:4, Rank:"1"},
-        {id:3, Rank:"2"},
-        {id:1, Rank:"6"}],
-        Friends: [1,2],
+        Bars: [{ id: 2, Rank: "3" },
+        { id: 6, Rank: "5" },
+        { id: 5, Rank: "4" },
+        { id: 4, Rank: "1" },
+        { id: 3, Rank: "2" },
+        { id: 1, Rank: "6" }],
+        Friends: [1, 2],
         Visiting: null
     },
     {
@@ -160,13 +160,13 @@ let users = [
         Firstname: "Erik",
         Lastname: "Cartman",
         ProfilePic: "https://i.ibb.co/JKk14dM/Mario.png", //test
-        Bars:[{id:2, Rank:"3"},
-        {id:6, Rank:"5"},
-        {id:5, Rank:"4"},
-        {id:4, Rank:"1"},
-        {id:3, Rank:"2"},
-        {id:1, Rank:"6"}],
-        Friends: [1,6],
+        Bars: [{ id: 2, Rank: "3" },
+        { id: 6, Rank: "5" },
+        { id: 5, Rank: "4" },
+        { id: 4, Rank: "1" },
+        { id: 3, Rank: "2" },
+        { id: 1, Rank: "6" }],
+        Friends: [1, 6],
         Visiting: 1,
     },
     {
@@ -177,13 +177,13 @@ let users = [
         Firstname: "Nia",
         Lastname: "Naal",
         ProfilePic: "https://i.ibb.co/7kMgXf1/Corporate-Christmas-Party-Vector-Smiling-Drunk-Man-And-Woman-Relaxing-Celebrating-Winter-Concept-End.jpg", //test
-        Bars:[{id:2, Rank:"3"},
-        {id:6, Rank:"5"},
-        {id:5, Rank:"4"},
-        {id:4, Rank:"1"},
-        {id:3, Rank:"2"},
-        {id:1, Rank:"6"}],
-        Friends: [2,7],
+        Bars: [{ id: 2, Rank: "3" },
+        { id: 6, Rank: "5" },
+        { id: 5, Rank: "4" },
+        { id: 4, Rank: "1" },
+        { id: 3, Rank: "2" },
+        { id: 1, Rank: "6" }],
+        Friends: [2, 7],
         Visiting: 6
     },
     {
@@ -194,21 +194,21 @@ let users = [
         Firstname: "Jessica",
         Lastname: "Cruz",
         ProfilePic: "https://i.ibb.co/LnNGNy6/Jessica.jpg", //test
-        Bars:[],
+        Bars: [],
         Friends: [],
         Visiting: null
     }
-    
+
 ];
 
 export const initialise = async () => {
     AsyncStorage.clear().then(() => {
         //AsyncStorage.setItem("friendList", JSON.stringify(friendList)).then(() => {
-            AsyncStorage.setItem("users", JSON.stringify(users)).then(() => {
-                AsyncStorage.setItem("barList", JSON.stringify(barList));
-                AsyncStorage.setItem("reviewList", JSON.stringify(reviewList));
-            });
+        AsyncStorage.setItem("users", JSON.stringify(users)).then(() => {
+            AsyncStorage.setItem("barList", JSON.stringify(barList));
+            AsyncStorage.setItem("reviewList", JSON.stringify(reviewList));
         });
+    });
     //})
 }
 

@@ -28,7 +28,7 @@ const Login: React.FunctionComponent<LoginScreenProps> = (props) => {
                 <View style={styles.inputfields}>
                     <Form >
                         <Item >
-                            <Input  style={styles.textInput} placeholder="Username"  onChangeText={e => setUsername(e)} />
+                            <Input style={styles.textInput} placeholder="Username" onChangeText={e => setUsername(e)} />
                         </Item>
                         <Item >
                             <Input secureTextEntry={true} style={styles.textInput} placeholder="Password" onChangeText={e => setPassword(e)} />
@@ -69,7 +69,7 @@ const TryLogin = (username: string, password: string, navigation: StackNavigatio
                 type: "danger",
             });
         }
-        
+
         let result = JSON.parse(users);
         let foundUser = result.find((temp: { Username: string; Password: string; }) => temp.Username === username && temp.Password === password);
         if (foundUser === undefined) {
@@ -105,23 +105,23 @@ const styles = StyleSheet.create({
         backgroundColor: '#181818',// dark background colour
 
     },
-    photo:{
+    photo: {
         width: 250,
         height: 250,
-        marginBottom:10,
+        marginBottom: 10,
     },
 
     logo: {
-        
+
         alignItems: "center",
         paddingBottom: "15%",
     },
     buttonView: {
-       paddingTop: "10%",
+        paddingTop: "10%",
 
     },
     buttons: {
-        
+
         alignSelf: "center",
         width: "40%",
         backgroundColor: "#FFC229", //yellow 
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         width: "90%",
     },
-    textInput:{
+    textInput: {
         color: "white",
     },
     text: {

@@ -1,6 +1,6 @@
 import { StackNavigationProp } from '@react-navigation/stack';
-import { Container, Content, Header, Text, Item, List, Input, Icon, Button, Footer, FooterTab,Right } from 'native-base';
-import React, {useEffect} from 'react';
+import { Container, Content, Header, Text, Item, List, Input, Icon, Button, Footer, FooterTab } from 'native-base';
+import React, { useEffect } from 'react';
 import { AppScreens, AuthStackParamList } from '../AuthFlowScreen';
 import { getData, storeData } from '../Database';
 import * as Font from "expo-font";
@@ -9,70 +9,80 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { StyleSheet, View } from 'react-native';
 import { ListItem, Avatar } from 'react-native-elements';
 
-type HomePageNavigationProps = StackNavigationProp<AuthStackParamList,AppScreens.HomePage>
+type HomePageNavigationProps = StackNavigationProp<AuthStackParamList, AppScreens.HomePage>
 
 interface HomePageScreenProps {
     navigation: HomePageNavigationProps
 }
-    const HomePage: React.FunctionComponent<HomePageScreenProps> = (props) => {
-        const [currentUser, setCurrentUser] = React.useState("");
-        const [barList, setBarList] = React.useState("");
-        const [reviewList, setReviewList] = React.useState("");
-        const [isLoaded, setLoaded] = React.useState(false);
-        const [search, setSearch] = React.useState("");
+const HomePage: React.FunctionComponent<HomePageScreenProps> = (props) => {
+    const [currentUser, setCurrentUser] = React.useState("");
+    const [barList, setBarList] = React.useState("");
+    const [reviewList, setReviewList] = React.useState("");
+    const [isLoaded, setLoaded] = React.useState(false);
+    const [search, setSearch] = React.useState("");
 
-        useEffect(() => {
-            getData("current").then(response => {
-                if(response === "")
-                {
-                    navigation.navigate("Login");
-                    return;
-                }
-                setCurrentUser(response);
+    useEffect(() => {
+        getData("current").then(response => {
+            if (response === "") {
+                navigation.navigate("Login");
+                return;
+            }
+            setCurrentUser(response);
 
-                getData("barList").then((response2) => {
-                    setBarList(response2);
-                    getData("reviewList").then((response3) => {
-                        setReviewList(response3);
-                        const LoadFonts = async () => {
-                            await Font.loadAsync({
-                                'Roboto': require('native-base/Fonts/Roboto.ttf'),
-                                'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
-                                ...Ionicons.font,
-                            });
-                        }
-                        LoadFonts().then(() => setLoaded(true));
-                    });
+            getData("barList").then((response2) => {
+                setBarList(response2);
+                getData("reviewList").then((response3) => {
+                    setReviewList(response3);
+                    const LoadFonts = async () => {
+                        await Font.loadAsync({
+                            'Roboto': require('native-base/Fonts/Roboto.ttf'),
+                            'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
+                            ...Ionicons.font,
+                        });
+                    }
+                    LoadFonts().then(() => setLoaded(true));
                 });
             });
         });
-    
-        const GetCurrentUser = () => {
-            return JSON.parse(currentUser);
-        }
+    });
 
-        const GetAverageScore = (BarId:any) => {
-            let sumRating = 0;
-            let amount = 0;
-            let result = JSON.parse(reviewList).filter((review: {id: any; Review: String; Score: any, Reviewer: any, Bar: any;}) => review.Bar === BarId)
-            if(result.length === 0){
-                console.log(BarId + " has no reviews to base average score on.");
-                return null;
-            }
-            else{
-                result.forEach((review: {id: any; Review: any; Score: any, Reviewer: any, Bar: any}) => {
-                    sumRating = sumRating + Number(review.Score);
-                    amount++;
-    
-                });
-                return Number(sumRating/amount).toFixed(0);
-            }
+    const GetCurrentUser = () => {
+        return JSON.parse(currentUser);
+    }
+
+    const GetAverageScore = (BarId: any) => {
+        let sumRating = 0;
+        let amount = 0;
+        let result = JSON.parse(reviewList).filter((review: { id: any; Review: String; Score: any, Reviewer: any, Bar: any; }) => review.Bar === BarId)
+        if (result.length === 0) {
+            console.log(BarId + " has no reviews to base average score on.");
+            return null;
         }
-        
-        const GetBarList = () => {
-            if(search === "")
-            {
-                return JSON.parse(barList).map((bar: {id: any; Name: any; Location: any, avatar_url: any}) => {
+        else {
+            result.forEach((review: { id: any; Review: any; Score: any, Reviewer: any, Bar: any }) => {
+                sumRating = sumRating + Number(review.Score);
+                amount++;
+
+            });
+            return Number(sumRating / amount).toFixed(0);
+        }
+    }
+
+    const GetBarList = () => {
+        if (search === "") {
+            return JSON.parse(barList).map((bar: { id: any; Name: any; Location: any, avatar_url: any }) => {
+                return {
+                    id: bar.id,
+                    Name: bar.Name,
+                    Location: bar.Location,
+                    avatar_url: bar.avatar_url
+                }
+            });
+        }
+        else {
+            return JSON.parse(barList)
+                .filter((bar: { id: any; Name: String; Location: any; }) => bar.Name.toLowerCase().startsWith(search.toLowerCase()))
+                .map((bar: { id: any; Name: any; Location: any, avatar_url: any }) => {
                     return {
                         id: bar.id,
                         Name: bar.Name,
@@ -80,65 +90,51 @@ interface HomePageScreenProps {
                         avatar_url: bar.avatar_url
                     }
                 });
-            }
-            else
-            {
-                return JSON.parse(barList)
-                .filter((bar: {id: any; Name: String; Location: any;}) => bar.Name.toLowerCase().startsWith(search.toLowerCase()))
-                .map((bar: {id: any; Name: any; Location: any, avatar_url: any}) => {
-                    return {
-                        id: bar.id,
-                        Name: bar.Name,
-                        Location: bar.Location,
-                        avatar_url: bar.avatar_url
-                    }
-                });
-            }
         }
+    }
 
-        const BarDetails = (barId: number) => {
-            storeData("barId",JSON.stringify(barId)).then(() => {
-                navigation.navigate("ReviewPage");
-            });
-        }
+    const BarDetails = (barId: number) => {
+        storeData("barId", JSON.stringify(barId)).then(() => {
+            navigation.navigate("ReviewPage");
+        });
+    }
 
-        const Logout = () => {
-            storeData("current",JSON.stringify("")).then(() => {
-                navigation.navigate("Login");
-            });
-            
-        }
+    const Logout = () => {
+        storeData("current", JSON.stringify("")).then(() => {
+            navigation.navigate("Login");
+        });
 
-        const {navigation} = props;
+    }
 
-        if(isLoaded)
-        {
-            return (
-                
-                <Container>
-                    
+    const { navigation } = props;
+
+    if (isLoaded) {
+        return (
+
+            <Container>
+
                 <Header searchBar rounded style={styles.header}>
                     <Item>
                         <Icon name="ios-search" />
-                        <Input placeholder ="Search for a bar" onChangeText={text => setSearch(text)}></Input>
+                        <Input placeholder="Search for a bar" onChangeText={text => setSearch(text)}></Input>
                     </Item>
                 </Header>
-              
 
-                
+
+
                 <Content style={styles.content}>
                     <View style={styles.allTheBars}>
                         <Text style={styles.headingText}>Hello, {GetCurrentUser().Firstname}</Text>
                         <ScrollView style={styles.scrollView}>
                             <List>
-                                {GetBarList().map((bar: {id: any, Name: any, Location: any, avatar_url: any, Url: any}) => {
+                                {GetBarList().map((bar: { id: any, Name: any, Location: any, avatar_url: any, Url: any }) => {
                                     return (
                                         <ListItem key={bar.id} bottomDivider style={styles.bottomDeviderList} onPress={() => BarDetails(bar.id)}>
                                             <Avatar source={{ uri: bar.avatar_url }} />
                                             <ListItem.Content>
-                                            <ListItem.Title>{bar.Name + ' '}</ListItem.Title>
-                                            <ListItem.Subtitle>{bar.Location}</ListItem.Subtitle>
-                                            <ListItem.Subtitle>{GetAverageScore(bar.id) === null ? "No reviews" : "Average score: " + GetAverageScore(bar.id)}</ListItem.Subtitle>
+                                                <ListItem.Title>{bar.Name + ' '}</ListItem.Title>
+                                                <ListItem.Subtitle>{bar.Location}</ListItem.Subtitle>
+                                                <ListItem.Subtitle>{GetAverageScore(bar.id) === null ? "No reviews" : "Average score: " + GetAverageScore(bar.id)}</ListItem.Subtitle>
                                             </ListItem.Content>
 
                                         </ListItem>
@@ -172,93 +168,92 @@ interface HomePageScreenProps {
                         </Button>
                     </FooterTab>
                 </Footer>
-                
+
             </Container>
-            
-            );
-        }
-        else
-        {
-            return null;
-        }
-        
+
+        );
+    }
+    else {
+        return null;
     }
 
-    const styles = StyleSheet.create({
-        container: {
-            
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-            
-        },
-        content:{
-           
-            backgroundColor: '#181818'// dark background colour
-            //backgroundColor: '#f1f1f1'
-        },
+}
 
-        header: {
-            backgroundColor:'#1f1f1f', 
-    
-        },
-        headerContent:{
-            padding:30,
-            alignItems: 'center',
-            
-        },
-        avatar:{
-            width: 130,
-            height: 130,
-            borderRadius: 63,
-            borderWidth: 4,
-            borderColor: "#FFC229", //yellow
-            marginBottom:10,
-        },
-        nameUser:{
-            fontSize:45,
-            color: '#FFC229', //yellow
-            fontWeight:'600',
-    
-        },
-        headingText: { // 'all the bars youve logd into'
-            color: '#FFC229',
-            backgroundColor: '#1f1f1f', //darkgray 
-            fontSize: 20,
-            fontWeight:'normal',
-            padding: 15,
-        },
-        topBars:{
-            opacity: 0.95
-            
-        },
-        allTheBars:{
-            opacity: 0.95
-            
-        },
-        scrollView: {
-            
-            height: 700,
-            
-        },
-        bottomDeviderList: {
-            paddingVertical: 2,
-            borderColor: '#FFC229', // yellow
-            borderWidth: 1,
-            
-        },
-    
-        footer: {
-            backgroundColor: '#FFC229', //yellow 
-        },
-        footerText: {
-            fontSize: 9,
-            color: 'black'
-        },
-        footerIcon: {
-            color: '#1f1f1f' //drakgray
-        }
-    
-    });
+const styles = StyleSheet.create({
+    container: {
 
-    export default HomePage;
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+
+    },
+    content: {
+
+        backgroundColor: '#181818'// dark background colour
+        //backgroundColor: '#f1f1f1'
+    },
+
+    header: {
+        backgroundColor: '#1f1f1f',
+
+    },
+    headerContent: {
+        padding: 30,
+        alignItems: 'center',
+
+    },
+    avatar: {
+        width: 130,
+        height: 130,
+        borderRadius: 63,
+        borderWidth: 4,
+        borderColor: "#FFC229", //yellow
+        marginBottom: 10,
+    },
+    nameUser: {
+        fontSize: 45,
+        color: '#FFC229', //yellow
+        fontWeight: '600',
+
+    },
+    headingText: { // 'all the bars youve logd into'
+        color: '#FFC229',
+        backgroundColor: '#1f1f1f', //darkgray 
+        fontSize: 20,
+        fontWeight: 'normal',
+        padding: 15,
+    },
+    topBars: {
+        opacity: 0.95
+
+    },
+    allTheBars: {
+        opacity: 0.95
+
+    },
+    scrollView: {
+
+        height: 700,
+
+    },
+    bottomDeviderList: {
+        paddingVertical: 2,
+        borderColor: '#FFC229', // yellow
+        borderWidth: 1,
+
+    },
+
+    footer: {
+        backgroundColor: '#FFC229', //yellow 
+    },
+    footerText: {
+        fontSize: 9,
+        color: 'black'
+    },
+    footerIcon: {
+        color: '#1f1f1f' //drakgray
+    }
+
+});
+
+export default HomePage;

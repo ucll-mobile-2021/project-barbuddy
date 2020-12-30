@@ -1,6 +1,6 @@
 import { StackNavigationProp } from '@react-navigation/stack';
-import { Container, Content, Header, Text, Item, List, Input, Icon, Button, Image, Footer, FooterTab } from 'native-base';
-import React, {useEffect} from 'react';
+import { Container, Content, Header, Text, Item, List, Input, Icon, Button, Footer, FooterTab } from 'native-base';
+import React, { useEffect } from 'react';
 import { AppScreens, AuthStackParamList } from '../AuthFlowScreen';
 import { getData, storeData } from '../Database';
 import * as Font from "expo-font";
@@ -8,82 +8,79 @@ import { Ionicons } from '@expo/vector-icons';
 import QRCode from 'react-native-qrcode-svg';
 import { ScrollView } from 'react-native-gesture-handler';
 import { StyleSheet, View } from 'react-native';
-import { ListItem,Avatar } from 'react-native-elements';
+import { ListItem, Avatar } from 'react-native-elements';
 
 
-type FriendListNavigationProps = StackNavigationProp<AuthStackParamList,AppScreens.FriendList>
+type FriendListNavigationProps = StackNavigationProp<AuthStackParamList, AppScreens.FriendList>
 export type FriendListParams = {
     username: string
 }
 
 interface FriendListScreenProps {
-    route: {params: FriendListParams}
+    route: { params: FriendListParams }
     navigation: FriendListNavigationProps
 }
-    const FriendList: React.FunctionComponent<FriendListScreenProps> = (props) => {
-        const {navigation, route} = props;
-        const [currentUser, setCurrentUser] = React.useState("");
-        const [friendList, setFriendList] = React.useState("");
-        const [barList, setBarList] = React.useState("");
-        const [isLoaded, setLoaded] = React.useState(false);
-        const [search, setSearch] = React.useState("");
+const FriendList: React.FunctionComponent<FriendListScreenProps> = (props) => {
+    const { navigation, route } = props;
+    const [currentUser, setCurrentUser] = React.useState("");
+    const [friendList, setFriendList] = React.useState("");
+    const [barList, setBarList] = React.useState("");
+    const [isLoaded, setLoaded] = React.useState(false);
+    const [search, setSearch] = React.useState("");
 
-        useEffect(() => {
-            getData("current").then(response => {
-                if(response === "")
-                {
-                    navigation.navigate("Login");
-                    return;
-                }
-                setCurrentUser(response);
+    useEffect(() => {
+        getData("current").then(response => {
+            if (response === "") {
+                navigation.navigate("Login");
+                return;
+            }
+            setCurrentUser(response);
 
-                getData("users").then((response2) => {
-                    setFriendList(response2);
-                    getData("barList").then((response3) => {
-                        setBarList(response3);
-                        const LoadFonts = async () => {
-                            await Font.loadAsync({
-                                'Roboto': require('native-base/Fonts/Roboto.ttf'),
-                                'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
-                                ...Ionicons.font,
-                             });
-                         }
-                         LoadFonts().then(() => setLoaded(true));
-                    });
+            getData("users").then((response2) => {
+                setFriendList(response2);
+                getData("barList").then((response3) => {
+                    setBarList(response3);
+                    const LoadFonts = async () => {
+                        await Font.loadAsync({
+                            'Roboto': require('native-base/Fonts/Roboto.ttf'),
+                            'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
+                            ...Ionicons.font,
+                        });
+                    }
+                    LoadFonts().then(() => setLoaded(true));
                 });
             });
         });
+    });
 
-        const Logout = () => {
-            storeData("current",JSON.stringify("")).then(() => {
-                navigation.navigate("Login");
-            });
-        }
+    const Logout = () => {
+        storeData("current", JSON.stringify("")).then(() => {
+            navigation.navigate("Login");
+        });
+    }
 
-        const ComradeDetails = (id: number) => {
-            navigation.navigate("ComradePage",{id: id});
-        }
+    const ComradeDetails = (id: number) => {
+        navigation.navigate("ComradePage", { id: id });
+    }
 
-        const GetCurrentUser = () => {
-            return JSON.parse(currentUser);
-        }
+    const GetCurrentUser = () => {
+        return JSON.parse(currentUser);
+    }
 
-        const GetQRCodeValue = () => {
-            let qr =  {
-                type: "friend",
-                id: GetCurrentUser().id
-            };
-            return JSON.stringify(qr);
-        }
+    const GetQRCodeValue = () => {
+        let qr = {
+            type: "friend",
+            id: GetCurrentUser().id
+        };
+        return JSON.stringify(qr);
+    }
 
-        const GetFriendList = () => {
-            if(search === "")
-            {
-                return JSON.parse(friendList).filter((friend: { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, ProfilePic: any, Bars: any, Friends: any, Visiting: any}) => GetCurrentUser().Friends.includes(friend.id))
-                .map((friend: { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, ProfilePic: any, Bars: any, Friends: any, Visiting: any}) => {
+    const GetFriendList = () => {
+        if (search === "") {
+            return JSON.parse(friendList).filter((friend: { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, ProfilePic: any, Bars: any, Friends: any, Visiting: any }) => GetCurrentUser().Friends.includes(friend.id))
+                .map((friend: { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, ProfilePic: any, Bars: any, Friends: any, Visiting: any }) => {
                     let barName = "";
-                    if(friend.Visiting !== null)
-                    {
+                    if (friend.Visiting !== null) {
                         barName = JSON.parse(barList).find((temp: any) => temp.id === friend.Visiting).Name;
                     }
                     return {
@@ -95,15 +92,13 @@ interface FriendListScreenProps {
 
                     }
                 });
-            }
-            else
-            {
-                return JSON.parse(friendList).filter((friend: { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, ProfilePic: any, Bars: any, Friends: any, Visiting: any}) => GetCurrentUser().Friends.includes(friend.id))
-                .filter((friend: { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, ProfilePic: any, Bars: any, Friends: any, Visiting: any}) => friend.Lastname.toLowerCase().startsWith(search.toLowerCase()) || friend.Firstname.toLowerCase().startsWith(search.toLowerCase()))
-                .map((friend: { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, ProfilePic: any, Bars: any, Friends: any, Visiting: any}) => {
+        }
+        else {
+            return JSON.parse(friendList).filter((friend: { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, ProfilePic: any, Bars: any, Friends: any, Visiting: any }) => GetCurrentUser().Friends.includes(friend.id))
+                .filter((friend: { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, ProfilePic: any, Bars: any, Friends: any, Visiting: any }) => friend.Lastname.toLowerCase().startsWith(search.toLowerCase()) || friend.Firstname.toLowerCase().startsWith(search.toLowerCase()))
+                .map((friend: { id: any, Username: any, Password: any, Date: any, Firstname: any, Lastname: any, ProfilePic: any, Bars: any, Friends: any, Visiting: any }) => {
                     let barName = "";
-                    if(friend.Visiting !== null)
-                    {
+                    if (friend.Visiting !== null) {
                         barName = JSON.parse(barList).find((temp: any) => temp.id === friend.Visiting).Name;
                     }
                     return {
@@ -114,18 +109,17 @@ interface FriendListScreenProps {
                         BarName: barName
                     }
                 });
-            }
         }
+    }
 
-        if(isLoaded)
-        {
+    if (isLoaded) {
         return (
             <Container>
-            {/* <LinearGradient colors={['#4c669f', '#3b5998', '#192f6a']}> */}
+                {/* <LinearGradient colors={['#4c669f', '#3b5998', '#192f6a']}> */}
                 <Header searchBar rounded style={styles.header}>
                     <Item>
                         <Icon name="ios-search" />
-                        <Input placeholder ="Search for a friend" onChangeText={text => setSearch(text)}></Input>
+                        <Input placeholder="Search for a friend" onChangeText={text => setSearch(text)}></Input>
                         <Icon name="ios-people" />
                     </Item>
                 </Header>
@@ -133,28 +127,30 @@ interface FriendListScreenProps {
                     <View style={styles.allTheBars}>
                         <Text style={styles.headingText}>Friendlist</Text>
                         <ScrollView style={styles.scrollView}>
-                            {GetFriendList().length !== 0?
-                            <List>
-                                {GetFriendList().map((friend: {id: any,Firstname: String, Lastname: String, BarName: String, ProfilePic:any}) => {
-                                    return (
-                                        <ListItem key={friend.id} bottomDivider style={styles.bottomDeviderList} onPress={() => ComradeDetails(Number(friend.id))}>
-                                            <Avatar source={{uri:friend.ProfilePic}}/>
-                                            <ListItem.Content>
-                                            <ListItem.Title>{friend.Firstname + ' ' + friend.Lastname} </ListItem.Title>
-                                            {friend.BarName === "" ? null : <ListItem.Subtitle>{'Last seen at: ' + friend.BarName}</ListItem.Subtitle>}
-                                            </ListItem.Content>
-                                            
-                                        </ListItem>
-                                    );
-                                })}
-                            </List>: null}
-                            {GetFriendList().length === 0? 
-                            <Text style={styles.headingText}>You haven't registered any of your friends yet.</Text>:null}
+                            {GetFriendList().length !== 0 ?
+                                <List>
+                                    {GetFriendList().map((friend: { id: any, Firstname: String, Lastname: String, BarName: String, ProfilePic: any }) => {
+                                        return (
+                                            <ListItem key={friend.id} bottomDivider style={styles.bottomDeviderList} onPress={() => ComradeDetails(Number(friend.id))}>
+                                                <Avatar source={{ uri: friend.ProfilePic }} />
+                                                <ListItem.Content>
+                                                    <ListItem.Title>{friend.Firstname + ' ' + friend.Lastname} </ListItem.Title>
+                                                    {friend.BarName === "" ? null : <ListItem.Subtitle>{'Last seen at: ' + friend.BarName}</ListItem.Subtitle>}
+                                                </ListItem.Content>
+
+                                            </ListItem>
+                                        );
+                                    })}
+                                </List> : null}
+                            {GetFriendList().length === 0 ?
+                                <Text style={styles.headingText}>You haven't registered any of your friends yet.</Text> : null}
                         </ScrollView>
                     </View>
-                    <View style={styles.qrCode}>
+                    <View style={styles.qrView}>
                         <Text style={styles.headingText}>Personal QR code</Text>
-                        <QRCode value={GetQRCodeValue()} size={150}/>
+                        <View style={styles.qr}>
+                            <QRCode value={GetQRCodeValue()} size={200} />
+                        </View>
                     </View>
                 </Content>
                 <Footer>
@@ -185,98 +181,98 @@ interface FriendListScreenProps {
         );
     }
 
-    else
-    {
+    else {
         return null;
     }
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+
+    },
+    content: {
+
+        backgroundColor: '#181818'// dark background colour
+        //backgroundColor: '#f1f1f1'
+    },
+    // linearGradientHeader: {
+    //     alignItems: 'center',
+    // justifyContent: 'center',
+    // borderRadius: 5,
+    // height: 200,
+    // width: 350,
+    // },
+    header: {
+        backgroundColor: '#1f1f1f',
+
+    },
+    headerContent: {
+        padding: 30,
+        alignItems: 'center',
+
+    },
+    avatar: {
+        width: 130,
+        height: 130,
+        borderRadius: 63,
+        borderWidth: 4,
+        borderColor: "#FFC229", //yellow
+        marginBottom: 10,
+    },
+    nameUser: {
+        fontSize: 45,
+        color: '#FFC229', //yellow
+        fontWeight: '600',
+
+    },
+    headingText: { // 'all the bars youve logd into'
+        color: '#FFC229',
+        //backgroundColor: '#1a1a1a',
+        backgroundColor: '#1f1f1f', //darkgray 
+        fontSize: 20,
+        fontWeight: 'normal',
+        padding: 15,
+        //paddingHorizontal:20
+    },
+    topBars: {
+        opacity: 0.95
+
+    },
+    allTheBars: {
+        opacity: 0.95
+
+    },
+    qrView: {
+        alignItems: "center"
+    },
+    qr: {
+        backgroundColor: "#FFC229"
+    },
+    scrollView: {
+        height: 350,
+    },
+    bottomDeviderList: {
+        paddingVertical: 2,
+        borderColor: '#FFC229', // yellow
+        borderWidth: 1,
+
+    },
+
+    footer: {
+        backgroundColor: '#FFC229', //yellow 
+    },
+    footerText: {
+        fontSize: 9,
+        color: 'black'
+    },
+    footerIcon: {
+        color: '#1f1f1f' //drakgray
     }
 
-    const styles = StyleSheet.create({
-        container: {
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-            
-        },
-        content:{
-            
-            backgroundColor: '#181818'// dark background colour
-            //backgroundColor: '#f1f1f1'
-        },
-        // linearGradientHeader: {
-        //     alignItems: 'center',
-        // justifyContent: 'center',
-        // borderRadius: 5,
-        // height: 200,
-        // width: 350,
-        // },
-        header: {
-            backgroundColor:'#1f1f1f', 
-    
-        },
-        headerContent:{
-            padding:30,
-            alignItems: 'center',
-            
-        },
-        avatar:{
-            width: 130,
-            height: 130,
-            borderRadius: 63,
-            borderWidth: 4,
-            borderColor: "#FFC229", //yellow
-            marginBottom:10,
-        },
-        nameUser:{
-            fontSize:45,
-            color: '#FFC229', //yellow
-            fontWeight:'600',
-    
-        },
-        headingText: { // 'all the bars youve logd into'
-            color: '#FFC229',
-            //backgroundColor: '#1a1a1a',
-            backgroundColor: '#1f1f1f', //darkgray 
-            fontSize: 20,
-            fontWeight:'normal',
-            padding: 15,
-            //paddingHorizontal:20
-        },
-        topBars:{
-            opacity: 0.95
-            
-        },
-        allTheBars:{
-            opacity: 0.95
-            
-        },
-        qrCode: {
-            opacity: 0.95,
-            textAlign: "center"
-        },
-        scrollView: {
-            height: 350,
-            
-        },
-        bottomDeviderList: {
-            paddingVertical: 2,
-            borderColor: '#FFC229', // yellow
-            borderWidth: 1,
-            
-        },
-    
-        footer: {
-            backgroundColor: '#FFC229', //yellow 
-        },
-        footerText: {
-            fontSize: 9,
-            color: 'black'
-        },
-        footerIcon: {
-            color: '#1f1f1f' //drakgray
-        }
-    
-    });
-    
+});
+
 
 export default FriendList;
