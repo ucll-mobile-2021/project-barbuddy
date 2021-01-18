@@ -28,10 +28,10 @@ const Login: React.FunctionComponent<LoginScreenProps> = (props) => {
                 <View style={styles.inputfields}>
                     <Form >
                         <Item >
-                            <Input style={styles.textInput} placeholder="Username" onChangeText={e => setUsername(e)} />
+                            <Input maxLength={30} style={styles.textInput} placeholder="Username" onChangeText={e => setUsername(e)} />
                         </Item>
                         <Item >
-                            <Input secureTextEntry={true} style={styles.textInput} placeholder="Password" onChangeText={e => setPassword(e)} />
+                            <Input maxLength={30} secureTextEntry={true} style={styles.textInput} placeholder="Password" onChangeText={e => setPassword(e)} />
                         </Item>
 
                     </Form>
