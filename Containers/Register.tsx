@@ -46,19 +46,19 @@ const Register: React.FunctionComponent<RegisterScreenProps> = (props) => {
                         <Form>
 
                             <Item style={styles.Input} >
-                                <Input style={styles.textInput} placeholder="Username" onChangeText={e => setUsername(e)} />
+                                <Input maxLength={30} style={styles.textInput} placeholder="Username" onChangeText={e => setUsername(e)} />
                             </Item>
                             <Item style={styles.Input} >
-                                <Input style={styles.textInput} placeholder="First name" onChangeText={e => setFirstname(e)} />
+                                <Input maxLength={30} style={styles.textInput} placeholder="First name" onChangeText={e => setFirstname(e)} />
                             </Item>
                             <Item style={styles.Input} >
-                                <Input style={styles.textInput} placeholder="Last name" onChangeText={e => setLastname(e)} />
+                                <Input maxLength={30} style={styles.textInput} placeholder="Last name" onChangeText={e => setLastname(e)} />
                             </Item>
                             <Item style={styles.Input} >
-                                <Input style={styles.textInput} secureTextEntry placeholder="Password" onChangeText={e => setPassword(e)} />
+                                <Input maxLength={30} style={styles.textInput} secureTextEntry placeholder="Password" onChangeText={e => setPassword(e)} />
                             </Item>
                             <Item style={styles.Input} >
-                                <Input style={styles.textInput} secureTextEntry placeholder="Confirm Password" onChangeText={e => setRepeatPassword(e)} />
+                                <Input maxLength={30} style={styles.textInput} secureTextEntry placeholder="Confirm Password" onChangeText={e => setRepeatPassword(e)} />
                             </Item>
 
 
@@ -100,6 +100,15 @@ const TryRegister = (username: string, firstname: string, lastname: string, pass
                 }
                 else {
                     AllUsers = JSON.parse(users);
+                }
+                if(AllUsers.find((user: any) => user.Username === username) !== undefined)
+                {
+                    Toast.show({
+                        text: "User with this name does not exist",
+                        type: "danger"
+                    });
+                    Haptics.impactAsync();
+                    return;
                 }
                 let id = AllUsers[AllUsers.length - 1].id + 2;
                 let result = {

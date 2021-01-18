@@ -119,7 +119,7 @@ const FriendList: React.FunctionComponent<FriendListScreenProps> = (props) => {
                 <Header searchBar rounded style={styles.header}>
                     <Item>
                         <Icon name="ios-search" />
-                        <Input placeholder="Search for a friend" onChangeText={text => setSearch(text)}></Input>
+                        <Input maxLength={50} placeholder="Search for a friend" onChangeText={text => setSearch(text)}></Input>
                         <Icon name="ios-people" />
                     </Item>
                 </Header>

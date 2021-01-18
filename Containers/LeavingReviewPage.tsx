@@ -114,7 +114,7 @@ const LeavingReviewPage: React.FunctionComponent<LeavingReviewPageScreenProps> =
                             </View>
                             <View style={styles.InputView}>
                                 <Item rounded style={styles.Input} >
-                                    <Input style={styles.InputText} placeholder="Review" onChangeText={e => setReview(e)} />
+                                    <Input maxLength={150} style={styles.InputText} placeholder="Review" onChangeText={e => setReview(e)} />
                                 </Item>
                             </View>
                         </Form>
